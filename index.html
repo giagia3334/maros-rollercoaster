@@ -134,7 +134,7 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
  <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
  <img alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
  <h2>Ride through <em>my work</em></h2>
- <p>Station 1: my photo excursion. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. The posts load right on the track as you ride.</p>
+ <p>Station 1: photography. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. The posts load right on the track as you ride.</p>
  <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is just the first draft. I think we can turn this into your portfolio page, where people see what you do and can contact you or send a request, or add any other features that feel authentic to you.</p><p>By the way, can’t wait to see those (authentic) ones.</p></div>
  <button class="btn" id="go">▶ PRESS START</button>
 </div></div>
@@ -194,8 +194,8 @@ document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
 const flags=document.getElementById('flags');
 function sign(x,txt,y=780){const p=P(fx(x));const g=el('g',{class:'sign'});g.setAttribute('transform',`translate(${p.x} ${p.y})`);g.appendChild(el('line',{x1:0,y1:0,x2:0,y2:-150,stroke:'#1B1A22','stroke-width':5}));const W=Math.max(260,txt.length*15+40);g.appendChild(el('rect',{x:-W/2,y:-204,width:W,height:58,rx:10}));const t=el('text',{x:0,y:-165,'text-anchor':'middle','font-size':'24'});t.textContent=txt;g.appendChild(t);flags.appendChild(g)}
-sign(900,'STATION 1 · PHOTOS');sign(6750,'STATION 2 · MY BLOG');sign(9950,'STATION 3 · LINKS');sign(11550,'STATION 4 · REQUEST A CALL');
-const caps=[[fx(-100),'<span class="k">welcome</span>a rollercoaster through my portfolio'],[fx(950),'<span class="k">station 1</span>my photo excursion: the posts load as you ride'],[fx(6700),'<span class="k">station 2</span>my personal blog: the most-watched reels'],[fx(9900),'<span class="k">station 3</span>my links pop up as you pass. tap one'],[fx(11450),'<span class="k">station 4</span>want to work together? request a call']];
+sign(900,'STATION 1 · PHOTOGRAPHY');sign(6750,'STATION 2 · MY BLOG');sign(9950,'STATION 3 · LINKS');sign(11550,'STATION 4 · REQUEST A CALL');
+const caps=[[fx(-100),'<span class="k">welcome</span>a rollercoaster through my portfolio'],[fx(950),'<span class="k">station 1</span>photography: the posts load as you ride'],[fx(6700),'<span class="k">station 2</span>my personal blog: the most-watched reels'],[fx(9900),'<span class="k">station 3</span>my links pop up as you pass. tap one'],[fx(11450),'<span class="k">station 4</span>want to work together? request a call']];
 const STATION3=fx(10500),STATION4=fx(11700);
 const F1=fx(900),F2=fx(6700),F3=fx(9900),F4=fx(11450);
 /* link boards */
@@ -247,7 +247,7 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0){stops[nearIdx].g.classList.remove('near');stops[nearIdx].eb.classList.remove('near')}nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');stops[ni].eb.classList.add('near');tip.textContent='TAP THE POST TO OPEN IT ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
  if((embTick=(embTick+1)%12)===0&&!paused){stops.forEach(s=>{const dd=s.f*L-d;if(dd>-900&&dd<1500)mountEmbed(s);else if(dd<-1600||dd>2600)unmountEmbed(s)})}
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
- const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOS':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
+ const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOGRAPHY':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
  const s=Math.max(.42,Math.min(1.1,innerWidth/560,innerHeight/700));const ax=.2+.2*Math.min(1,Math.max(0,d-1200)/(L*.05));const tgx=innerWidth*ax-pt.x*s,tgy=innerHeight*.78-pt.y*s;
  if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
@@ -260,7 +260,7 @@ requestAnimationFrame(frame);
 /* instagram post viewer (official embed) */
 const pov=document.getElementById('pov'),pbox=document.getElementById('pbox');let embedLoaded=false;
 function loadEmbedJs(){if(embedLoaded)return;embedLoaded=true;const s=document.createElement('script');s.async=true;s.src='https://www.instagram.com/embed.js';document.body.appendChild(s)}
-function openPost(href,label,isReel){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTO · ')+label.toUpperCase();document.getElementById('popen').href=href;
+function openPost(href,label,isReel){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTOGRAPHY · ')+label.toUpperCase();document.getElementById('popen').href=href;
  pbox.innerHTML=`<div class="wait">LOADING POST…</div><blockquote class="instagram-media" data-instgrm-permalink="${href}" data-instgrm-version="14" data-instgrm-captioned="false" style="background:#fff;border:0;margin:0;padding:0;width:100%"></blockquote>`;
  pov.classList.add('on');loadEmbedJs();const tryProc=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();pbox.querySelector('.wait')?.remove()}else setTimeout(tryProc,300)};tryProc()}
 document.getElementById('px').addEventListener('click',()=>{pov.classList.remove('on');pbox.innerHTML=''});
