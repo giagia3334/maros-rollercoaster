@@ -144,7 +144,7 @@ svg image{pointer-events:none}
 .intro-car.loading{animation:carload 1.2s ease-in-out infinite}
 .loadbar{height:8px;background:#E6E0D6;border-radius:8px;overflow:hidden;margin:0 0 10px}.loadbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mag),var(--ora),var(--lime),var(--teal));transition:width .25s}
 .loadtxt{font-family:var(--game);font-size:13px;letter-spacing:.14em;color:#5b5a63;text-align:center;margin:0 0 10px}
-.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}.howto.two{grid-template-columns:1fr 1fr}
 .howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
 .howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
 </style>
@@ -180,7 +180,7 @@ svg image{pointer-events:none}
  <img class="carbig" alt="" src="img/car.webp" draggable="false">
  <h2>Ready for adventure?</h2>
  <p>Jump for the hearts, open the gifts, pass three gates.</p>
- <div class="howto"><div><b>◀ ▶</b>ride · arrows or buttons</div><div><b>▲</b>jump for hearts · space</div><div><b>TOUCH</b>gift boxes to open them</div></div>
+ <div class="howto two"><div><b>◀ ▶</b>ride · arrows or buttons</div><div><b>▲</b>jump · space or ↑</div></div>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -305,7 +305,7 @@ const CODE='THEREWEGO';
 function enterDimension(){capHold=Infinity;document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
  setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();const yes=document.getElementById('yesbtn'),maybe=document.getElementById('maybebtn'),dm=document.getElementById('deptmsg');let maybes=0;
    yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
-   maybe.addEventListener('click',()=>{maybes++;dm.textContent=['THE DEPARTMENT ACCEPTS THIS ANSWER. FOR NOW.','STILL OPEN. STILL ONE QUESTION.','OK, THE BUTTON IS RIGHT THERE WHENEVER.'][Math.min(2,maybes-1)];dm.style.color='#FFD9EC'});
+   maybe.addEventListener('click',()=>{maybes++;dm.textContent=['MAYBE NOTED. THE DEPARTMENT CAN WAIT.','SECOND MAYBE. THE YES BUTTON IS GETTING CURIOUS.','OK, THE BUTTON IS RIGHT THERE WHENEVER.'][Math.min(2,maybes-1)];dm.style.color='#FFD9EC'});
   const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});vd.addEventListener('click',()=>{vd.muted=false;vd.play()},{once:true});
   for(let i=0;i<14;i++){const im=document.createElement('img');im.className='dimobj';im.src=EL[ELK[i%ELK.length]];im.style.width=(40+Math.random()*70)+'px';im.style.left=Math.random()*95+'vw';im.style.top=Math.random()*100+'vh';im.style.animationDuration=(18+Math.random()*20)+'s';im.style.animationDelay=(-Math.random()*20)+'s';im.style.opacity=.16+Math.random()*.18;dim.appendChild(im)}
   burst(200,true)},1300)}
