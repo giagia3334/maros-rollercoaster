@@ -1,4 +1,4 @@
-<title>Maro's Rollercoaster</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Mariam Kartvelishvili · photographer & social media manager, Tbilisi. Ride through the portfolio."><link rel="icon" href="img/car.webp"><title>Maro's Rollercoaster</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=DotGothic16&display=swap">
 <style>
 :root{color-scheme:light;
@@ -18,23 +18,30 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .sup{stroke:var(--ink);stroke-width:4;opacity:.75}
 .ground{fill:var(--lime)}.ground2{fill:var(--teal);opacity:.6}.cloud{fill:#fff;opacity:.9}
 .bb{cursor:pointer;pointer-events:auto;transform-box:fill-box;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.bb.near{transform:scale(1.22)}
+.bb.near{transform:scale(1.12)}
 .bb.lk{transform:scale(.6);opacity:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s}
 .bb.lk.pop{transform:scale(1);opacity:1}
 .bb.lk.near{transform:scale(1.15)}
 .bb .lkbg{fill:#fff;stroke:var(--ink);stroke-width:4}
-.bb .lkic{font-size:44px}
-.bb .lkt{font-family:var(--game);font-size:16px;fill:var(--ink)}
+.bb .lkt{font-family:var(--disp);font-weight:800;font-size:17px;fill:var(--ink)}
 .bb .lks{font-family:var(--disp);font-size:12px;fill:#5b5a63}
 .bb rect.fr{fill:#fff;stroke:var(--ink);stroke-width:4}
 .bb rect.ph{fill:url(#film)}
-.bb text{font-family:var(--game);fill:var(--ink)}
-.bb .tap{font-size:13px;fill:var(--led)}
+.bb text{font-family:var(--disp);font-weight:800;fill:var(--ink);letter-spacing:-.01em}
+.bb .tap{font-size:13px;fill:var(--mag);font-weight:500}
 .bb:hover rect.fr,.bb.near rect.fr{stroke:var(--mag)}
-.bb .views{font-size:18px;fill:#fff}
+.bb .views{font-size:18px;fill:#fff;font-family:var(--disp);font-weight:800}
 .bb .badge{fill:var(--ink)}
-.sign text{font-family:var(--game);fill:var(--led)}
-.sign rect{fill:var(--ink)}
+.sign text{font-family:var(--disp);font-weight:800;fill:var(--led);letter-spacing:-.01em}
+.sign rect{fill:#fff;stroke:var(--ink);stroke-width:4}
+.sign{cursor:pointer}
+#emb{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none;z-index:1;backface-visibility:hidden}
+.eb{position:absolute;overflow:hidden;border-radius:4px;pointer-events:auto;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.eb.near{transform:scale(1.12)}
+.eb .in{transform-origin:0 0;width:326px;background:transparent}
+.eb .wait{z-index:1}
+.eb .instagram-media{margin:0!important;min-width:326px!important;max-width:326px!important;width:326px!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.eb .wait{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--game);font-size:14px;color:var(--led);pointer-events:none}
 #car{position:absolute;left:0;top:0;width:250px;height:auto;transform-origin:0 0;will-change:transform;pointer-events:none;z-index:2;backface-visibility:hidden}
 /* hud */
 .hud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:7;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
@@ -99,8 +106,7 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 .sv b{display:block}.sv span{color:#5b5a63;font-size:14px}.sv i{font-style:normal;font-family:var(--game);color:var(--mag);font-size:13px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.chip{font-size:13px;padding:6px 10px;border-radius:999px;border:2px solid #E6E0D6;background:#fff}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-
+</style></head><body>
 <div class="stage" id="stage">
 <svg class="world" id="cloudsvg" aria-hidden="true"><g id="clouds"></g></svg>
 <svg class="world" id="svg">
@@ -111,11 +117,12 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
  <g id="world">
   <rect class="ground2" x="-2000" y="1120" width="16000" height="60"/><rect class="ground" x="-2000" y="1150" width="16000" height="1000"/>
   <g id="scen"></g><g id="sup"></g>
-  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 5200 800 C 5500 800 5500 1000 5800 1000 C 6100 1000 6150 420 6450 420 C 6750 420 6800 950 7100 950 C 7400 950 7450 500 7750 500 C 8050 500 8100 950 8400 950 L 9200 950 C 9500 950 9550 560 9850 560 C 10150 560 10200 950 10500 950 L 11400 950"/>
+  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 5900 800 C 6200 800 6200 1000 6500 1000 C 6800 1000 6850 420 7150 420 C 7450 420 7500 950 7800 950 C 8100 950 8150 500 8450 500 C 8750 500 8800 950 9100 950 L 9900 950 C 10200 950 10250 560 10550 560 C 10850 560 10900 950 11200 950 L 12100 950"/>
   <path class="ties" id="ties"/><path class="rail" id="rail"/><path class="rail2" id="rail2"/>
   <g id="bbs"></g><g id="flags"></g>
  </g>
 </svg>
+<div id="emb"></div>
 <img id="car" alt="" src="img/car.webp" draggable="false">
 </div>
 <div class="hud"><div id="where">MARO’S ROLLERCOASTER</div><div class="st" id="st">stop 0/22</div></div>
@@ -127,11 +134,10 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
  <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
  <img alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
  <h2>Ride through <em>my work</em></h2>
- <p>Station 1: my photo excursion. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. Tap any frame to open it.</p>
+ <p>Station 1: my photo excursion. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. The posts load right on the track as you ride.</p>
  <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is just the first draft. I think we can turn this into your portfolio page, where people see what you do and can contact you or send a request, or add any other features that feel authentic to you.</p><p>By the way, can’t wait to see those (authentic) ones.</p></div>
  <button class="btn" id="go">▶ PRESS START</button>
 </div></div>
-<form name="call-request" data-netlify="true" netlify-honeypot="website" hidden><input name="name"><input name="email"><input name="phone"><textarea name="reason"></textarea><input name="website"></form>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
 <div class="ov" id="pov"><div class="card post"><button class="x" id="px">✕</button><div class="rt" id="plab">INSTAGRAM</div><div id="pbox"></div><a class="btn ig" id="popen" href="#" target="_blank" rel="noopener">OPEN ON INSTAGRAM →</a></div></div>
 
@@ -139,7 +145,8 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 /* ===== EDIT ME ===== */
 const CFG={
  name:'Mariam Kartvelishvili',handle:'@mariamkartvelishvili__',instagram:'mariamkartvelishvili__',photoInstagram:'kartvela1',
- whatsapp:'',email:'',calendly:'',linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://www.facebook.com/mariam.qartvelishvili.96/',city:'Tbilisi, Georgia',
+ whatsapp:'',email:'',calendly:'',formEndpoint:'', // e.g. 'https://formsubmit.co/ajax/you@mail.com' or a Formspree URL
+linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://www.facebook.com/mariam.qartvelishvili.96/',city:'Tbilisi, Georgia',
  posts:[ // portfolio excursion: [instagram post id, label]
   ['DFXz47cMsMc','Jan 2025'],['DFX4j-JMmRB','Jan 2025'],['CvAQuUhMc0O','Jul 2023 · ბაბუს ფოტოები'],['CxxtUiwMWbf','Sep 2023'],['CxxtgA-sXyp','Sep 2023'],
   ['C0rf4XMsUZ3','Dec 2023'],['C2UrsEjM6iw','Jan 2024'],['C4TcBBjsLUx','Mar 2024'],['C7mIxUMMcJk','May 2024'],['C-nG-pNMvZl','Aug 2024'],
@@ -160,38 +167,53 @@ const fx=(x,after=0)=>{for(let dd=after*L;dd<L;dd+=8){if(track.getPointAtLength(
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* scenery */
 const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p=track.getPointAtLength(d);if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
-for(let i=0;i<40;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
-const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',5600,170],['rose',6900,110],['pinkflower',8300,120],['cocktail',9000,110],['umbrella',10900,190],['vases',11200,170]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
+for(let i=0;i<44;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
+const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',6300,170],['rose',7600,110],['pinkflower',9000,120],['cocktail',9700,110],['umbrella',11600,190],['vases',11900,170]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
 /* billboards */
 const bbs=document.getElementById('bbs');const stops=[];
-function board(x,w,h,label,sub,href,thumb,isReel){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
- const top=p.y-150-h;g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h+46,stroke:'#1B1A22','stroke-width':5}));
+const embLayer=document.getElementById('emb');
+function board(x,w,h,label,sub,href,isReel){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
+ const top=p.y-200-h;g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h+46,stroke:'#1B1A22','stroke-width':5}));
  g.appendChild(el('rect',{class:'fr',x:p.x-w/2-8,y:top-8,width:w+16,height:h+46,rx:8}));
  g.appendChild(el('rect',{class:'ph',x:p.x-w/2,y:top,width:w,height:h,rx:4}));
- const im=el('image',{href:thumb,x:p.x-w/2,y:top,width:w,height:h,preserveAspectRatio:'xMidYMid slice','clip-path':'url(#cp)'});im.addEventListener('error',()=>im.remove());g.appendChild(im);
- if(isReel){g.appendChild(el('rect',{class:'badge',x:p.x-w/2+8,y:top+8,width:92,height:28,rx:6}));const v=el('text',{class:'views',x:p.x-w/2+16,y:top+28});v.textContent='▶ '+sub;g.appendChild(v)}
- const t=el('text',{x:p.x,y:top+h+20,'text-anchor':'middle','font-size':'14'});t.textContent=label;g.appendChild(t);
- const tp=el('text',{class:'tap',x:p.x,y:top+h+36,'text-anchor':'middle'});tp.textContent=isReel?'TAP TO WATCH':'TAP TO OPEN';g.appendChild(tp);
+ const t=el('text',{x:p.x,y:top+h+20,'text-anchor':'middle','font-size':'15'});t.textContent=label;g.appendChild(t);
+ const tp=el('text',{class:'tap',x:p.x,y:top+h+36,'text-anchor':'middle'});tp.textContent=isReel?'TAP THE FRAME TO WATCH FULL':'TAP THE FRAME TO OPEN';g.appendChild(tp);
  const open=()=>openPost(href,label,isReel);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
- bbs.appendChild(g);stops.push({f,g,label});return f}
-CFG.posts.forEach(([id,lab],i)=>board(1150+i*270,150,190,lab,'',`https://www.instagram.com/p/${id}/`,`/thumb/p/${id}`,false));
-CFG.reels.forEach(([id,v],i)=>board(6300+i*430,150,260,'reel · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,`/thumb/r/${id}`,true));
+ bbs.appendChild(g);
+ // live Instagram embed, positioned exactly over the frame (mounted lazily near the car)
+ const eb=document.createElement('div');eb.className='eb';const sc=w/326;
+ eb.style.cssText=`left:${p.x-w/2}px;top:${top}px;width:${w}px;height:${h}px;transform-origin:${w/2}px ${p.y-top}px`;
+ const st={f,g,eb,href,sc,w,h,mounted:false};stops.push(st);embLayer.appendChild(eb);return f}
+function mountEmbed(s){if(s.mounted)return;s.mounted=true;
+ s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc});height:${Math.ceil(s.h/s.sc)}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14" data-instgrm-captioned="false"></blockquote></div>`;
+ loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();setTimeout(()=>s.eb.querySelector('.wait')?.remove(),1500)}else setTimeout(go,300)};go()}
+function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;s.eb.innerHTML=''}
+CFG.posts.forEach(([id,lab],i)=>board(1150+i*330,240,300,lab,'',`https://www.instagram.com/p/${id}/`,false));
+CFG.reels.forEach(([id,v],i)=>board(7000+i*430,220,390,'my blog · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,true));
 document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
 const flags=document.getElementById('flags');
-function sign(x,txt,y=780){const p=P(fx(x));const g=el('g',{class:'sign'});g.setAttribute('transform',`translate(${p.x} ${p.y})`);g.appendChild(el('line',{x1:0,y1:0,x2:0,y2:-150,stroke:'#1B1A22','stroke-width':5}));g.appendChild(el('rect',{x:-150,y:-200,width:300,height:54,rx:8}));const t=el('text',{x:0,y:-164,'text-anchor':'middle','font-size':'24','letter-spacing':'2'});t.textContent=txt;g.appendChild(t);flags.appendChild(g)}
-sign(900,'STATION 1 · PHOTOS');sign(6050,'STATION 2 · MY BLOG');sign(9250,'STATION 3 · LINKS');sign(10850,'STATION 4 · REQUEST A CALL');
-const caps=[[fx(-100),'<span class="k">welcome</span>a rollercoaster through my portfolio'],[fx(950),'<span class="k">station 1</span>my photo excursion: tap a frame to open it'],[fx(6000),'<span class="k">station 2</span>my personal blog: the most-watched reels'],[fx(9200),'<span class="k">station 3</span>my links pop up as you pass. tap one'],[fx(10750),'<span class="k">station 4</span>want to work together? request a call']];
-const STATION3=fx(9800),STATION4=fx(11000);
-const F1=fx(900),F2=fx(6000),F3=fx(9200),F4=fx(10750);
+function sign(x,txt,y=780){const p=P(fx(x));const g=el('g',{class:'sign'});g.setAttribute('transform',`translate(${p.x} ${p.y})`);g.appendChild(el('line',{x1:0,y1:0,x2:0,y2:-150,stroke:'#1B1A22','stroke-width':5}));const W=Math.max(260,txt.length*15+40);g.appendChild(el('rect',{x:-W/2,y:-204,width:W,height:58,rx:10}));const t=el('text',{x:0,y:-165,'text-anchor':'middle','font-size':'24'});t.textContent=txt;g.appendChild(t);flags.appendChild(g)}
+sign(900,'STATION 1 · PHOTOS');sign(6750,'STATION 2 · MY BLOG');sign(9950,'STATION 3 · LINKS');sign(11550,'STATION 4 · REQUEST A CALL');
+const caps=[[fx(-100),'<span class="k">welcome</span>a rollercoaster through my portfolio'],[fx(950),'<span class="k">station 1</span>my photo excursion: the posts load as you ride'],[fx(6700),'<span class="k">station 2</span>my personal blog: the most-watched reels'],[fx(9900),'<span class="k">station 3</span>my links pop up as you pass. tap one'],[fx(11450),'<span class="k">station 4</span>want to work together? request a call']];
+const STATION3=fx(10500),STATION4=fx(11700);
+const F1=fx(900),F2=fx(6700),F3=fx(9900),F4=fx(11450);
 /* link boards */
-const LINKS=[['📸','Instagram',CFG.handle,`https://instagram.com/${CFG.instagram}`],['🎞️','Photography','@'+CFG.photoInstagram,`https://instagram.com/${CFG.photoInstagram}`],['💼','LinkedIn','experience',CFG.linkedin],['👥','Facebook','say hi',CFG.facebook],CFG.whatsapp?['💬','WhatsApp','fastest way',`https://wa.me/${CFG.whatsapp}`]:null,CFG.email?['✉️','Email',CFG.email,`mailto:${CFG.email}`]:null].filter(Boolean);
+/* official brand marks (Instagram glyph, LinkedIn, Facebook, WhatsApp, Mail) */
+const LOGO={
+ instagram:(cx,cy,S)=>{const g=el('g');g.appendChild(el('rect',{x:cx-S/2,y:cy-S/2,width:S,height:S,rx:S*.27,fill:'url(#iggrad)'}));g.appendChild(el('rect',{x:cx-S*.31,y:cy-S*.31,width:S*.62,height:S*.62,rx:S*.17,fill:'none',stroke:'#fff','stroke-width':S*.07}));g.appendChild(el('circle',{cx,cy,r:S*.145,fill:'none',stroke:'#fff','stroke-width':S*.07}));g.appendChild(el('circle',{cx:cx+S*.19,cy:cy-S*.19,r:S*.045,fill:'#fff'}));return g},
+ linkedin:(cx,cy,S)=>{const g=el('g',{transform:`translate(${cx-S/2} ${cy-S/2}) scale(${S/24})`});g.appendChild(el('rect',{x:1.5,y:1.5,width:21,height:21,fill:'#fff'}));g.appendChild(el('path',{fill:'#0A66C2',d:'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z'}));return g},
+ facebook:(cx,cy,S)=>{const g=el('g',{transform:`translate(${cx-S/2} ${cy-S/2}) scale(${S/24})`});g.appendChild(el('circle',{cx:12,cy:12.07,r:11,fill:'#fff'}));g.appendChild(el('path',{fill:'#1877F2',d:'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'}));return g},
+ whatsapp:(cx,cy,S)=>{const g=el('g',{transform:`translate(${cx-S/2} ${cy-S/2}) scale(${S/24})`});g.appendChild(el('circle',{cx:12,cy:12,r:11.5,fill:'#25D366'}));g.appendChild(el('path',{fill:'#fff',d:'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z'}));return g},
+ mail:(cx,cy,S)=>{const g=el('g');g.appendChild(el('rect',{x:cx-S/2,y:cy-S/2,width:S,height:S,rx:S*.27,fill:'#E6306E'}));g.appendChild(el('rect',{x:cx-S*.3,y:cy-S*.2,width:S*.6,height:S*.42,rx:S*.06,fill:'none',stroke:'#fff','stroke-width':S*.07}));g.appendChild(el('path',{d:`M${cx-S*.3} ${cy-S*.17} L${cx} ${cy+S*.05} L${cx+S*.3} ${cy-S*.17}`,fill:'none',stroke:'#fff','stroke-width':S*.07,'stroke-linejoin':'round'}));return g}};
+document.querySelector('#svg defs').insertAdjacentHTML('beforeend','<linearGradient id="iggrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FFD600"/><stop offset=".3" stop-color="#FF7A00"/><stop offset=".6" stop-color="#FF0069"/><stop offset=".85" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></linearGradient>');
+const LINKS=[['instagram','Instagram',CFG.handle,`https://instagram.com/${CFG.instagram}`],['instagram','Photography','@'+CFG.photoInstagram,`https://instagram.com/${CFG.photoInstagram}`],['linkedin','LinkedIn','experience',CFG.linkedin],['facebook','Facebook','say hi',CFG.facebook],CFG.whatsapp?['whatsapp','WhatsApp','fastest way',`https://wa.me/${CFG.whatsapp}`]:null,CFG.email?['mail','Email',CFG.email,`mailto:${CFG.email}`]:null].filter(Boolean);
 const linkStops=[];
-LINKS.forEach(([ic,lab,sub,href],i)=>{const f=fx(9450+i*300);const p=P(f);const g=el('g',{class:'bb lk',tabindex:'0',role:'link'});const w=170,h=120,top=p.y-190-h;
+LINKS.forEach(([ic,lab,sub,href],i)=>{const f=fx(10150+i*300);const p=P(f);const a=el('a',{href,target:'_blank',rel:'noopener'});const g=el('g',{class:'bb lk',tabindex:'0',role:'link'});const w=176,h=132,top=p.y-190-h;
  g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h,stroke:'#1B1A22','stroke-width':5}));
  g.appendChild(el('rect',{class:'lkbg',x:p.x-w/2,y:top,width:w,height:h,rx:14}));
- const t1=el('text',{class:'lkic',x:p.x,y:top+52,'text-anchor':'middle'});t1.textContent=ic;const t2=el('text',{class:'lkt',x:p.x,y:top+80,'text-anchor':'middle'});t2.textContent=lab.toUpperCase();const t3=el('text',{class:'lks',x:p.x,y:top+100,'text-anchor':'middle'});t3.textContent=sub;g.append(t1,t2,t3);
- const open=()=>window.open(href,'_blank','noopener');g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter')open()});bbs.appendChild(g);linkStops.push({f,g})});
+ g.appendChild(LOGO[ic](p.x,top+42,52));const t2=el('text',{class:'lkt',x:p.x,y:top+92,'text-anchor':'middle'});t2.textContent=lab.toUpperCase();const t3=el('text',{class:'lks',x:p.x,y:top+112,'text-anchor':'middle'});t3.textContent=sub;g.append(t2,t3);
+ a.appendChild(g);bbs.appendChild(a);linkStops.push({f,g})});
 /* controls & physics */
 const keys={l:false,r:false};let auto=true,paused=true,d=1200,v=0,prevD=1200,last=null,acc=0;const STEP=1000/60;
 const hold=(id,k)=>{const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('down');setAuto(false)},off=()=>{keys[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,off))};
@@ -201,13 +223,13 @@ autoBtn.addEventListener('click',()=>setAuto(!auto));setAuto(true);
 addEventListener('keydown',e=>{if(e.key==='ArrowRight'){keys.r=true;setAuto(false)}if(e.key==='ArrowLeft'){keys.l=true;setAuto(false)}});
 addEventListener('keyup',e=>{if(e.key==='ArrowRight')keys.r=false;if(e.key==='ArrowLeft')keys.l=false});
 addEventListener('wheel',e=>{if(!paused){v+=Math.sign(e.deltaY)*2;setAuto(false)}},{passive:true});
-let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov,.bb'))return;tx0=e.touches[0].clientX},{passive:true});
+let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov,.bb,.eb'))return;tx0=e.touches[0].clientX},{passive:true});
 addEventListener('touchmove',e=>{if(tx0==null||paused)return;const x=e.touches[0].clientX;v+=(x-tx0)*.15;tx0=x;setAuto(false)},{passive:true});
 addEventListener('touchend',()=>tx0=null);
 const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.innerHTML;goBtn.innerHTML='LOADING…';
 (async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp']);await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=r;im.onerror=r;im.src=u})));await (document.fonts?document.fonts.ready:0);goBtn.disabled=false;goBtn.innerHTML=gl})();
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
-let dwell=0,nearIdx=-1,shown3=false,shown4=false;
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;stops.slice(0,3).forEach(mountEmbed)});
+let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0;
 function physics(){prevD=d;const pA=track.getPointAtLength(d),pB=track.getPointAtLength(Math.min(L,d+6));const slope=(pB.y-pA.y)/6;
  let want=paused?0:(keys.r?9:0)+(keys.l?-9:0);
  if(!paused&&auto&&!keys.r&&!keys.l){ // auto ride: slow, pauses at each frame
@@ -222,13 +244,14 @@ const carEl=document.getElementById('car');let camX=0,camY=0,camInit=false,smAng
 function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;acc=Math.max(0,acc+Math.max(0,Math.min(100,dt)));let n=0;while(acc>=STEP&&n<8){physics();acc-=STEP;n++}
  const al=Math.min(1,acc/STEP),rd=prevD+(d-prevD)*al,p=rd/L;
  // near frame
- let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0)stops[nearIdx].g.classList.remove('near');nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');tip.textContent='TAP THE FRAME TO OPEN ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
+ let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0){stops[nearIdx].g.classList.remove('near');stops[nearIdx].eb.classList.remove('near')}nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');stops[ni].eb.classList.add('near');tip.textContent='TAP THE POST TO OPEN IT ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
+ if((embTick=(embTick+1)%12)===0&&!paused){stops.forEach(s=>{const dd=s.f*L-d;if(dd>-900&&dd<1500)mountEmbed(s);else if(dd<-1600||dd>2600)unmountEmbed(s)})}
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
  const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOS':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
- const s=Math.max(.42,Math.min(1.1,innerWidth/760));const ax=.2+.2*Math.min(1,Math.max(0,d-1200)/(L*.05));const tgx=innerWidth*ax-pt.x*s,tgy=innerHeight*.55-pt.y*s;
+ const s=Math.max(.42,Math.min(1.1,innerWidth/560,innerHeight/700));const ax=.2+.2*Math.min(1,Math.max(0,d-1200)/(L*.05));const tgx=innerWidth*ax-pt.x*s,tgy=innerHeight*.78-pt.y*s;
  if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
- svg.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;cloudsvg.style.transform=`translate3d(${camX*.45}px,${camY*.3+innerHeight*.1}px,0) scale(${s})`;
+ svg.style.transform=embLayer.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;cloudsvg.style.transform=`translate3d(${camX*.45}px,${camY*.3+innerHeight*.1}px,0) scale(${s})`;
  const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) translate(${-cw/2}px,${-ch}px)`;
  linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
  if(!shown4&&d>=STATION4*L){shown4=true;openCard('call')}
@@ -248,19 +271,21 @@ function openCard(kind){setAuto(false);card.innerHTML='';const x=document.create
  card.innerHTML=`<div class="brand"><span class="led">STATION 4</span><span class="ed">★ REQUEST A CALL ★</span></div>
  <h2>Let’s talk about <em>your idea</em></h2>
  <p>Photos, reels, events, content for your brand. Leave your details and I’ll call you back.</p>
- <form id="callf" name="call-request" method="POST" data-netlify="true" netlify-honeypot="website" class="row">
-  <input type="hidden" name="form-name" value="call-request">
-  <p style="display:none"><label>Website <input name="website"></label></p>
+ <form id="callf" name="call-request" method="POST" class="row">
+  <input type="hidden" name="_subject" value="Call request · Maro’s Rollercoaster"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table">
   <input name="name" placeholder="Full name" required autocomplete="name">
   <input name="email" type="email" placeholder="Email" required autocomplete="email">
   <input name="phone" type="tel" placeholder="Phone (WhatsApp is perfect)" required autocomplete="tel">
   <textarea name="reason" placeholder="What are we creating? A shoot, a reel, an event, an ad… tell me the story in two lines." required></textarea>
   <button class="btn" type="submit">REQUEST THE CALL →</button>
   <p class="note" id="fnote">I usually reply within a day. No spam, no newsletters, just a call.</p>
- </form>`;card.prepend(x);ov.classList.add('on');
+ </form>${CFG.calendly?`<div class="rt" style="margin-top:16px">OR BOOK A SLOT RIGHT HERE</div><div class="calendly-inline-widget" data-url="${CFG.calendly}?hide_gdpr_banner=1&primary_color=e6306e" style="min-width:280px;height:640px"></div>`:''}`;card.prepend(x);ov.classList.add('on');
+ if(CFG.calendly&&!document.getElementById('caljs')){const sc=document.createElement('script');sc.id='caljs';sc.src='https://assets.calendly.com/assets/external/widget.js';sc.async=true;document.body.appendChild(sc)}
  const f=document.getElementById('callf');f.addEventListener('submit',async e=>{e.preventDefault();const b=f.querySelector('button');b.disabled=true;b.textContent='SENDING…';
-  try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()});if(!r.ok)throw 0;
-   f.innerHTML=`<h2 style="margin-top:6px">Got it. <em>Talk soon!</em></h2><p>Your request is on its way to Mariam. If it’s urgent, DM her on Instagram.</p><a class="btn ig" href="https://ig.me/m/${CFG.instagram}" target="_blank" rel="noopener">OPEN INSTAGRAM DM</a>`}
-  catch(err){b.disabled=false;b.textContent='TRY AGAIN →';document.getElementById('fnote').textContent='Hmm, that didn’t go through. Try again or DM me on Instagram.'}})}
+  const fd=new FormData(f);const msg=`Hi Mariam! Call request from Maro’s Rollercoaster\n\nName: ${fd.get('name')}\nEmail: ${fd.get('email')}\nPhone: ${fd.get('phone')}\n\n${fd.get('reason')}`;
+  const done=(sent)=>{f.innerHTML=`<h2 style="margin-top:6px">${sent?'Got it. <em>Talk soon!</em>':'Almost there. <em>Send it to me:</em>'}</h2><p>${sent?'Your request is on its way to Mariam. If it’s urgent, DM her on Instagram.':'Your request is copied. Paste it to me on Instagram or WhatsApp and I’ll call you back.'}</p><div class="sum">${msg.replace(/</g,'&lt;')}</div><div class="row"><a class="btn ig" href="https://ig.me/m/${CFG.instagram}" target="_blank" rel="noopener">${sent?'OPEN INSTAGRAM DM':'SEND VIA INSTAGRAM DM'}</a>${CFG.whatsapp?`<a class="btn wa" href="https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">SEND VIA WHATSAPP</a>`:''}<button class="btn lt" type="button" id="cpy">COPY THE MESSAGE</button></div>`;document.getElementById('cpy').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(msg);e.target.textContent='COPIED ✓'}catch{e.target.textContent='SELECT & COPY ABOVE'}})};
+  try{if(!CFG.formEndpoint)throw 0;const r=await fetch(CFG.formEndpoint,{method:'POST',headers:{'Accept':'application/json'},body:fd});if(!r.ok)throw 0;done(true)}
+  catch(err){try{await navigator.clipboard.writeText(msg)}catch{}done(false)}})}
 document.getElementById('flags').addEventListener('click',e=>{const t=e.target.closest('.sign');if(!t)return;const txt=t.textContent;if(/CALL/.test(txt))openCard('call')});
 </script>
+</body></html>
