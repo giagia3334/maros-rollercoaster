@@ -186,10 +186,10 @@ function board(x,w,h,label,sub,href,isReel){const f=fx(x);const p=P(f);const g=e
  const st={f,g,eb,href,sc,w,h,mounted:false};stops.push(st);embLayer.appendChild(eb);return f}
 function mountEmbed(s){if(s.mounted)return;s.mounted=true;
  s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc});height:${Math.ceil(s.h/s.sc)}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14" data-instgrm-captioned="false"></blockquote></div>`;
- loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();setTimeout(()=>s.eb.querySelector('.wait')?.remove(),1500)}else setTimeout(go,300)};go()}
+ loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();setTimeout(()=>s.eb.querySelector('.wait')?.remove(),3500)}else setTimeout(go,300)};go()}
 function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;s.eb.innerHTML=''}
 CFG.posts.forEach(([id,lab],i)=>board(1150+i*330,240,300,lab,'',`https://www.instagram.com/p/${id}/`,false));
-CFG.reels.forEach(([id,v],i)=>board(7000+i*430,220,390,'my blog · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,true));
+CFG.reels.forEach(([id,v],i)=>board(7000+i*430,220,340,'my blog · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,true));
 document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
 const flags=document.getElementById('flags');
@@ -228,7 +228,7 @@ addEventListener('touchmove',e=>{if(tx0==null||paused)return;const x=e.touches[0
 addEventListener('touchend',()=>tx0=null);
 const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.innerHTML;goBtn.innerHTML='LOADING…';
 (async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp']);await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=r;im.onerror=r;im.src=u})));await (document.fonts?document.fonts.ready:0);goBtn.disabled=false;goBtn.innerHTML=gl})();
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;stops.slice(0,3).forEach(mountEmbed)});
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;stops.slice(0,5).forEach(mountEmbed)});
 let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0;
 function physics(){prevD=d;const pA=track.getPointAtLength(d),pB=track.getPointAtLength(Math.min(L,d+6));const slope=(pB.y-pA.y)/6;
  let want=paused?0:(keys.r?9:0)+(keys.l?-9:0);
@@ -245,7 +245,7 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  const al=Math.min(1,acc/STEP),rd=prevD+(d-prevD)*al,p=rd/L;
  // near frame
  let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0){stops[nearIdx].g.classList.remove('near');stops[nearIdx].eb.classList.remove('near')}nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');stops[ni].eb.classList.add('near');tip.textContent='TAP THE POST TO OPEN IT ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
- if((embTick=(embTick+1)%12)===0&&!paused){stops.forEach(s=>{const dd=s.f*L-d;if(dd>-900&&dd<1500)mountEmbed(s);else if(dd<-1600||dd>2600)unmountEmbed(s)})}
+ if((embTick=(embTick+1)%12)===0&&!paused){stops.forEach(s=>{const dd=s.f*L-d;if(dd>-900&&dd<2300)mountEmbed(s);else if(dd<-1600||dd>3400)unmountEmbed(s)})}
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
  const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOGRAPHY':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
