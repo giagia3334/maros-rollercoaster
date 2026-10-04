@@ -124,6 +124,9 @@ svg image{pointer-events:none}
 #code{font-family:var(--game);font-size:20px;letter-spacing:.2em;text-transform:uppercase;padding:12px 14px;border-radius:8px;border:2px solid var(--led);background:#0f0d2a;color:var(--led);min-width:0;width:200px;text-align:center}
 #code:focus{outline:none;border-color:var(--led);box-shadow:0 0 16px rgba(124,252,58,.5)}
 .lmsg{font-family:var(--game);font-size:15px;min-height:20px;color:#FFD9EC}
+.dept{border-style:solid;border-color:var(--mag);box-shadow:0 0 30px rgba(230,48,110,.25)}
+.deptrow{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.btn.ghost{background:transparent;border-color:#5a54a3;color:#C9C3FF;box-shadow:none}
 .sig{font-family:var(--hand);font-size:34px;color:#fff;opacity:.9}
 .dimobj{position:fixed;z-index:0;pointer-events:none;filter:drop-shadow(0 0 14px rgba(255,255,255,.35)) blur(.5px);animation:drift linear infinite}
 .dimwrap{z-index:1}
@@ -178,9 +181,15 @@ svg image{pointer-events:none}
   <h1 class="dimh">YOU MADE IT TO<br>ANOTHER DIMENSION</h1>
   <p class="dimq">May you enjoy every moment of your life!</p>
   <video class="vid" data-src="img/reel.mp4" preload="none" playsinline controls muted loop></video>
-  <p class="dimq small">Don’t call it a date, call it fun.</p>
-  <a class="btn neon" id="calbtn" href="https://calendly.com/gia-ananidze/meeting" target="_blank" rel="noopener">PICK A DAY &amp; TIME ↓</a>
-  <div class="calwrap" id="calwrap"><div class="calendly-inline-widget" data-url="https://calendly.com/gia-ananidze/meeting?hide_gdpr_banner=1&background_color=100f24&text_color=edeaff&primary_color=e6306e" style="min-width:280px;width:100%;height:660px"></div></div>
+  <div class="lock dept">
+   <div class="lt">OFFICIAL FUN BOOKING DEPARTMENT</div>
+   <p class="lp">Open 24/7. One desk, one question, zero paperwork.</p>
+   <p class="dimq small">Don’t call it a date, call it fun.</p>
+   <p class="lp" style="color:#fff;font-size:17px">Fulfill the curiosity?</p>
+   <div class="deptrow"><button class="btn neon" id="yesbtn" type="button">YES</button><button class="btn ghost" id="maybebtn" type="button">MAYBE</button></div>
+   <div class="lmsg" id="deptmsg"></div>
+  <div class="calwrap" id="calwrap" hidden><div class="calendly-inline-widget" data-url="https://calendly.com/gia-ananidze/meeting?hide_gdpr_banner=1&background_color=100f24&text_color=edeaff&primary_color=e6306e" style="min-width:280px;width:100%;height:660px"></div></div>
+  </div>
   <div class="lock">
    <div class="lt">ROUND 2 · LOCKED</div>
    <p class="lp">Round 2 is a real gift. It opens with the one-time code you get once you pick a time.</p>
@@ -282,7 +291,9 @@ function fountain(){const layer=document.createElement('div');layer.className='f
  setTimeout(()=>{layer.style.transition='opacity 1s';layer.style.opacity=0;setTimeout(()=>layer.remove(),1100)},4200)}
 const CODE='FUN-2709';
 function enterDimension(){capHold=Infinity;document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
- setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();if(!document.getElementById('caljs')){const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc)}document.getElementById('calbtn').addEventListener('click',e=>{e.preventDefault();document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'})});
+ setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();const yes=document.getElementById('yesbtn'),maybe=document.getElementById('maybebtn'),dm=document.getElementById('deptmsg');let maybes=0;
+   yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
+   maybe.addEventListener('click',()=>{maybes++;dm.textContent=['THE DEPARTMENT ACCEPTS THIS ANSWER. FOR NOW.','STILL OPEN. STILL ONE QUESTION.','OK, THE BUTTON IS RIGHT THERE WHENEVER.'][Math.min(2,maybes-1)];dm.style.color='#FFD9EC'});
   const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});vd.addEventListener('click',()=>{vd.muted=false;vd.play()},{once:true});
   for(let i=0;i<14;i++){const im=document.createElement('img');im.className='dimobj';im.src=EL[ELK[i%ELK.length]];im.style.width=(40+Math.random()*70)+'px';im.style.left=Math.random()*95+'vw';im.style.top=Math.random()*100+'vh';im.style.animationDuration=(18+Math.random()*20)+'s';im.style.animationDelay=(-Math.random()*20)+'s';im.style.opacity=.16+Math.random()*.18;dim.appendChild(im)}
   burst(200,true)},1300)}

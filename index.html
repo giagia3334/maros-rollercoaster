@@ -18,7 +18,7 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .sup{stroke:var(--ink);stroke-width:4;opacity:.75}
 .ground{fill:var(--lime)}.ground2{fill:var(--teal);opacity:.6}.cloud{fill:#fff;opacity:.9}
 .bb{cursor:pointer;pointer-events:auto;transform-box:fill-box;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.bb.near{transform:scale(1.12)}
+.bb.near{transform:scale(1.3)}
 .bb.lk{transform:scale(.6);opacity:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s}
 .bb.lk.pop{transform:scale(1);opacity:1}
 .bb.lk.near{transform:scale(1.15)}
@@ -37,7 +37,11 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .sign{cursor:pointer}
 #emb{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none;z-index:1;backface-visibility:hidden}
 .eb{position:absolute;overflow:hidden;border-radius:4px;pointer-events:auto;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.eb.near{transform:scale(1.12)}
+.eb.near{transform:scale(1.3)}
+.eb video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+#pbox video{width:100%;max-width:360px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;background:#000;display:block}
+.pad button.flip{color:#fff;border-color:var(--mag);background:var(--mag)}
+.pad button.flip.down{background:#b81f55}
 .eb .in{transform-origin:0 0;width:326px;background:transparent}
 .eb .wait{z-index:1}
 .eb .instagram-media{margin:0!important;min-width:326px!important;max-width:326px!important;width:326px!important;border:0!important;box-shadow:none!important;border-radius:0!important}
@@ -128,12 +132,11 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 <div class="hud"><div id="where">MARO’S ROLLERCOASTER</div><div class="st" id="st">stop 0/22</div></div>
 <div class="cap"><div id="cap"></div></div>
 <div class="tip"><span id="tip"></span></div>
-<div class="pad"><button id="bl" aria-label="back">◀</button><button id="auto" class="auto on" aria-label="auto ride">▶ AUTO</button><button id="br" aria-label="forward">▶</button></div>
+<div class="pad"><button id="bl" aria-label="back">◀</button><button id="auto" class="auto on" aria-label="auto ride">▶ AUTO</button><button id="flip" class="flip" aria-label="flip">FLIP!</button><button id="br" aria-label="forward">▶</button></div>
 
 <div class="ov on" id="intro"><div class="card">
  <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
  <img alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
- <h2>Ride through <em>my work</em></h2>
  <p>Station 1: photography. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. The posts load right on the track as you ride.</p>
  <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is just the first draft. I think we can turn this into your portfolio page, where people see what you do and can contact you or send a request, or add any other features that feel authentic to you.</p><p>By the way, can’t wait to see those (authentic) ones.</p></div>
  <button class="btn" id="go">▶ PRESS START</button>
@@ -151,7 +154,7 @@ linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://w
   ['DFXz47cMsMc','Jan 2025'],['DFX4j-JMmRB','Jan 2025'],['CvAQuUhMc0O','Jul 2023 · ბაბუს ფოტოები'],['CxxtUiwMWbf','Sep 2023'],['CxxtgA-sXyp','Sep 2023'],
   ['C0rf4XMsUZ3','Dec 2023'],['C2UrsEjM6iw','Jan 2024'],['C4TcBBjsLUx','Mar 2024'],['C7mIxUMMcJk','May 2024'],['C-nG-pNMvZl','Aug 2024'],
   ['C-nLYupMe10','Aug 2024'],['C_F-f1UsQ96','Aug 2024'],['C_F-vzhMfjM','Aug 2024'],['C_F_HnHsoMk','Aug 2024'],['C_GAOozMH5E','Aug 2024']],
- reels:[ // personal blog: [reel id, views]
+ reels:[ // personal blog: [reel id, views, optional local mp4 e.g. 'img/reels/DdO6jotNRcF.mp4' → plays inside the game]
   ['DdO6jotNRcF','260K'],['DcHAue4Ng3U','45.9K'],['DdJsJgQNoSD','40.4K'],['DcJwnUZt0Ml','14.4K'],['DcUT9bft7tX','11.3K'],['Dc3yZzMtzcd','10.8K'],['DdMeH9Btvy5','10.4K']],
  services:[['Portrait session','1–2 h, 25+ edited photos','from ₾150'],['Events & conferences','openings, conferences, parties','from ₾400'],['Sports & action','swimming, snow, outdoor','from ₾300'],['Brand & product','for your feed, menu or site','from ₾300'],['Reel / UGC ad','shot & edited, usage rights','from ₾200'],['Viral content session','60 min, what to post next','from ₾120'],['Social media management','monthly, plan + shoot + post','from ₾900/mo']],
  creds:['Freelance photographer since 2022','Viral content consultant · Remini (Bending Spoons)','Event photography · Uni Koblenz','Sports photo lead · iswim.ge','SMM · GEODAYLIGHT, Monopolia'],
@@ -168,28 +171,29 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* scenery */
 const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p=track.getPointAtLength(d);if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
 for(let i=0;i<44;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
-const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',6300,170],['rose',7600,110],['pinkflower',9000,120],['cocktail',9700,110],['umbrella',11600,190],['vases',11900,170]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
+const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',6300,170],['rose',7600,110],['pinkflower',9000,120],['cocktail',9700,110],['umbrella',11600,190],['strawberry',11950,150]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
 /* billboards */
 const bbs=document.getElementById('bbs');const stops=[];
 const embLayer=document.getElementById('emb');
-function board(x,w,h,label,sub,href,isReel){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
+function board(x,w,h,label,sub,href,isReel,mp4){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
  const top=p.y-200-h;g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h+46,stroke:'#1B1A22','stroke-width':5}));
  g.appendChild(el('rect',{class:'fr',x:p.x-w/2-8,y:top-8,width:w+16,height:h+46,rx:8}));
  g.appendChild(el('rect',{class:'ph',x:p.x-w/2,y:top,width:w,height:h,rx:4}));
  const t=el('text',{x:p.x,y:top+h+20,'text-anchor':'middle','font-size':'15'});t.textContent=label;g.appendChild(t);
  const tp=el('text',{class:'tap',x:p.x,y:top+h+36,'text-anchor':'middle'});tp.textContent=isReel?'TAP THE FRAME TO WATCH FULL':'TAP THE FRAME TO OPEN';g.appendChild(tp);
- const open=()=>openPost(href,label,isReel);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
+ const open=()=>openPost(href,label,isReel,mp4);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
  bbs.appendChild(g);
  // live Instagram embed, positioned exactly over the frame (mounted lazily near the car)
  const eb=document.createElement('div');eb.className='eb';const sc=w/326;
  eb.style.cssText=`left:${p.x-w/2}px;top:${top}px;width:${w}px;height:${h}px;transform-origin:${w/2}px ${p.y-top}px`;
- const st={f,g,eb,href,sc,w,h,mounted:false};stops.push(st);embLayer.appendChild(eb);return f}
+ const st={f,g,eb,href,sc,w,h,mp4,mounted:false};stops.push(st);embLayer.appendChild(eb);return f}
 function mountEmbed(s){if(s.mounted)return;s.mounted=true;
+ if(s.mp4){const v=document.createElement('video');v.src=s.mp4;v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';v.addEventListener('click',e=>{e.stopPropagation();openPost(s.href,'',true,s.mp4)});s.eb.appendChild(v);return}
  s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc});height:${Math.ceil(s.h/s.sc)}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14" data-instgrm-captioned="false"></blockquote></div>`;
  loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();setTimeout(()=>s.eb.querySelector('.wait')?.remove(),3500)}else setTimeout(go,300)};go()}
 function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;s.eb.innerHTML=''}
 CFG.posts.forEach(([id,lab],i)=>board(1150+i*330,240,300,lab,'',`https://www.instagram.com/p/${id}/`,false));
-CFG.reels.forEach(([id,v],i)=>board(7000+i*430,220,340,'my blog · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,true));
+CFG.reels.forEach(([id,v,mp4],i)=>board(7000+i*430,mp4?220:220,mp4?390:340,'my blog · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,true,mp4));
 document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
 const flags=document.getElementById('flags');
@@ -229,7 +233,10 @@ addEventListener('touchend',()=>tx0=null);
 const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.innerHTML;goBtn.innerHTML='LOADING…';
 (async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp']);await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=r;im.onerror=r;im.src=u})));await (document.fonts?document.fonts.ready:0);goBtn.disabled=false;goBtn.innerHTML=gl})();
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;stops.slice(0,5).forEach(mountEmbed)});
-let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0;
+let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0,flipT=-1;const FLIP_MS=950;
+function doFlip(){if(paused||flipT>=0)return;flipT=0;tip.textContent=['WHEEE!','FLIP!','SHOW-OFF ✓','10/10 LANDING'][Math.floor(Math.random()*4)];tip.classList.add('on');setTimeout(()=>{if(nearIdx<0)tip.classList.remove('on')},1200)}
+const flipBtn=document.getElementById('flip');flipBtn.addEventListener('pointerdown',e=>{e.preventDefault();flipBtn.classList.add('down');doFlip()});['pointerup','pointercancel','pointerleave'].forEach(x=>flipBtn.addEventListener(x,()=>flipBtn.classList.remove('down')));
+addEventListener('keydown',e=>{if(e.key===' '||e.key==='ArrowUp'){if(e.target.closest('input,textarea,button'))return;e.preventDefault();doFlip()}});
 function physics(){prevD=d;const pA=track.getPointAtLength(d),pB=track.getPointAtLength(Math.min(L,d+6));const slope=(pB.y-pA.y)/6;
  let want=paused?0:(keys.r?9:0)+(keys.l?-9:0);
  if(!paused&&auto&&!keys.r&&!keys.l){ // auto ride: slow, pauses at each frame
@@ -244,7 +251,7 @@ const carEl=document.getElementById('car');let camX=0,camY=0,camInit=false,smAng
 function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;acc=Math.max(0,acc+Math.max(0,Math.min(100,dt)));let n=0;while(acc>=STEP&&n<8){physics();acc-=STEP;n++}
  const al=Math.min(1,acc/STEP),rd=prevD+(d-prevD)*al,p=rd/L;
  // near frame
- let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0){stops[nearIdx].g.classList.remove('near');stops[nearIdx].eb.classList.remove('near')}nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');stops[ni].eb.classList.add('near');tip.textContent='TAP THE POST TO OPEN IT ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
+ let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0){stops[nearIdx].g.classList.remove('near');stops[nearIdx].eb.classList.remove('near')}if(nearIdx>=0){const pv=stops[nearIdx].eb.querySelector('video');if(pv)pv.pause()}nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');stops[ni].eb.classList.add('near');const nv=stops[ni].eb.querySelector('video');if(nv)nv.play().catch(()=>{});tip.textContent='TAP THE POST TO OPEN IT ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
  if((embTick=(embTick+1)%12)===0&&!paused){stops.forEach(s=>{const dd=s.f*L-d;if(dd>-900&&dd<2300)mountEmbed(s);else if(dd<-1600||dd>3400)unmountEmbed(s)})}
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
  const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOGRAPHY':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
@@ -252,7 +259,9 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  const s=Math.max(.42,Math.min(1.1,innerWidth/560,innerHeight/700));const ax=.2+.2*Math.min(1,Math.max(0,d-1200)/(L*.05));const tgx=innerWidth*ax-pt.x*s,tgy=innerHeight*.78-pt.y*s;
  if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
  svg.style.transform=embLayer.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;cloudsvg.style.transform=`translate3d(${camX*.45}px,${camY*.3+innerHeight*.1}px,0) scale(${s})`;
- const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) translate(${-cw/2}px,${-ch}px)`;
+ const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';let fl='';
+ if(flipT>=0){flipT+=dt;const t=Math.min(1,flipT/FLIP_MS);const jump=Math.sin(t*Math.PI)*240*s;const ea=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const ang=-360*ea;const sq=t>.9?1+(t-.9)*1.2:1;fl=`translate(0px,${-jump}px) translate(${cw/2}px,${ch/2}px) rotate(${ang}deg) scale(${1/sq},${sq}) translate(${-cw/2}px,${-ch/2}px)`;if(t>=1)flipT=-1}
+ carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) ${fl} translate(${-cw/2}px,${-ch}px)`;
  linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
  if(!shown4&&d>=STATION4*L){shown4=true;openCard('call')}
  requestAnimationFrame(frame)}
@@ -260,7 +269,8 @@ requestAnimationFrame(frame);
 /* instagram post viewer (official embed) */
 const pov=document.getElementById('pov'),pbox=document.getElementById('pbox');let embedLoaded=false;
 function loadEmbedJs(){if(embedLoaded)return;embedLoaded=true;const s=document.createElement('script');s.async=true;s.src='https://www.instagram.com/embed.js';document.body.appendChild(s)}
-function openPost(href,label,isReel){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTOGRAPHY · ')+label.toUpperCase();document.getElementById('popen').href=href;
+function openPost(href,label,isReel,mp4){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTOGRAPHY · ')+label.toUpperCase();document.getElementById('popen').href=href;
+ if(mp4){pbox.innerHTML=`<video src="${mp4}" controls autoplay playsinline loop></video>`;pov.classList.add('on');return}
  pbox.innerHTML=`<div class="wait">LOADING POST…</div><blockquote class="instagram-media" data-instgrm-permalink="${href}" data-instgrm-version="14" data-instgrm-captioned="false" style="background:#fff;border:0;margin:0;padding:0;width:100%"></blockquote>`;
  pov.classList.add('on');loadEmbedJs();const tryProc=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();pbox.querySelector('.wait')?.remove()}else setTimeout(tryProc,300)};tryProc()}
 document.getElementById('px').addEventListener('click',()=>{pov.classList.remove('on');pbox.innerHTML=''});
