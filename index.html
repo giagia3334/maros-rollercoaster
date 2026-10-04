@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Mariam Kartvelishvili · photographer & social media manager, Tbilisi. Ride through the portfolio."><link rel="icon" href="img/car.webp"><title>Maro's Rollercoaster</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=DotGothic16&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=DotGothic16&display=swap">
 <style>
 :root{color-scheme:light;
  --mag:#E6306E;--teal:#2BC4B0;--cob:#2F5BD3;--ora:#F59A2C;--lime:#B8E04A;--cream:#FBF7F0;--ink:#1B1A22;--led:#73B652;
@@ -125,6 +125,14 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 .sv b{display:block}.sv span{color:#5b5a63;font-size:14px}.sv i{font-style:normal;font-family:var(--game);color:var(--mag);font-size:13px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.chip{font-size:13px;padding:6px 10px;border-radius:999px;border:2px solid #E6E0D6;background:#fff}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@keyframes carload{0%{transform:translateX(-6px) rotate(-3deg)}25%{transform:translateY(-6px) rotate(0)}50%{transform:translateX(6px) rotate(3deg)}75%{transform:translateY(-6px) rotate(0)}100%{transform:translateX(-6px) rotate(-3deg)}}
+@keyframes wheelie{0%,100%{transform:rotate(0)}50%{transform:rotate(360deg)}}
+.intro-car.loading{animation:carload 1.2s ease-in-out infinite}
+.loadbar{height:8px;background:#E6E0D6;border-radius:8px;overflow:hidden;margin:0 0 10px}.loadbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mag),var(--ora),var(--lime),var(--teal));transition:width .25s}
+.loadtxt{font-family:var(--game);font-size:13px;letter-spacing:.14em;color:#5b5a63;text-align:center;margin:0 0 10px}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
+.howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
+.howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
 </style></head><body>
 <div class="stage" id="stage">
 <svg class="world" id="cloudsvg" aria-hidden="true"><g id="clouds"></g></svg>
@@ -153,8 +161,10 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 
 <div class="ov on" id="intro"><div class="card">
  <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
- <img alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
+ <img class="intro-car" alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
+ <div class="loadbar"><i></i></div><p class="loadtxt">LOADING…</p>
  <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is just the first draft. I think we can turn this into your portfolio page, where people see what you do and can contact you or send a request, or add any other features that feel authentic to you.</p><p>By the way, can’t wait to see those (authentic) ones.</p></div>
+ <div class="howto"><div><b>◀ ▶</b>ride · swipe or arrows</div><div><b>FLIP!</b>jump · space / ↑</div><div><b>TAP</b>a frame or a link</div></div>
  <button class="btn" id="go">▶ START</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -182,10 +192,12 @@ const svg=document.getElementById('svg'),cloudsvg=document.getElementById('cloud
 const track=document.getElementById('track'),L=track.getTotalLength();['rail','rail2','ties'].forEach(i=>document.getElementById(i).setAttribute('d',track.getAttribute('d')));
 const P=f=>track.getPointAtLength(Math.max(0,Math.min(1,f))*L);
 const angAt=f=>{const dd=f*L,a=track.getPointAtLength(Math.max(0,dd-10)),b=track.getPointAtLength(Math.min(L,dd+10));return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI};
-const fx=(x,after=0)=>{for(let dd=after*L;dd<L;dd+=8){if(track.getPointAtLength(dd).x>=x)return dd/L}return 1};
+/* sampled track table: one pass instead of thousands of getPointAtLength calls at startup */
+const TS=4,TN=Math.ceil(L/TS),TX=new Float32Array(TN+1),TY=new Float32Array(TN+1);for(let i=0;i<=TN;i++){const q=track.getPointAtLength(Math.min(L,i*TS));TX[i]=q.x;TY[i]=q.y}
+const fx=(x,after=0)=>{let i=Math.floor(after*L/TS);for(;i<=TN;i++){if(TX[i]>=x)return Math.min(1,i*TS/L)}return 1};
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* scenery */
-const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p=track.getPointAtLength(d);if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
+const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p={x:TX[Math.round(d/TS)],y:TY[Math.round(d/TS)]};if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
 for(let i=0;i<60;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
 const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',7000,170],['rose',9000,110],['pinkflower',11500,120],['cocktail',13000,110],['umbrella',15750,190],['strawberry',15980,150]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
 /* billboards */
@@ -257,7 +269,10 @@ let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov,.bb
 addEventListener('touchmove',e=>{if(tx0==null||paused)return;const x=e.touches[0].clientX;v+=(x-tx0)*.15;tx0=x;setAuto(false)},{passive:true});
 addEventListener('touchend',()=>tx0=null);
 const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.innerHTML;goBtn.innerHTML='LOADING…';
-(async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp','img/doorL.webp','img/doorR.webp']);await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=r;im.onerror=r;im.src=u})));await (document.fonts?document.fonts.ready:0);goBtn.disabled=false;goBtn.innerHTML=gl})();
+(async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp','img/doorL.webp','img/doorR.webp']);const total=urls.length+1;let done=0;const bar=document.querySelector('.loadbar i'),ltx=document.querySelector('.loadtxt'),icar=document.querySelector('.intro-car');icar.classList.add('loading');
+ const tick=()=>{const pc=Math.round(done/total*100);bar.style.width=pc+'%';ltx.textContent=`MARO’S ROLLERCOASTER IS LOADING… ${pc}%`;goBtn.innerHTML=`LOADING ${pc}%`};tick();
+ await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>{done++;tick();r()})};im.onerror=()=>{done++;tick();r()};im.src=u})));
+ loadEmbedJs();await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();icar.classList.remove('loading');ltx.textContent='READY';goBtn.disabled=false;goBtn.innerHTML=gl})();
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;stops.slice(0,5).forEach(mountEmbed)});
 let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0,flipT=-1,fxFired=false;const FLIP_MS=1150;
 /* fireworks */

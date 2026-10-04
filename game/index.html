@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Mariam’s Game · Birthday Edition</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@500&family=DotGothic16&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@500&family=DotGothic16&display=swap">
 <style>
 :root{color-scheme:light;
  --mag:#E6306E;--teal:#2BC4B0;--cob:#2F5BD3;--ora:#F59A2C;--lime:#B8E04A;--cream:#FBF7F0;--ink:#1B1A22;--shoe:#D7261E;
@@ -139,6 +139,14 @@ svg image{pointer-events:none}
 .floaters span{position:absolute;bottom:-120px;animation:rise linear forwards;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 @keyframes rise{0%{transform:translateY(0) translateX(0) rotate(-8deg);opacity:0}8%{opacity:1}100%{transform:translateY(-115vh) translateX(40px) rotate(10deg);opacity:1}}
 @media (prefers-reduced-motion:reduce){.card,.cap div,.ov{transition:none}}
+@keyframes carload{0%{transform:translateX(-6px) rotate(-3deg)}25%{transform:translateY(-6px) rotate(0)}50%{transform:translateX(6px) rotate(3deg)}75%{transform:translateY(-6px) rotate(0)}100%{transform:translateX(-6px) rotate(-3deg)}}
+@keyframes wheelie{0%,100%{transform:rotate(0)}50%{transform:rotate(360deg)}}
+.intro-car.loading{animation:carload 1.2s ease-in-out infinite}
+.loadbar{height:8px;background:#E6E0D6;border-radius:8px;overflow:hidden;margin:0 0 10px}.loadbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mag),var(--ora),var(--lime),var(--teal));transition:width .25s}
+.loadtxt{font-family:var(--game);font-size:13px;letter-spacing:.14em;color:#5b5a63;text-align:center;margin:0 0 10px}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
+.howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
+.howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
 </style>
 
 <div class="stage" id="stage">
@@ -156,7 +164,8 @@ svg image{pointer-events:none}
   
  </g>
 </svg>
-<img id="car" alt="" src="img/car.webp" draggable="false">
+<img class="intro-car" id="car" alt="" src="img/car.webp" draggable="false">
+ <div class="loadbar"><i></i></div><p class="loadtxt">LOADING…</p>
 </div>
 <canvas id="confetti"></canvas>
 <div class="hud"><span>♥ <b id="score">0</b>/<span id="total">0</span></span><span>round <b id="round">1</b>/3</span><span id="need"></span></div>
@@ -171,6 +180,7 @@ svg image{pointer-events:none}
  <img class="carbig" alt="" src="img/car.webp" draggable="false">
  <h2>Ready for adventure?</h2>
  <p>Jump for the hearts, open the gifts, pass three gates.</p>
+ <div class="howto"><div><b>◀ ▶</b>ride · arrows or buttons</div><div><b>▲</b>jump for hearts · space</div><div><b>TOUCH</b>gift boxes to open them</div></div>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -212,7 +222,9 @@ const track=document.getElementById('track'),L=track.getTotalLength();
 ['rail','rail2','ties'].forEach(id=>document.getElementById(id).setAttribute('d',track.getAttribute('d')));
 const P=f=>track.getPointAtLength(Math.max(0,Math.min(1,f))*L);
 const angAt=f=>{const dd=f*L,a=track.getPointAtLength(Math.max(0,dd-10)),b=track.getPointAtLength(Math.min(L,dd+10));return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI};
-const fx=(x,after=0)=>{let lo=after*L;for(let dd=lo;dd<L;dd+=8){if(track.getPointAtLength(dd).x>=x)return dd/L}return 1};
+/* sampled track table: one pass instead of thousands of getPointAtLength calls at startup */
+const TS=4,TN=Math.ceil(L/TS),TX=new Float32Array(TN+1),TY=new Float32Array(TN+1);for(let i=0;i<=TN;i++){const q=track.getPointAtLength(Math.min(L,i*TS));TX[i]=q.x;TY[i]=q.y}
+const fx=(x,after=0)=>{let i=Math.floor(after*L/TS);for(;i<=TN;i++){if(TX[i]>=x)return Math.min(1,i*TS/L)}return 1};
 const HILL=fx(890);
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -334,10 +346,10 @@ addEventListener('keyup',e=>{if(e.key==='ArrowRight')keys.r=false;if(e.key==='Ar
 const hold=(id,k)=>{const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('down')},off=()=>{keys[k]=false;b.classList.remove('down')};
  b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,off))};
 hold('br','r');hold('bl','l');
-const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBtn.innerHTML;goBtn.innerHTML='LOADING… 0%';
+const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBtn.innerHTML;goBtn.innerHTML='LOADING… 0%';const lbar=document.querySelector('.loadbar i'),ltx=document.querySelector('.loadtxt'),icar=document.querySelector('.intro-car');icar.classList.add('loading');const lt=new MutationObserver(()=>{const m=/(\d+)%/.exec(goBtn.textContent);if(m){lbar.style.width=m[1]+'%';ltx.textContent=`MARIAM’S GAME IS LOADING… ${m[1]}%`}else{lbar.style.width='100%';ltx.textContent='READY';icar.classList.remove('loading')}});lt.observe(goBtn,{childList:true,characterData:true,subtree:true});
 (async()=>{const urls=[...Object.values(IMG),...Object.values(EL),document.getElementById('car').getAttribute('src')];let done=0;
  await Promise.all(urls.map(u=>new Promise(res=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>{done++;goBtn.innerHTML=`LOADING… ${Math.round(done/urls.length*100)}%`;res()})};im.onerror=()=>{done++;res()};im.src=u})));
- await (document.fonts?document.fonts.ready:Promise.resolve());
+ await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
  goBtn.disabled=false;goBtn.innerHTML=goLabel})();
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
 document.getElementById('bj').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
