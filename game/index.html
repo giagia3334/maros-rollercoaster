@@ -289,7 +289,7 @@ function fountain(){const layer=document.createElement('div');layer.className='f
   e.animate([{transform:'translate(-50%,-50%) scale(.2) rotate(0deg)',opacity:0},{transform:`translate(calc(-50% + ${dx*.7}px),calc(-50% + ${dy*1.1}px)) scale(1.05) rotate(${rot}deg)`,opacity:1,offset:.55},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1) rotate(${rot*.6}deg)`,opacity:1}],{duration:2600+Math.random()*1200,easing:'cubic-bezier(.2,.8,.3,1)',fill:'forwards'});
   n++},70);
  setTimeout(()=>{layer.style.transition='opacity 1s';layer.style.opacity=0;setTimeout(()=>layer.remove(),1100)},4200)}
-const CODE='FUN-2709';
+const CODE='THEREWEGO';
 function enterDimension(){capHold=Infinity;document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
  setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();const yes=document.getElementById('yesbtn'),maybe=document.getElementById('maybebtn'),dm=document.getElementById('deptmsg');let maybes=0;
    yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
