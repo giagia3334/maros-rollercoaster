@@ -1,0 +1,266 @@
+<title>Maro's Rollercoaster</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Caveat:wght@700&family=DotGothic16&display=swap">
+<style>
+:root{color-scheme:light;
+ --mag:#E6306E;--teal:#2BC4B0;--cob:#2F5BD3;--ora:#F59A2C;--lime:#B8E04A;--cream:#FBF7F0;--ink:#1B1A22;--led:#73B652;
+ --disp:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;--hand:"Caveat",cursive;--game:"DotGothic16",ui-monospace,monospace;
+ --sky1:#FBF7F0;--sky2:#BFEDE6}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--cream);color:var(--ink);font-family:var(--game)}
+body{overflow:hidden;touch-action:none;padding-inline:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img{-webkit-user-drag:none;pointer-events:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+.stage{position:fixed;inset:0;overflow:hidden;background:linear-gradient(180deg,var(--sky1),var(--sky2))}
+svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;transform-origin:0 0;will-change:transform;backface-visibility:hidden}
+#track{fill:none;stroke:none}
+.rail{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}.rail2{fill:none;stroke:var(--mag);stroke-width:3;stroke-dasharray:14 10}
+.ties{fill:none;stroke:var(--ink);stroke-width:18;stroke-dasharray:4 26;opacity:.9}
+.sup{stroke:var(--ink);stroke-width:4;opacity:.75}
+.ground{fill:var(--lime)}.ground2{fill:var(--teal);opacity:.6}.cloud{fill:#fff;opacity:.9}
+.bb{cursor:pointer;pointer-events:auto;transform-box:fill-box;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.bb.near{transform:scale(1.22)}
+.bb.lk{transform:scale(.6);opacity:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s}
+.bb.lk.pop{transform:scale(1);opacity:1}
+.bb.lk.near{transform:scale(1.15)}
+.bb .lkbg{fill:#fff;stroke:var(--ink);stroke-width:4}
+.bb .lkic{font-size:44px}
+.bb .lkt{font-family:var(--game);font-size:16px;fill:var(--ink)}
+.bb .lks{font-family:var(--disp);font-size:12px;fill:#5b5a63}
+.bb rect.fr{fill:#fff;stroke:var(--ink);stroke-width:4}
+.bb rect.ph{fill:url(#film)}
+.bb text{font-family:var(--game);fill:var(--ink)}
+.bb .tap{font-size:13px;fill:var(--led)}
+.bb:hover rect.fr,.bb.near rect.fr{stroke:var(--mag)}
+.bb .views{font-size:18px;fill:#fff}
+.bb .badge{fill:var(--ink)}
+.sign text{font-family:var(--game);fill:var(--led)}
+.sign rect{fill:var(--ink)}
+#car{position:absolute;left:0;top:0;width:250px;height:auto;transform-origin:0 0;will-change:transform;pointer-events:none;z-index:2;backface-visibility:hidden}
+/* hud */
+.hud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:7;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.hud>*{font-family:var(--game);font-size:14px;background:var(--ink);color:var(--led);padding:7px 10px;border-radius:8px;letter-spacing:.04em;pointer-events:auto}
+.hud .st{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.cap{position:fixed;left:16px;right:16px;top:calc(62px + env(safe-area-inset-top,0px));z-index:6;pointer-events:none;display:flex;justify-content:center}
+.cap div{max-width:520px;background:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:10px 16px;border-radius:8px;font-family:var(--disp);font-weight:800;font-size:clamp(20px,5vw,26px);line-height:1.05;letter-spacing:-.02em;text-align:center;text-wrap:balance;opacity:0;transform:translateY(-14px);transition:opacity .3s,transform .3s}
+.cap div.on{opacity:1;transform:none}
+.cap .k{display:table;margin:0 auto 6px;font-family:var(--game);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--led);background:var(--ink);padding:2px 8px;border-radius:4px}
+.pad{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;gap:10px;z-index:7;pointer-events:none}
+.pad button{pointer-events:auto;font:inherit;font-size:22px;height:56px;min-width:64px;padding:0 14px;border-radius:14px;border:3px solid var(--ink);background:var(--ink);box-shadow:0 5px 0 rgba(27,26,34,.35);color:var(--led);cursor:pointer;touch-action:none}
+.pad button.down,.pad button:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(27,26,34,.35);background:#2a2836}
+.pad button.auto.on{border-color:var(--led)}
+.tip{position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;z-index:6;pointer-events:none}
+.tip span{font-family:var(--game);font-size:13px;letter-spacing:.1em;background:var(--ink);color:var(--led);padding:6px 12px;border-radius:6px;opacity:0;transition:opacity .3s}
+.tip span.on{opacity:1}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:9;display:grid;place-items:center;padding:16px;background:rgba(27,26,34,.4);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}
+.ov.on{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .3s}
+.card.post{padding:16px;padding-top:48px}
+.card.post .rt{margin-bottom:8px}
+#pbox{min-height:200px;display:grid;place-items:center;margin-bottom:12px}
+#pbox .instagram-media{margin:0 auto!important;min-width:0!important;width:100%!important;max-width:400px!important}
+#pbox .wait{font-family:var(--game);color:#5b5a63;font-size:14px}
+.card{width:min(100%,460px);max-height:calc(100% - 32px);overflow:auto;background:#fff;border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);border-radius:12px;padding:20px;position:relative;font-family:var(--disp)}
+.brand{display:grid;gap:4px;margin:-20px -20px 12px;padding:14px 16px;background:var(--ink);border-radius:9px 9px 0 0;text-align:center}
+.brand .led{font-family:var(--game);font-size:clamp(24px,6.5vw,34px);letter-spacing:.04em;color:var(--led)}
+.brand .ed{font-family:var(--game);font-size:13px;letter-spacing:.2em;color:#fff;opacity:.85}
+.gnote{background:var(--cream);border:2px dashed #E6E0D6;border-radius:12px;padding:12px 14px;margin:0 0 14px;text-align:left}
+.gnote .gl{font-family:var(--game);font-size:12px;letter-spacing:.18em;color:var(--led);background:var(--ink);display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.gnote p{margin:0 0 6px;font-size:15px;line-height:1.4;color:var(--ink)}
+.gnote p:last-child{margin:0;font-family:var(--hand);font-size:22px;line-height:1}
+.card h2{margin:0 0 8px;font-size:clamp(26px,6.5vw,34px);line-height:.95;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+.card h2 em{font-style:normal;color:var(--mag)}
+.card p{margin:0 0 14px;font-size:16px;line-height:1.4;color:#5b5a63}
+.rt{font-family:var(--game);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--led);margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-family:var(--game);font-size:18px;letter-spacing:.04em;padding:13px 18px;border-radius:8px;border:3px solid var(--ink);background:var(--ink);color:var(--led);cursor:pointer;text-decoration:none;width:100%;transition:transform .12s}
+.btn:hover{transform:translateY(-1px)}
+.btn.lt{background:#fff;color:var(--ink)}
+.btn.wa{background:#25D366;border-color:#25D366;color:#0b2b16}
+.btn.ig{background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);border-color:transparent;color:#fff}
+.row{display:grid;gap:10px}
+.x{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:#fff;font:inherit;font-size:18px;cursor:pointer}
+.brand+.x{top:12px;color:#fff;background:var(--ink);border-color:var(--led)}
+.qh{display:flex;justify-content:space-between;font-family:var(--game);font-size:12px;color:#5b5a63;margin-bottom:8px}
+.bar{height:6px;background:#eee;border-radius:6px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;background:var(--mag);width:0;transition:width .3s}
+.q{font-size:22px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;font-weight:700;font-size:16px;text-align:left;padding:12px 14px;border-radius:12px;border:2px solid #E6E0D6;background:var(--cream);color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--ink)}.opt.on{border-color:var(--mag);background:#FFE1EC}
+textarea,input{font:inherit;width:100%;padding:12px 14px;border-radius:12px;border:2px solid #E6E0D6;background:var(--cream);color:var(--ink)}
+textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none;border-color:var(--mag)}
+.qb{display:flex;gap:8px;margin-top:12px}.qb .btn{width:auto;flex:1}
+.sum{background:var(--cream);border:2px dashed #E6E0D6;border-radius:12px;padding:12px 14px;font-family:var(--game);font-size:13px;white-space:pre-wrap;line-height:1.5;margin:0 0 12px}
+.note{font-size:13px;color:#5b5a63;margin:8px 0 0}
+.links{display:grid;gap:10px}
+.lnk{display:flex;align-items:center;gap:12px;background:var(--cream);border:2px solid #E6E0D6;border-radius:14px;padding:12px 14px;text-decoration:none;font-weight:700;color:var(--ink)}
+.lnk .i{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:18px;background:#FFE1EC}
+.lnk small{display:block;font-weight:500;color:#5b5a63;font-size:13px}
+.cards{display:grid;gap:8px;margin:0 0 14px}
+.sv{background:var(--cream);border:2px solid #E6E0D6;border-radius:12px;padding:10px 12px}
+.sv b{display:block}.sv span{color:#5b5a63;font-size:14px}.sv i{font-style:normal;font-family:var(--game);color:var(--mag);font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.chip{font-size:13px;padding:6px 10px;border-radius:999px;border:2px solid #E6E0D6;background:#fff}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="stage" id="stage">
+<svg class="world" id="cloudsvg" aria-hidden="true"><g id="clouds"></g></svg>
+<svg class="world" id="svg">
+ <defs>
+  <linearGradient id="film" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2a35"/><stop offset=".5" stop-color="#4a3c52"/><stop offset="1" stop-color="#1e2a2a"/></linearGradient>
+  <clipPath id="cp" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".03"/></clipPath>
+ </defs>
+ <g id="world">
+  <rect class="ground2" x="-2000" y="1120" width="16000" height="60"/><rect class="ground" x="-2000" y="1150" width="16000" height="1000"/>
+  <g id="scen"></g><g id="sup"></g>
+  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 5200 800 C 5500 800 5500 1000 5800 1000 C 6100 1000 6150 420 6450 420 C 6750 420 6800 950 7100 950 C 7400 950 7450 500 7750 500 C 8050 500 8100 950 8400 950 L 9200 950 C 9500 950 9550 560 9850 560 C 10150 560 10200 950 10500 950 L 11400 950"/>
+  <path class="ties" id="ties"/><path class="rail" id="rail"/><path class="rail2" id="rail2"/>
+  <g id="bbs"></g><g id="flags"></g>
+ </g>
+</svg>
+<img id="car" alt="" src="img/car.webp" draggable="false">
+</div>
+<div class="hud"><div id="where">MARO’S ROLLERCOASTER</div><div class="st" id="st">stop 0/22</div></div>
+<div class="cap"><div id="cap"></div></div>
+<div class="tip"><span id="tip"></span></div>
+<div class="pad"><button id="bl" aria-label="back">◀</button><button id="auto" class="auto on" aria-label="auto ride">▶ AUTO</button><button id="br" aria-label="forward">▶</button></div>
+
+<div class="ov on" id="intro"><div class="card">
+ <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
+ <img alt="" src="img/car.webp" style="width:min(100%,340px);display:block;margin:0 auto 8px" draggable="false">
+ <h2>Ride through <em>my work</em></h2>
+ <p>Station 1: my photo excursion. Station 2: my blog, the reels. Station 3: my links. Station 4: request a call. Tap any frame to open it.</p>
+ <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is just the first draft. I think we can turn this into your portfolio page, where people see what you do and can contact you or send a request, or add any other features that feel authentic to you.</p><p>By the way, can’t wait to see those (authentic) ones.</p></div>
+ <button class="btn" id="go">▶ PRESS START</button>
+</div></div>
+<form name="call-request" data-netlify="true" netlify-honeypot="website" hidden><input name="name"><input name="email"><input name="phone"><textarea name="reason"></textarea><input name="website"></form>
+<div class="ov" id="ov"><div class="card" id="card"></div></div>
+<div class="ov" id="pov"><div class="card post"><button class="x" id="px">✕</button><div class="rt" id="plab">INSTAGRAM</div><div id="pbox"></div><a class="btn ig" id="popen" href="#" target="_blank" rel="noopener">OPEN ON INSTAGRAM →</a></div></div>
+
+<script>
+/* ===== EDIT ME ===== */
+const CFG={
+ name:'Mariam Kartvelishvili',handle:'@mariamkartvelishvili__',instagram:'mariamkartvelishvili__',photoInstagram:'kartvela1',
+ whatsapp:'',email:'',calendly:'',linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://www.facebook.com/mariam.qartvelishvili.96/',city:'Tbilisi, Georgia',
+ posts:[ // portfolio excursion: [instagram post id, label]
+  ['DFXz47cMsMc','Jan 2025'],['DFX4j-JMmRB','Jan 2025'],['CvAQuUhMc0O','Jul 2023 · ბაბუს ფოტოები'],['CxxtUiwMWbf','Sep 2023'],['CxxtgA-sXyp','Sep 2023'],
+  ['C0rf4XMsUZ3','Dec 2023'],['C2UrsEjM6iw','Jan 2024'],['C4TcBBjsLUx','Mar 2024'],['C7mIxUMMcJk','May 2024'],['C-nG-pNMvZl','Aug 2024'],
+  ['C-nLYupMe10','Aug 2024'],['C_F-f1UsQ96','Aug 2024'],['C_F-vzhMfjM','Aug 2024'],['C_F_HnHsoMk','Aug 2024'],['C_GAOozMH5E','Aug 2024']],
+ reels:[ // personal blog: [reel id, views]
+  ['DdO6jotNRcF','260K'],['DcHAue4Ng3U','45.9K'],['DdJsJgQNoSD','40.4K'],['DcJwnUZt0Ml','14.4K'],['DcUT9bft7tX','11.3K'],['Dc3yZzMtzcd','10.8K'],['DdMeH9Btvy5','10.4K']],
+ services:[['Portrait session','1–2 h, 25+ edited photos','from ₾150'],['Events & conferences','openings, conferences, parties','from ₾400'],['Sports & action','swimming, snow, outdoor','from ₾300'],['Brand & product','for your feed, menu or site','from ₾300'],['Reel / UGC ad','shot & edited, usage rights','from ₾200'],['Viral content session','60 min, what to post next','from ₾120'],['Social media management','monthly, plan + shoot + post','from ₾900/mo']],
+ creds:['Freelance photographer since 2022','Viral content consultant · Remini (Bending Spoons)','Event photography · Uni Koblenz','Sports photo lead · iswim.ge','SMM · GEODAYLIGHT, Monopolia'],
+};
+/* =================== */
+const NS='http://www.w3.org/2000/svg';const el=(n,a={})=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e};
+const PAL=['#E6306E','#2BC4B0','#2F5BD3','#F59A2C','#B8E04A'];
+const svg=document.getElementById('svg'),cloudsvg=document.getElementById('cloudsvg'),cloudsG=document.getElementById('clouds');
+const track=document.getElementById('track'),L=track.getTotalLength();['rail','rail2','ties'].forEach(i=>document.getElementById(i).setAttribute('d',track.getAttribute('d')));
+const P=f=>track.getPointAtLength(Math.max(0,Math.min(1,f))*L);
+const angAt=f=>{const dd=f*L,a=track.getPointAtLength(Math.max(0,dd-10)),b=track.getPointAtLength(Math.min(L,dd+10));return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI};
+const fx=(x,after=0)=>{for(let dd=after*L;dd<L;dd+=8){if(track.getPointAtLength(dd).x>=x)return dd/L}return 1};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* scenery */
+const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p=track.getPointAtLength(d);if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
+for(let i=0;i<40;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
+const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',5600,170],['rose',6900,110],['pinkflower',8300,120],['cocktail',9000,110],['umbrella',10900,190],['vases',11200,170]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
+/* billboards */
+const bbs=document.getElementById('bbs');const stops=[];
+function board(x,w,h,label,sub,href,thumb,isReel){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
+ const top=p.y-150-h;g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h+46,stroke:'#1B1A22','stroke-width':5}));
+ g.appendChild(el('rect',{class:'fr',x:p.x-w/2-8,y:top-8,width:w+16,height:h+46,rx:8}));
+ g.appendChild(el('rect',{class:'ph',x:p.x-w/2,y:top,width:w,height:h,rx:4}));
+ const im=el('image',{href:thumb,x:p.x-w/2,y:top,width:w,height:h,preserveAspectRatio:'xMidYMid slice','clip-path':'url(#cp)'});im.addEventListener('error',()=>im.remove());g.appendChild(im);
+ if(isReel){g.appendChild(el('rect',{class:'badge',x:p.x-w/2+8,y:top+8,width:92,height:28,rx:6}));const v=el('text',{class:'views',x:p.x-w/2+16,y:top+28});v.textContent='▶ '+sub;g.appendChild(v)}
+ const t=el('text',{x:p.x,y:top+h+20,'text-anchor':'middle','font-size':'14'});t.textContent=label;g.appendChild(t);
+ const tp=el('text',{class:'tap',x:p.x,y:top+h+36,'text-anchor':'middle'});tp.textContent=isReel?'TAP TO WATCH':'TAP TO OPEN';g.appendChild(tp);
+ const open=()=>openPost(href,label,isReel);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
+ bbs.appendChild(g);stops.push({f,g,label});return f}
+CFG.posts.forEach(([id,lab],i)=>board(1150+i*270,150,190,lab,'',`https://www.instagram.com/p/${id}/`,`/thumb/p/${id}`,false));
+CFG.reels.forEach(([id,v],i)=>board(6300+i*430,150,260,'reel · '+v+' views',v,`https://www.instagram.com/reel/${id}/`,`/thumb/r/${id}`,true));
+document.getElementById('st').textContent=`stop 0/${stops.length}`;
+/* station signs */
+const flags=document.getElementById('flags');
+function sign(x,txt,y=780){const p=P(fx(x));const g=el('g',{class:'sign'});g.setAttribute('transform',`translate(${p.x} ${p.y})`);g.appendChild(el('line',{x1:0,y1:0,x2:0,y2:-150,stroke:'#1B1A22','stroke-width':5}));g.appendChild(el('rect',{x:-150,y:-200,width:300,height:54,rx:8}));const t=el('text',{x:0,y:-164,'text-anchor':'middle','font-size':'24','letter-spacing':'2'});t.textContent=txt;g.appendChild(t);flags.appendChild(g)}
+sign(900,'STATION 1 · PHOTOS');sign(6050,'STATION 2 · MY BLOG');sign(9250,'STATION 3 · LINKS');sign(10850,'STATION 4 · REQUEST A CALL');
+const caps=[[fx(-100),'<span class="k">welcome</span>a rollercoaster through my portfolio'],[fx(950),'<span class="k">station 1</span>my photo excursion: tap a frame to open it'],[fx(6000),'<span class="k">station 2</span>my personal blog: the most-watched reels'],[fx(9200),'<span class="k">station 3</span>my links pop up as you pass. tap one'],[fx(10750),'<span class="k">station 4</span>want to work together? request a call']];
+const STATION3=fx(9800),STATION4=fx(11000);
+const F1=fx(900),F2=fx(6000),F3=fx(9200),F4=fx(10750);
+/* link boards */
+const LINKS=[['📸','Instagram',CFG.handle,`https://instagram.com/${CFG.instagram}`],['🎞️','Photography','@'+CFG.photoInstagram,`https://instagram.com/${CFG.photoInstagram}`],['💼','LinkedIn','experience',CFG.linkedin],['👥','Facebook','say hi',CFG.facebook],CFG.whatsapp?['💬','WhatsApp','fastest way',`https://wa.me/${CFG.whatsapp}`]:null,CFG.email?['✉️','Email',CFG.email,`mailto:${CFG.email}`]:null].filter(Boolean);
+const linkStops=[];
+LINKS.forEach(([ic,lab,sub,href],i)=>{const f=fx(9450+i*300);const p=P(f);const g=el('g',{class:'bb lk',tabindex:'0',role:'link'});const w=170,h=120,top=p.y-190-h;
+ g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h,stroke:'#1B1A22','stroke-width':5}));
+ g.appendChild(el('rect',{class:'lkbg',x:p.x-w/2,y:top,width:w,height:h,rx:14}));
+ const t1=el('text',{class:'lkic',x:p.x,y:top+52,'text-anchor':'middle'});t1.textContent=ic;const t2=el('text',{class:'lkt',x:p.x,y:top+80,'text-anchor':'middle'});t2.textContent=lab.toUpperCase();const t3=el('text',{class:'lks',x:p.x,y:top+100,'text-anchor':'middle'});t3.textContent=sub;g.append(t1,t2,t3);
+ const open=()=>window.open(href,'_blank','noopener');g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter')open()});bbs.appendChild(g);linkStops.push({f,g})});
+/* controls & physics */
+const keys={l:false,r:false};let auto=true,paused=true,d=1200,v=0,prevD=1200,last=null,acc=0;const STEP=1000/60;
+const hold=(id,k)=>{const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('down');setAuto(false)},off=()=>{keys[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,off))};
+hold('br','r');hold('bl','l');
+const autoBtn=document.getElementById('auto');function setAuto(on){auto=on;autoBtn.classList.toggle('on',on);autoBtn.textContent=on?'❚❚ AUTO':'▶ AUTO'}
+autoBtn.addEventListener('click',()=>setAuto(!auto));setAuto(true);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight'){keys.r=true;setAuto(false)}if(e.key==='ArrowLeft'){keys.l=true;setAuto(false)}});
+addEventListener('keyup',e=>{if(e.key==='ArrowRight')keys.r=false;if(e.key==='ArrowLeft')keys.l=false});
+addEventListener('wheel',e=>{if(!paused){v+=Math.sign(e.deltaY)*2;setAuto(false)}},{passive:true});
+let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov,.bb'))return;tx0=e.touches[0].clientX},{passive:true});
+addEventListener('touchmove',e=>{if(tx0==null||paused)return;const x=e.touches[0].clientX;v+=(x-tx0)*.15;tx0=x;setAuto(false)},{passive:true});
+addEventListener('touchend',()=>tx0=null);
+const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.innerHTML;goBtn.innerHTML='LOADING…';
+(async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp']);await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=r;im.onerror=r;im.src=u})));await (document.fonts?document.fonts.ready:0);goBtn.disabled=false;goBtn.innerHTML=gl})();
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
+let dwell=0,nearIdx=-1,shown3=false,shown4=false;
+function physics(){prevD=d;const pA=track.getPointAtLength(d),pB=track.getPointAtLength(Math.min(L,d+6));const slope=(pB.y-pA.y)/6;
+ let want=paused?0:(keys.r?9:0)+(keys.l?-9:0);
+ if(!paused&&auto&&!keys.r&&!keys.l){ // auto ride: slow, pauses at each frame
+  const nx=stops.find(s=>s.f*L>d+4);if(nx&&nx.f*L-d<40&&dwell<150){dwell++;want=0}else{want=nx&&nx.f*L-d<40?0:3.2;if(nx&&nx.f*L-d>=40)dwell=0}
+  if(!nx&&d>STATION4*L)want=0}
+ v+=(want-v)*.08;if(!paused&&(keys.r||keys.l))v+=slope*.15;if(!keys.r&&!keys.l&&!auto)v*=.92;if(Math.abs(v)<.03)v=0;v=Math.max(-12,Math.min(15,v));
+ d=Math.max(1200,Math.min(L,d+v));if(d<=1200&&v<0)v=0;if(d>=L)v=0;
+
+}
+const capEl=document.getElementById('cap');let capIdx=-1;const tip=document.getElementById('tip'),where=document.getElementById('where');
+const carEl=document.getElementById('car');let camX=0,camY=0,camInit=false,smAng=0,angInit=false;
+function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;acc=Math.max(0,acc+Math.max(0,Math.min(100,dt)));let n=0;while(acc>=STEP&&n<8){physics();acc-=STEP;n++}
+ const al=Math.min(1,acc/STEP),rd=prevD+(d-prevD)*al,p=rd/L;
+ // near frame
+ let ni=-1;stops.forEach((s,i)=>{if(Math.abs(s.f*L-d)<80)ni=i});if(ni!==nearIdx){if(nearIdx>=0)stops[nearIdx].g.classList.remove('near');nearIdx=ni;if(ni>=0){stops[ni].g.classList.add('near');tip.textContent='TAP THE FRAME TO OPEN ON INSTAGRAM';tip.classList.add('on');document.getElementById('st').textContent=`stop ${ni+1}/${stops.length}`}else tip.classList.remove('on')}
+ let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
+ const wt=p<F1?'MARO’S ROLLERCOASTER':p<F2?'STATION 1 · PHOTOS':p<F3?'STATION 2 · MY BLOG':p<F4?'STATION 3 · LINKS':'STATION 4 · CALL';if(where.textContent!==wt)where.textContent=wt;
+ const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
+ const s=Math.max(.42,Math.min(1.1,innerWidth/760));const ax=.2+.2*Math.min(1,Math.max(0,d-1200)/(L*.05));const tgx=innerWidth*ax-pt.x*s,tgy=innerHeight*.55-pt.y*s;
+ if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
+ svg.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;cloudsvg.style.transform=`translate3d(${camX*.45}px,${camY*.3+innerHeight*.1}px,0) scale(${s})`;
+ const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) translate(${-cw/2}px,${-ch}px)`;
+ linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
+ if(!shown4&&d>=STATION4*L){shown4=true;openCard('call')}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+/* instagram post viewer (official embed) */
+const pov=document.getElementById('pov'),pbox=document.getElementById('pbox');let embedLoaded=false;
+function loadEmbedJs(){if(embedLoaded)return;embedLoaded=true;const s=document.createElement('script');s.async=true;s.src='https://www.instagram.com/embed.js';document.body.appendChild(s)}
+function openPost(href,label,isReel){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTO · ')+label.toUpperCase();document.getElementById('popen').href=href;
+ pbox.innerHTML=`<div class="wait">LOADING POST…</div><blockquote class="instagram-media" data-instgrm-permalink="${href}" data-instgrm-version="14" data-instgrm-captioned="false" style="background:#fff;border:0;margin:0;padding:0;width:100%"></blockquote>`;
+ pov.classList.add('on');loadEmbedJs();const tryProc=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();pbox.querySelector('.wait')?.remove()}else setTimeout(tryProc,300)};tryProc()}
+document.getElementById('px').addEventListener('click',()=>{pov.classList.remove('on');pbox.innerHTML=''});
+/* station cards */
+const ov=document.getElementById('ov'),card=document.getElementById('card');
+function closeCard(){ov.classList.remove('on')}
+function openCard(kind){setAuto(false);card.innerHTML='';const x=document.createElement('button');x.className='x';x.textContent='✕';x.addEventListener('click',closeCard);
+ card.innerHTML=`<div class="brand"><span class="led">STATION 4</span><span class="ed">★ REQUEST A CALL ★</span></div>
+ <h2>Let’s talk about <em>your idea</em></h2>
+ <p>Photos, reels, events, content for your brand. Leave your details and I’ll call you back.</p>
+ <form id="callf" name="call-request" method="POST" data-netlify="true" netlify-honeypot="website" class="row">
+  <input type="hidden" name="form-name" value="call-request">
+  <p style="display:none"><label>Website <input name="website"></label></p>
+  <input name="name" placeholder="Full name" required autocomplete="name">
+  <input name="email" type="email" placeholder="Email" required autocomplete="email">
+  <input name="phone" type="tel" placeholder="Phone (WhatsApp is perfect)" required autocomplete="tel">
+  <textarea name="reason" placeholder="What are we creating? A shoot, a reel, an event, an ad… tell me the story in two lines." required></textarea>
+  <button class="btn" type="submit">REQUEST THE CALL →</button>
+  <p class="note" id="fnote">I usually reply within a day. No spam, no newsletters, just a call.</p>
+ </form>`;card.prepend(x);ov.classList.add('on');
+ const f=document.getElementById('callf');f.addEventListener('submit',async e=>{e.preventDefault();const b=f.querySelector('button');b.disabled=true;b.textContent='SENDING…';
+  try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()});if(!r.ok)throw 0;
+   f.innerHTML=`<h2 style="margin-top:6px">Got it. <em>Talk soon!</em></h2><p>Your request is on its way to Mariam. If it’s urgent, DM her on Instagram.</p><a class="btn ig" href="https://ig.me/m/${CFG.instagram}" target="_blank" rel="noopener">OPEN INSTAGRAM DM</a>`}
+  catch(err){b.disabled=false;b.textContent='TRY AGAIN →';document.getElementById('fnote').textContent='Hmm, that didn’t go through. Try again or DM me on Instagram.'}})}
+document.getElementById('flags').addEventListener('click',e=>{const t=e.target.closest('.sign');if(!t)return;const txt=t.textContent;if(/CALL/.test(txt))openCard('call')});
+</script>
