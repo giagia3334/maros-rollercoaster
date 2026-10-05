@@ -113,7 +113,6 @@ svg image{pointer-events:none}
 .dimh{font-family:var(--game);font-weight:400;font-size:clamp(30px,8.5vw,46px);line-height:1.05;margin:6px 0 0;color:var(--led);text-shadow:0 0 18px rgba(115,182,82,.6)}
 .dimq{font-family:var(--hand);font-size:clamp(30px,8vw,40px);line-height:1;margin:0;color:#FFD9EC}
 .dimq.small{font-size:clamp(26px,6.5vw,32px);color:#fff}
-.calwrap{width:100%;border:3px solid #3b3670;border-radius:14px;overflow:hidden;background:#100f24;box-shadow:0 0 40px rgba(230,48,110,.35)}
 .dim .vid{transform:none;border-color:#3b3670;box-shadow:0 0 40px rgba(47,91,211,.5);margin:0}
 .btn.neon{background:#0f0d2a;border-color:var(--led);color:var(--led);box-shadow:0 0 22px rgba(115,182,82,.55)}
 .btn.neon:hover{transform:translateY(2px);box-shadow:0 0 34px rgba(115,182,82,.8)}
@@ -155,6 +154,8 @@ svg image{pointer-events:none}
 .howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}.howto.two{grid-template-columns:1fr 1fr}
 .howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
 .howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
+.snd{font:inherit;font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;border:2px solid var(--led);background:var(--ink);color:#fff;cursor:pointer;pointer-events:auto;margin-left:4px}
+.calwrap{width:100%;border:3px solid #3b3670;border-radius:14px;overflow:hidden;background:#100f24;box-shadow:0 0 40px rgba(230,48,110,.35)}
 </style>
 
 <div class="stage" id="stage">
@@ -176,7 +177,8 @@ svg image{pointer-events:none}
  <div class="loadbar"><i></i></div><p class="loadtxt">LOADING…</p>
 </div>
 <canvas id="confetti"></canvas>
-<div class="hud"><span>♥ <b id="score">0</b>/<span id="total">0</span></span><span>round <b id="round">1</b>/3</span><span id="need"></span></div>
+<div class="hud"><span>♥ <b id="score">0</b>/<span id="total">0</span></span><span>round <b id="round">1</b>/3</span><span id="need"></span><button id="snd" class="snd" aria-label="sound" hidden>🔊</button></div>
+<audio id="bgm" src="img/music.mp3" loop preload="auto"></audio>
 <div class="toast" id="toast">wheee!</div>
 <div class="gate" id="gate"></div>
 <div class="cap"><div id="cap"></div></div>
@@ -317,7 +319,7 @@ function enterDimension(){capHold=Infinity;document.getElementById('stage').clas
     if(maybes===1){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge');vib(40)}
     else if(maybes===2){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge','big');vib([60,40,60])}
     else{maybe.hidden=true;yes.classList.add('big');dm.innerHTML='OK, THE BUTTON IS RIGHT THERE WHENEVER. WAITING<span class="dots"><i>.</i><i>.</i><i>.</i></span>';dm.style.color='#FFD9EC';vib(30)}});
-  const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});vd.addEventListener('click',()=>{vd.muted=false;vd.play()},{once:true});
+  const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});vd.addEventListener('click',()=>{vd.muted=false;vd.play();if(bgmOk)duckBgm(.12,600)},{once:true});
   for(let i=0;i<14;i++){const im=document.createElement('img');im.className='dimobj';im.src=EL[ELK[i%ELK.length]];im.style.width=(40+Math.random()*70)+'px';im.style.left=Math.random()*95+'vw';im.style.top=Math.random()*100+'vh';im.style.animationDuration=(18+Math.random()*20)+'s';im.style.animationDelay=(-Math.random()*20)+'s';im.style.opacity=.16+Math.random()*.18;dim.appendChild(im)}
   burst(200,true)},1300)}
 function starfield(){const c=document.getElementById('stars'),g=c.getContext('2d');let w,h,st=[];function rs(){w=c.width=innerWidth*devicePixelRatio;h=c.height=innerHeight*devicePixelRatio;st=Array.from({length:220},()=>({x:Math.random()*w,y:Math.random()*h,z:.3+Math.random(),r:Math.random()*1.8+.4}))}rs();addEventListener('resize',rs);
@@ -362,7 +364,11 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBt
  await Promise.all(urls.map(u=>new Promise(res=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>{done++;goBtn.innerHTML=`LOADING… ${Math.round(done/urls.length*100)}%`;res()})};im.onerror=()=>{done++;res()};im.src=u})));
  await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
  goBtn.disabled=false;goBtn.innerHTML=goLabel})();
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
+const bgm=document.getElementById('bgm'),sndBtn=document.getElementById('snd');let bgmOk=false;bgm.volume=.55;
+bgm.addEventListener('canplaythrough',()=>{bgmOk=true;sndBtn.hidden=false},{once:true});bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true});
+sndBtn.addEventListener('click',()=>{if(bgm.paused){bgm.play().catch(()=>{});sndBtn.textContent='🔊'}else{bgm.pause();sndBtn.textContent='🔇'}});
+function duckBgm(to,ms){const v0=bgm.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=v0+(to-v0)*k;if(k<1)requestAnimationFrame(st)};st()}
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk){bgm.play().catch(()=>{sndBtn.textContent='🔇'})}});
 document.getElementById('bj').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
 addEventListener('wheel',e=>{if(!paused)v+=Math.sign(e.deltaY)*2},{passive:true});
 let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov'))return;tx0=e.touches[0].clientX},{passive:true});
@@ -381,9 +387,9 @@ function say(s){toast.textContent=s;toast.classList.add('on');toastT=performance
 const ov=document.getElementById('ov'),card=document.getElementById('card');
 const quiz=[
  {q:'When life throws a challenge at you, what do you do?',a:['Keep going, with a smile','Keep going, one step at a time','Keep going, and grow from it','Keep going, your own way'],
-  ok:'Correct! There was never a wrong answer here. You keep going, and that\u2019s exactly why everything works out for you.'},
+  ok:'Correct'},
  {q:'Which moments do I wish you to enjoy in life?',a:['Every moment','Every single moment','Every moment, even the small ones','Every moment, especially the wild ones'],
-  ok:'Correct! All of the above. Every moment, Mariam.'},
+  ok:'Correct'},
 ];
 const rewards=[
  {rt:'round 1 done',h:'You made it <em>up the hill</em>',img:'hat',msg:'Keep experiencing new, fascinating things you never even imagined',btn:'Round 2: the drop ▶',tip:'Next gate opens with 3 hearts'},
