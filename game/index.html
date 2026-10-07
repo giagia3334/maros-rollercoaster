@@ -212,7 +212,7 @@ svg image{pointer-events:none}
   </div>
   <div class="lock">
    <div class="lt">ROUND 2 · LOCKED</div>
-   <p class="lp">Round 2 is a real gift. It opens with the one-time code you get once you pick a time.</p>
+   <p class="lp">How to unlock: <b style="color:#fff">1.</b> Press YES above and pick a day. <b style="color:#fff">2.</b> Gia texts you the code. <b style="color:#fff">3.</b> Type it here.</p>
    <form id="codeform"><input id="code" inputmode="text" autocomplete="off" placeholder="ENTER CODE" aria-label="code"><button class="btn neon" type="submit">UNLOCK</button></form>
    <div class="lmsg" id="lmsg"></div>
   </div>
@@ -314,7 +314,7 @@ function fountain(){const layer=document.createElement('div');layer.className='f
 const CODE='THEREWEGO';
 function enterDimension(){capHold=Infinity;document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
  setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();const yes=document.getElementById('yesbtn'),maybe=document.getElementById('maybebtn'),dm=document.getElementById('deptmsg');let maybes=0;
-   yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
+   yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY. GIA WILL TEXT YOU THE ROUND 2 CODE.';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
    maybe.addEventListener('click',()=>{maybes++;const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
     if(maybes===1){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge');vib(40)}
     else if(maybes===2){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge','big');vib([60,40,60])}
@@ -328,7 +328,7 @@ const codeIn=document.getElementById('code');codeIn.addEventListener('input',()=
 codeIn.addEventListener('unlock',()=>{if(codeIn.disabled)return;const m=document.getElementById('lmsg');m.textContent='UNLOCKED ✓ TAP TO ENTER ROUND 2';m.style.color='var(--led)';burst(260,true);codeIn.disabled=true;const b=document.querySelector('#codeform .btn');if(b){const a=document.createElement('a');a.className='btn neon';a.href='https://giagia3334.github.io/maros-rollercoaster/';a.target='_blank';a.rel='noopener';a.textContent='ENTER ROUND 2 →';b.replaceWith(a);setTimeout(()=>a.focus(),200)}},{once:true});
 document.getElementById('codeform').addEventListener('submit',e=>{e.preventDefault();const v=document.getElementById('code').value.trim().toUpperCase().replace(/\s+/g,'');const m=document.getElementById('lmsg');
  if(v===CODE.replace('-','')||v===CODE){codeIn.dispatchEvent(new Event('unlock'));const a=document.querySelector('#codeform a.btn');if(a)a.click()}
- else{m.textContent='NOT YET. THE CODE ARRIVES ONCE YOU PICK A TIME.';m.style.color='#FFD9EC'}});
+ else{m.textContent='NOT YET. PICK A DAY ABOVE AND GIA WILL TEXT YOU THE CODE.';m.style.color='#FFD9EC'}});
 function finish(){finished=true;keys.l=keys.r=false;capSay('<span class="k">finish line</span>🏁 YOU DID IT, MARIAM! 🏁',4200);burst(260,true);setTimeout(()=>burst(200),600);setTimeout(()=>burst(200,true),1400);fountain();floaters();setTimeout(enterDimension,3800)}
 /* hearts and gifts */
 const items=[];
@@ -460,7 +460,7 @@ function frame(now){
  const p=rd/L;
  /* items */
  items.forEach(it=>{const dist=Math.abs(it.dd-d);if(dist>120)return;
-  if(it.type==='heart'&&!it.got&&dist<50&&jy<-55){it.got=true;score++;scoreEl.textContent=score;needTxt();it.g.style.transition='opacity .4s';it.g.style.opacity=0;say(['wheee!','yes!','one more!','so smooth','nice jump'][score%5])}
+  if(it.type==='heart'&&!it.got&&dist<78&&jy<-28){it.got=true;score++;scoreEl.textContent=score;needTxt();it.g.style.transition='opacity .4s';it.g.style.opacity=0;say(['wheee!','yes!','one more!','so smooth','nice jump'][score%5])}
   if(it.type==='gift'&&!paused&&!it.open&&dist<40){it.open=true;it.lid.classList.add('open');say('🎁');capSay('<span class="k">keep</span>'+it.phrase,2800)}});
  if(toast.classList.contains('on')&&now-toastT>900)toast.classList.remove('on');
  if(round<3){const cd=CHECK[round]*L,st=round===0?0:CHECK[round-1]*L;const got=items.filter(x=>x.type==='heart'&&x.got&&x.dd>st&&x.dd<cd).length;const miss=NEED[round]-got;
