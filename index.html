@@ -57,6 +57,11 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .pad button.flip.down{background:#b81f55}
 .eb .in{transform-origin:0 0;width:540px;background:transparent;will-change:transform;backface-visibility:hidden}
 .eb .wait{z-index:1}
+.eb .swipe{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:2;pointer-events:none;display:flex;align-items:center;gap:10px;font-family:var(--game);font-size:20px;letter-spacing:.18em;color:#fff;background:rgba(27,26,34,.72);backdrop-filter:blur(6px);padding:8px 16px;border-radius:999px}
+.eb .swipe span{font-family:var(--disp);font-weight:800;font-size:30px;line-height:.8;animation:nudgeL 1.4s ease-in-out infinite}
+.eb .swipe span:last-child{animation-name:nudgeR}
+@keyframes nudgeL{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+@keyframes nudgeR{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
 .eb .vb{position:absolute;left:16px;top:16px;z-index:2;pointer-events:none;font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;background:rgba(27,26,34,.72);backdrop-filter:blur(6px);padding:5px 10px;border-radius:999px}
 .eb .instagram-media{margin:0!important;min-width:540px!important;max-width:540px!important;width:540px!important;border:0!important;box-shadow:none!important;border-radius:0!important}
 .eb iframe{display:block}
@@ -181,7 +186,7 @@ linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://w
   ['C0rf4XMsUZ3','Dec 2023'],['C2UrsEjM6iw','Jan 2024'],['C4TcBBjsLUx','Mar 2024'],['C7mIxUMMcJk','May 2024'],['C-nG-pNMvZl','Aug 2024'],
   ['C-nLYupMe10','Aug 2024'],['C_F-f1UsQ96','Aug 2024'],['C_F-vzhMfjM','Aug 2024'],['C_F_HnHsoMk','Aug 2024'],['C_GAOozMH5E','Aug 2024']],
  reels:[ // personal blog: [reel id, views, optional local mp4 e.g. 'img/reels/DdO6jotNRcF.mp4' → plays inside the game]
-  ['DcHAue4Ng3U','45.9K','img/reels/DcHAue4Ng3U.mp4'],['DcJwnUZt0Ml','14.4K','img/reels/DcJwnUZt0Ml.mp4'],['DdO6jotNRcF','260K','img/reels/DdO6jotNRcF.mp4'],['Dc3yZzMtzcd','10.8K','img/reels/Dc3yZzMtzcd.mp4'],['DdJsJgQNoSD','40.4K'],['DcUT9bft7tX','11.3K','img/reels/DcUT9bft7tX.mp4'],['DdMeH9Btvy5','10.4K','img/reels/DdMeH9Btvy5.mp4']],
+  ['DcHAue4Ng3U','45.9K','img/reels/DcHAue4Ng3U.mp4'],['DcJwnUZt0Ml','14.4K','img/reels/DcJwnUZt0Ml.mp4'],['DdO6jotNRcF','260K','img/reels/DdO6jotNRcF.mp4'],['Dc3yZzMtzcd','10.8K','img/reels/Dc3yZzMtzcd.mp4'],['DdJsJgQNoSD','40.4K','img/reels/DdJsJgQNoSD.mp4'],['DcUT9bft7tX','11.3K','img/reels/DcUT9bft7tX.mp4'],['DdMeH9Btvy5','10.4K','img/reels/DdMeH9Btvy5.mp4']],
  services:[['Portrait session','1–2 h, 25+ edited photos','from ₾150'],['Events & conferences','openings, conferences, parties','from ₾400'],['Sports & action','swimming, snow, outdoor','from ₾300'],['Brand & product','for your feed, menu or site','from ₾300'],['Reel / UGC ad','shot & edited, usage rights','from ₾200'],['Viral content session','60 min, what to post next','from ₾120'],['Social media management','monthly, plan + shoot + post','from ₾900/mo']],
  creds:['Freelance photographer since 2022','Viral content consultant · Remini (Bending Spoons)','Event photography · Uni Koblenz','Sports photo lead · iswim.ge','SMM · GEODAYLIGHT, Monopolia'],
 };
@@ -216,14 +221,15 @@ function board(x,w,h,label,sub,href,isReel,mp4){const f=fx(x);const p=P(f);const
  const st={f,g,eb,href,sc,w,h,mp4,mounted:false,px:p.x,k:1};g.style.transition='none';stops.push(st);embLayer.appendChild(eb);return f}
 function mountEmbed(s){if(s.mounted)return;s.mounted=true;
  if(s.mp4){const v=document.createElement('video');v.src=s.mp4;v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.addEventListener('click',e=>{e.stopPropagation();openPost(s.href,'',true,s.mp4)});s.eb.prepend(v);return}
- const vb=s.eb.querySelector('.vb');s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc}) translateY(-${HDR}px);height:${Math.ceil(s.h/s.sc)+HDR}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14"></blockquote></div>`;
+ const vb=s.eb.querySelector('.vb')||s.swipe;s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc}) translateY(-${HDR}px);height:${Math.ceil(s.h/s.sc)+HDR}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14"></blockquote></div>`;
  if(vb)s.eb.appendChild(vb);loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();let n=0;const fit=()=>{if(!s.mounted)return;if(!fitEmbed(s)&&n++<40)setTimeout(fit,250);else if(n>=40)s.eb.querySelector('.wait')?.remove()};setTimeout(fit,600)}else setTimeout(go,300)};go()}
-function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;const vb=s.eb.querySelector('.vb');s.eb.innerHTML='';if(vb)s.eb.appendChild(vb)}
+function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;const vb=s.eb.querySelector('.vb')||s.swipe;s.eb.innerHTML='';if(vb)s.eb.appendChild(vb)}
 const HDR=54,FOOT=232,IN_W=540; // instagram embed: header, footer (likes/comments block), inner width
 function fitEmbed(s){const ifr=s.eb.querySelector('iframe');if(!ifr)return false;const th=parseFloat(ifr.style.height)||ifr.offsetHeight;if(!th||th<HDR+FOOT+40)return false;
  const imgH=Math.max(283,Math.min(675,th-HDR-FOOT));const sc=Math.max(s.w/IN_W,s.h/imgH);const inr=s.eb.querySelector('.in');
  const tx=(s.w/sc-IN_W)/2,ty=s.h/(2*sc)-(HDR+imgH/2);inr.style.transform=`scale(${sc}) translate(${tx}px,${ty}px)`;inr.style.height=Math.ceil(th)+'px';s.eb.querySelector('.wait')?.remove();return true}
-CFG.posts.forEach(([id,lab],i)=>board(1150+i*560,460,575,lab,'',`https://www.instagram.com/p/${id}/`,false));
+const CAROUSEL=new Set(['DFXz47cMsMc','DFX4j-JMmRB','CvAQuUhMc0O','CxxtUiwMWbf','C-nG-pNMvZl','C_F-f1UsQ96']);
+CFG.posts.forEach(([id,lab],i)=>{board(1150+i*560,460,575,lab,'',`https://www.instagram.com/p/${id}/`,false);if(CAROUSEL.has(id)){const s=stops[stops.length-1];const sw=document.createElement('div');sw.className='swipe';sw.innerHTML='<span>‹</span>SWIPE<span>›</span>';s.eb.appendChild(sw);s.swipe=sw}});
 CFG.reels.forEach(([id,v,mp4],i)=>board(10700+i*560,400,711,'',v,`https://www.instagram.com/reel/${id}/`,true,mp4));
 document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
