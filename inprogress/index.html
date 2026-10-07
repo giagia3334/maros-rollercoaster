@@ -70,11 +70,11 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid 
 .floor{left:-700px;top:-10px;width:1400px;height:9600px;background:
  linear-gradient(#0f0e14,#0f0e14) padding-box,
  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px,transparent 2px 120px),
- repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 120px);background-color:#111016;transform-origin:50% 0;transform:translate3d(0,300px,400px) rotateX(90deg)}
-.ceil{left:-700px;top:-10px;width:1400px;height:9600px;background:#09080c;transform-origin:50% 0;transform:translate3d(0,-320px,400px) rotateX(90deg)}
+ repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 120px);background-color:#111016;transform-origin:50% 0;transform:translate3d(0,300px,720px) rotateX(90deg)}
+.ceil{left:-700px;top:-10px;width:1400px;height:9600px;background:#09080c;transform-origin:50% 0;transform:translate3d(0,-320px,720px) rotateX(90deg)}
 .wall{top:-320px;width:9600px;height:620px;background:#17161d;transform-origin:0 0}
-.wall.l{left:0;transform:translate3d(-460px,0,400px) rotateY(90deg)}
-.wall.r{left:0;transform:translate3d(460px,0,400px) rotateY(-90deg) scaleX(-1)}
+.wall.l{left:0;transform:translate3d(-460px,0,720px) rotateY(90deg)}
+.wall.r{left:0;transform:translate3d(460px,0,720px) rotateY(-90deg) scaleX(-1)}
 .endwall{left:-460px;top:-320px;width:920px;height:620px;background:#17161d;display:grid;place-items:center;transform:translate3d(0,0,var(--z))}
 .endwall h2{font-family:var(--game);font-weight:400;color:#fff;font-size:34px;margin:0;letter-spacing:.06em;text-align:center;line-height:1.4}
 .endwall p{color:#8d8a98;margin:8px 0 0;font-size:15px;text-align:center}
@@ -447,7 +447,7 @@ function frame(now){requestAnimationFrame(frame);if(last===null)last=now;let dt=
  else if(follow&&!dragging){const p=trackAt(car.d);const k=1-Math.pow(1-.12,dt/16.7);cam.x+=(p.x-cam.x)*k;cam.y+=(p.y-cam.y)*k;clampCam();if(Math.abs(p.x-cam.x)+Math.abs(p.y-cam.y)>.2)dirty=true}
  if(fw.length){fw=fw.filter(q=>{if(q.d>0){q.d-=dt;return true}q.x+=q.vx*dt/16;q.y+=q.vy*dt/16;q.vy+=.08*dt/16;q.vx*=.985;q.life-=.02*dt/16;return q.life>0});dirty=true}
  const moving=Math.abs(car.v)>.001||car.flip>=0||!reduce; /* tumbleweeds + marquee animate */
- if(dirty||moving||overlayOpen()===false&&frameCount%2===0){if(!document.hidden&&!overlayOpen())draw(now);dirty=false}
+ if(dirty||moving||overlayOpen()===false&&frameCount%2===0){if(!overlayOpen())draw(now);dirty=false}
  frameCount++;
  chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('here',lastNear&&c.dataset.id===lastNear.id));
 }
