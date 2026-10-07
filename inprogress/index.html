@@ -147,9 +147,9 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
   <clipPath id="cp" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".03"/></clipPath>
  </defs>
  <g id="world">
-  <rect class="ground2" x="-2000" y="1120" width="24000" height="60"/><rect class="ground" x="-2000" y="1150" width="24000" height="1000"/>
+  <rect class="ground2" x="-2000" y="1120" width="23000" height="60"/><rect class="ground" x="-2000" y="1150" width="23000" height="1000"/>
   <g id="scen"></g><g id="sup"></g>
-  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 9600 800 C 9900 800 9900 1000 10200 1000 C 10500 1000 10550 420 10850 420 C 11150 420 11200 950 11500 950 C 11800 950 11850 500 12150 500 C 12450 500 12500 950 12800 950 L 16080 950 C 16380 950 16430 560 16730 560 C 17030 560 17080 950 17380 950 C 17630 950 17680 1120 17930 1120 L 18480 1120"/>
+  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 9600 800 C 9900 800 9900 1000 10200 1000 C 10500 1000 10550 420 10850 420 C 11150 420 11200 950 11500 950 C 11800 950 11850 500 12150 500 C 12450 500 12500 950 12800 950 L 15520 950 C 15820 950 15870 560 16170 560 C 16470 560 16520 950 16820 950 C 17070 950 17120 1120 17370 1120 L 17920 1120"/>
   <path class="ties" id="ties"/><path class="rail" id="rail"/><path class="rail2" id="rail2"/>
   <g id="bbs"></g><g id="flags"></g>
  </g>
@@ -187,7 +187,7 @@ linkedin:'https://www.linkedin.com/in/mariam-kartvelishvili',facebook:'https://w
   ['C-nLYupMe10','Aug 2024'],['C_F-f1UsQ96','Aug 2024'],['C_F-vzhMfjM','Aug 2024'],['C_F_HnHsoMk','Aug 2024'],['C_GAOozMH5E','Aug 2024']],
  reels:[ // personal blog: [reel id, views, optional local mp4 e.g. 'img/reels/DdO6jotNRcF.mp4' → plays inside the game]
   ['DcHAue4Ng3U','45.9K','img/reels/DcHAue4Ng3U.mp4'],['DdO6jotNRcF','260K','img/reels/DdO6jotNRcF.mp4'],['Dc3yZzMtzcd','10.8K','img/reels/Dc3yZzMtzcd.mp4'],['DdJsJgQNoSD','40.4K','img/reels/DdJsJgQNoSD.mp4'],['DdMeH9Btvy5','10.4K','img/reels/DdMeH9Btvy5.mp4'],
-  ['DbtE5QFODQ5','14.9K','img/reels/DbtE5QFODQ5.mp4'],['DbV41rCNT8Z','87.7K','img/reels/DbV41rCNT8Z.mp4'],['Da5ckv-tlv0','22.5K','img/reels/Da5ckv-tlv0.mp4'],['DZu2DMxNYmW','25.2K'],['DZAoPIGNsJu','31.6K','img/reels/DZAoPIGNsJu.mp4']],
+  ['DbtE5QFODQ5','14.9K','img/reels/DbtE5QFODQ5.mp4'],['DbV41rCNT8Z','87.7K','img/reels/DbV41rCNT8Z.mp4'],['Da5ckv-tlv0','22.5K','img/reels/Da5ckv-tlv0.mp4'],['DZAoPIGNsJu','31.6K','img/reels/DZAoPIGNsJu.mp4']],
  services:[['Portrait session','1–2 h, 25+ edited photos','from ₾150'],['Events & conferences','openings, conferences, parties','from ₾400'],['Sports & action','swimming, snow, outdoor','from ₾300'],['Brand & product','for your feed, menu or site','from ₾300'],['Reel / UGC ad','shot & edited, usage rights','from ₾200'],['Viral content session','60 min, what to post next','from ₾120'],['Social media management','monthly, plan + shoot + post','from ₾900/mo']],
  creds:['Freelance photographer since 2022','Viral content consultant · Remini (Bending Spoons)','Event photography · Uni Koblenz','Sports photo lead · iswim.ge','SMM · GEODAYLIGHT, Monopolia'],
 };
@@ -205,7 +205,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* scenery */
 const sup=document.getElementById('sup');for(let d=0;d<L;d+=70){const p={x:TX[Math.round(d/TS)],y:TY[Math.round(d/TS)]};if(p.y>1090)continue;sup.appendChild(el('line',{class:'sup',x1:p.x,y1:p.y+6,x2:p.x,y2:1150}))}
 for(let i=0;i<66;i++){const g=el('g',{class:'cloud'});const x=-1400+i*330+Math.random()*120,y=80+Math.random()*420,r=30+Math.random()*30;[[0,0,r],[r*.9,8,r*.8],[-r*.9,10,r*.7],[r*.3,-r*.5,r*.7]].forEach(([dx,dy,rr])=>g.appendChild(el('circle',{cx:x+dx,cy:y+dy,r:rr})));cloudsG.appendChild(g)}
-const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',7000,170],['rose',9000,110],['pinkflower',11500,120],['cocktail',13000,110],['umbrella',17430,190],['strawberry',17660,150]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
+const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,120],['strawberry',2600,80],['basket',4400,150],['lavender',7000,170],['rose',9000,110],['pinkflower',11500,120],['cocktail',13000,110],['umbrella',16870,190],['strawberry',17100,150]].forEach(([k,x,sz])=>scen.appendChild(el('image',{href:`img/el_${k}.webp`,x:x-sz/2,y:1156-sz,width:sz,height:sz,preserveAspectRatio:'xMidYMax meet'})));
 /* billboards */
 const bbs=document.getElementById('bbs');const stops=[];
 const embLayer=document.getElementById('emb');
@@ -236,16 +236,16 @@ document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
 const flags=document.getElementById('flags');
 function sign(x,txt,y=780){const p=P(fx(x));const g=el('g',{class:'sign'});g.setAttribute('transform',`translate(${p.x} ${p.y})`);g.appendChild(el('line',{x1:0,y1:0,x2:0,y2:-150,stroke:'#1B1A22','stroke-width':5}));const W=Math.max(260,txt.length*15+40);g.appendChild(el('rect',{x:-W/2,y:-204,width:W,height:58,rx:10}));const t=el('text',{x:0,y:-165,'text-anchor':'middle','font-size':'24'});t.textContent=txt;g.appendChild(t);flags.appendChild(g)}
-sign(900,'PHOTOGRAPHY');sign(10450,'PERSONAL VLOG');sign(16030,'LINKS');sign(17530,'MARO’S HOUSE');
+sign(900,'PHOTOGRAPHY');sign(10450,'PERSONAL VLOG');sign(15470,'LINKS');sign(16970,'MARO’S HOUSE');
 const caps=[];
-const STATION3=fx(16580),STATION4=fx(18330);
+const STATION3=fx(16020),STATION4=fx(17770);
 /* Maro's house (end of the ride) */
-const HK=340/645,HX=18330-992*HK,HY=1125-1301*HK;
+const HK=340/645,HX=17770-992*HK,HY=1125-1301*HK;
 const houseImg=el('image',{href:'img/house.webp',x:HX,y:HY,width:2048*HK,height:1360*HK,style:'cursor:pointer'});houseImg.addEventListener('click',()=>openCard('call'));scen.appendChild(houseImg);
 const doorsLayer=document.getElementById('doors');
 const mkDoor=(side,x0,x1)=>{const dv=document.createElement('div');dv.className='dr '+side;dv.style.cssText=`left:${HX+x0*HK}px;top:${HY+750*HK}px;width:${(x1-x0)*HK}px;height:${552*HK}px`;dv.innerHTML=`<img src="img/door${side==='l'?'L':'R'}.webp" alt="">`;doorsLayer.appendChild(dv);return dv};
-const doorL=mkDoor('l',670,993),doorR=mkDoor('r',992,1316);const DOOR_D=fx(18330)*L;let doorState=0;
-const F1=fx(900),F2=fx(10450),F3=fx(16030),F4=fx(17530);
+const doorL=mkDoor('l',670,993),doorR=mkDoor('r',992,1316);const DOOR_D=fx(17770)*L;let doorState=0;
+const F1=fx(900),F2=fx(10450),F3=fx(15470),F4=fx(16970);
 /* link boards */
 /* official brand marks (Instagram glyph, LinkedIn, Facebook, WhatsApp, Mail) */
 const LOGO={
@@ -257,7 +257,7 @@ const LOGO={
 document.querySelector('#svg defs').insertAdjacentHTML('beforeend','<linearGradient id="iggrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FFD600"/><stop offset=".3" stop-color="#FF7A00"/><stop offset=".6" stop-color="#FF0069"/><stop offset=".85" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></linearGradient>');
 const LINKS=[['instagram','Instagram',CFG.handle,`https://instagram.com/${CFG.instagram}`],['instagram','Photography','@'+CFG.photoInstagram,`https://instagram.com/${CFG.photoInstagram}`],['linkedin','LinkedIn','experience',CFG.linkedin],['facebook','Facebook','say hi',CFG.facebook],CFG.whatsapp?['whatsapp','WhatsApp','fastest way',`https://wa.me/${CFG.whatsapp}`]:null,CFG.email?['mail','Email',CFG.email,`mailto:${CFG.email}`]:null].filter(Boolean);
 const linkStops=[];
-LINKS.forEach(([ic,lab,sub,href],i)=>{const f=fx(16230+i*330);const p=P(f);const a=el('a',{href,target:'_blank',rel:'noopener'});const g=el('g',{class:'bb lk',tabindex:'0',role:'link'});const w=230,h=176,top=p.y-190-h;
+LINKS.forEach(([ic,lab,sub,href],i)=>{const f=fx(15670+i*330);const p=P(f);const a=el('a',{href,target:'_blank',rel:'noopener'});const g=el('g',{class:'bb lk',tabindex:'0',role:'link'});const w=230,h=176,top=p.y-190-h;
  g.appendChild(el('line',{x1:p.x,y1:p.y,x2:p.x,y2:top+h,stroke:'#1B1A22','stroke-width':5}));
  g.appendChild(el('rect',{class:'lkbg',x:p.x-w/2,y:top,width:w,height:h,rx:14}));
  g.appendChild(LOGO[ic](p.x,top+56,72));const t2=el('text',{class:'lkt',x:p.x,y:top+122,'text-anchor':'middle'});t2.textContent=lab.toUpperCase();const t3=el('text',{class:'lks',x:p.x,y:top+146,'text-anchor':'middle'});t3.textContent=sub;g.append(t2,t3);
