@@ -452,7 +452,7 @@ function frame(now){requestAnimationFrame(frame);if(last===null)last=now;let dt=
  else if(inertia){cam.x-=inertia.vx*dt/cam.z;cam.y-=inertia.vy*dt/cam.z;inertia.vx*=Math.pow(.92,dt/16);inertia.vy*=Math.pow(.92,dt/16);clampCam();dirty=true;if(Math.hypot(inertia.vx,inertia.vy)<.02)inertia=null}
  else if(follow&&!dragging){const p=trackAt(car.d);const k=1-Math.pow(1-.12,dt/16.7);cam.x+=(p.x-cam.x)*k;cam.y+=(p.y-cam.y)*k;clampCam()}
  if(fw.length)fw=fw.filter(q=>{if(q.d>0){q.d-=dt;return true}q.x+=q.vx*dt/16;q.y+=q.vy*dt/16;q.vy+=.06*dt/16;q.vx*=.985;q.life-=.02*dt/16;return q.life>0});
- if(!overlayOpen()&&!document.hidden){draw(now);dirty=false}
+ if(!overlayOpen()){draw(now);dirty=false}
  if(frameCount%30===0){const t=tbilisi();const hh=Math.floor(t.h),mm=Math.floor((t.h-hh)*60);timeBtn.querySelector('span').textContent=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;timeBtn.classList.toggle('night',nightNow>.5);if(maro)document.getElementById('maroTxt').textContent='Maro · '+maro.what;chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('here',lastNear&&c.dataset.id===lastNear.id))}
  frameCount++}
 
