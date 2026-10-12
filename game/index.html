@@ -183,15 +183,15 @@ svg image{pointer-events:none}
 <div class="toast" id="toast">wheee!</div>
 <div class="gate" id="gate"></div>
 <div class="cap"><div id="cap"></div></div>
-<div class="hint" id="hint"><span style="background:var(--ink);padding:6px 12px;border-radius:6px;display:inline-block">→ RIDE · ↑ JUMP · 3 HEARTS OPEN THE GATE</span></div>
-<div class="pad"><button id="bl" aria-label="back">◀</button><button id="bj" class="jump" aria-label="jump">▲</button><button id="bf" class="flip" aria-label="flip">FLIP!</button><button id="br" aria-label="forward">▶</button></div>
+<div class="hint" id="hint"><span style="background:var(--ink);padding:6px 12px;border-radius:6px;display:inline-block">→ RIDE · FLIP! FOR ♥ · 3 HEARTS OPEN THE GATE</span></div>
+<div class="pad"><button id="bl" aria-label="back">◀</button><button id="bf" class="flip" aria-label="flip">FLIP!</button><button id="br" aria-label="forward">▶</button></div>
 
 <div class="ov on" id="intro"><div class="card intro">
  <div class="brand"><span class="led">MARIAM’S GAME</span><span class="ed">★ BIRTHDAY EDITION ★</span></div>
  <img class="carbig" alt="" src="img/car.webp" draggable="false">
  <h2>Ready for adventure?</h2>
- <p>Jump for the hearts, open the gifts, pass three gates.</p>
- <div class="howto two"><div><b>◀ ▶</b>ride · arrows or buttons</div><div><b>▲</b>jump · space or ↑</div><div><b>FLIP!</b>show off · F</div></div>
+ <p>Flip for the hearts, open the gifts, pass three gates.</p>
+ <div class="howto two"><div><b>◀ ▶</b>ride</div><div><b>FLIP!</b>catch the ♥</div></div>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -260,7 +260,7 @@ const defs=svg.querySelector('defs');defs.innerHTML+='<pattern id="chk" width="1
 /* captions shown while riding (big, on the HUD) */
 const caps=[
  [fx(-150),'<span class="k">birthday edition</span>buckle up, this ride is for you'],
- [fx(300),'<span class="k">how to play</span>jump for ♥, open the 🎁'],
+ [fx(300),'<span class="k">how to play</span>FLIP! for ♥, open the 🎁'],
  [fx(870),'<span class="k">top of the hill</span>hold on!'],
  [fx(2150,fx(2000)),'<span class="k">loop!</span>eyes open'],
  [fx(4400),'<span class="k">second climb</span>higher than before'],
@@ -359,7 +359,7 @@ function jump(){if(paused||finished)return;if(jy===0){jv=-16;squash=1;if(keys.r)
 let squash=0;let flipT=-1,fxFired=false;const FLIP_MS=1150;
 function doFlip(){if(paused||finished||flipT>=0)return;flipT=0;if(jy===0){jv=-13;if(keys.r)v=Math.max(v,7)}say(['wheee!','FLIP!','show-off ✓','10/10 landing'][Math.floor(Math.random()*4)])}
 const bf=document.getElementById('bf');bf.addEventListener('pointerdown',e=>{e.preventDefault();bf.classList.add('down');doFlip()});['pointerup','pointercancel','pointerleave'].forEach(x=>bf.addEventListener(x,()=>bf.classList.remove('down')));addEventListener('keydown',e=>{if((e.key==='f'||e.key==='F')&&!e.target.closest('input,textarea')){e.preventDefault();doFlip()}});
-addEventListener('keydown',e=>{if(e.key==='ArrowRight'){keys.r=true;e.preventDefault()}if(e.key==='ArrowLeft'){keys.l=true;e.preventDefault()}if(e.key==='ArrowUp'||e.key===' '){jump();e.preventDefault()}});
+addEventListener('keydown',e=>{if(e.key==='ArrowRight'){keys.r=true;e.preventDefault()}if(e.key==='ArrowLeft'){keys.l=true;e.preventDefault()}if(e.key==='ArrowUp'||e.key===' '){doFlip();e.preventDefault()}});
 addEventListener('keyup',e=>{if(e.key==='ArrowRight')keys.r=false;if(e.key==='ArrowLeft')keys.l=false});
 const hold=(id,k)=>{const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('down')},off=()=>{keys[k]=false;b.classList.remove('down')};
  b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,off))};
@@ -374,7 +374,7 @@ bgm.addEventListener('canplaythrough',()=>{bgmOk=true;sndBtn.hidden=false},{once
 sndBtn.addEventListener('click',()=>{if(bgm.paused){bgm.play().catch(()=>{});sndBtn.textContent='🔊'}else{bgm.pause();sndBtn.textContent='🔇'}});
 function duckBgm(to,ms){const v0=bgm.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=v0+(to-v0)*k;if(k<1)requestAnimationFrame(st)};st()}
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk){bgm.play().catch(()=>{sndBtn.textContent='🔇'})}});
-document.getElementById('bj').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
+
 addEventListener('wheel',e=>{if(!paused)v+=Math.sign(e.deltaY)*2},{passive:true});
 let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov'))return;tx0=e.touches[0].clientX},{passive:true});
 addEventListener('touchmove',e=>{if(tx0==null||paused)return;const x=e.touches[0].clientX;v+=(x-tx0)*.15;tx0=x},{passive:true});
@@ -465,11 +465,11 @@ function frame(now){
  const p=rd/L;
  /* items */
  items.forEach(it=>{const dist=Math.abs(it.dd-d);if(dist>120)return;
-  if(it.type==='heart'&&!it.got&&dist<78&&jy<-28){it.got=true;score++;scoreEl.textContent=score;needTxt();it.g.style.transition='opacity .4s';it.g.style.opacity=0;say(['wheee!','yes!','one more!','so smooth','nice jump'][score%5])}
+  if(it.type==='heart'&&!it.got&&dist<78&&jy<-28){it.got=true;score++;scoreEl.textContent=score;needTxt();it.g.style.transition='opacity .4s';it.g.style.opacity=0;say(['wheee!','yes!','one more!','so smooth','nice flip'][score%5])}
   if(it.type==='gift'&&!paused&&!it.open&&dist<40){it.open=true;it.lid.classList.add('open');say('🎁');capSay('<span class="k">keep</span>'+it.phrase,2800)}});
  if(toast.classList.contains('on')&&now-toastT>900)toast.classList.remove('on');
  if(round<3){const cd=CHECK[round]*L,st=round===0?0:CHECK[round-1]*L;const got=items.filter(x=>x.type==='heart'&&x.got&&x.dd>st&&x.dd<cd).length;const miss=NEED[round]-got;
-   const near=!paused&&miss>0&&d>cd-420&&d<cd; gateEl.classList.toggle('on',near); if(near)gateEl.firstChild.textContent=`GATE LOCKED 🔒 you need ${miss} more ♥ to open it. Ride back ◀ and jump ▲ for the hearts you missed.`;} else gateEl.classList.remove('on');
+   const near=!paused&&miss>0&&d>cd-420&&d<cd; gateEl.classList.toggle('on',near); if(near)gateEl.firstChild.textContent=`GATE LOCKED 🔒 you need ${miss} more ♥ to open it. Ride back ◀ and FLIP! for the hearts you missed.`;} else gateEl.classList.remove('on');
  /* captions */
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.005&&p<f+.075)ci=i});
  if(now<capHold){}else if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
