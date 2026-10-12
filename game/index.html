@@ -192,7 +192,7 @@ svg image{pointer-events:none}
  <h2>Ready for adventure?</h2>
  <p>Flip for the hearts, open the gifts, pass three gates.</p>
  <div class="howto two"><div><b>◀ ▶</b>ride</div><div><b>FLIP!</b>catch the ♥</div></div>
- <button class="mus on" id="mus" type="button">🎵 music: <b>ON</b></button>
+ <button class="mus on" id="mus" type="button" hidden>🎵 music: <b>ON</b></button>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -202,7 +202,7 @@ svg image{pointer-events:none}
   <div class="brand"><span class="led glow">MARIAM’S GAME</span><span class="ed">★ BIRTHDAY EDITION · COMPLETE ★</span></div>
   <h1 class="dimh">YOU MADE IT TO<br>ANOTHER DIMENSION</h1>
   <p class="dimq">May you enjoy every moment of your life!</p>
-  <video class="vid" data-src="img/reel.mp4" preload="none" playsinline controls muted loop></video>
+  <video class="vid" data-src="img/reel.mp4" preload="none" playsinline muted loop></video>
   <div class="lock dept">
    <div class="lt">OFFICIAL FUN BOOKING DEPARTMENT</div>
    <p class="lp">Open 24/7. One desk, one question, zero paperwork.</p>
@@ -315,14 +315,14 @@ function fountain(){const layer=document.createElement('div');layer.className='f
   n++},70);
  setTimeout(()=>{layer.style.transition='opacity 1s';layer.style.opacity=0;setTimeout(()=>layer.remove(),1100)},4200)}
 const CODE='THEREWEGO';
-function enterDimension(){capHold=Infinity;document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
+function enterDimension(){capHold=Infinity;if(bgmOk){bgm.volume=.55;bgm.currentTime=0;bgm.play().catch(()=>{})}document.getElementById('stage').classList.add('warp');document.querySelector('.pad').style.opacity=0;document.querySelector('.hud').style.opacity=0;capEl.classList.remove('on');
  setTimeout(()=>{const dim=document.getElementById('dim');dim.classList.add('on');starfield();const yes=document.getElementById('yesbtn'),maybe=document.getElementById('maybebtn'),dm=document.getElementById('deptmsg');let maybes=0;
    yes.addEventListener('click',()=>{dm.textContent='REQUEST APPROVED ✓ PICK A DAY. YOU’LL RECEIVE THE ROUND 2 CODE BY EMAIL.';dm.style.color='var(--led)';yes.disabled=true;maybe.hidden=true;burst(220,true);document.getElementById('calwrap').hidden=false;const sc=document.createElement('script');sc.id='caljs';sc.async=true;sc.src='https://assets.calendly.com/assets/external/widget.js';document.body.appendChild(sc);setTimeout(()=>document.getElementById('calwrap').scrollIntoView({behavior:'smooth',block:'start'}),300)},{once:true});
    maybe.addEventListener('click',()=>{maybes++;const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
     if(maybes===1){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge');vib(40)}
     else if(maybes===2){yes.classList.remove('nudge');void yes.offsetWidth;yes.classList.add('nudge','big');vib([60,40,60])}
     else{maybe.hidden=true;yes.classList.add('big');dm.innerHTML='OK, THE BUTTON IS RIGHT THERE WHENEVER. WAITING<span class="dots"><i>.</i><i>.</i><i>.</i></span>';dm.style.color='#FFD9EC';vib(30)}});
-  const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});vd.addEventListener('click',()=>{vd.muted=false;vd.play();if(bgmOk)duckBgm(.12,600)},{once:true});
+  const vd=dim.querySelector('video');vd.src=vd.dataset.src;vd.play().catch(()=>{});
   for(let i=0;i<14;i++){const im=document.createElement('img');im.className='dimobj';im.src=EL[ELK[i%ELK.length]];im.style.width=(40+Math.random()*70)+'px';im.style.left=Math.random()*95+'vw';im.style.top=Math.random()*100+'vh';im.style.animationDuration=(18+Math.random()*20)+'s';im.style.animationDelay=(-Math.random()*20)+'s';im.style.opacity=.16+Math.random()*.18;dim.appendChild(im)}
   burst(200,true)},1300)}
 function starfield(){const c=document.getElementById('stars'),g=c.getContext('2d');let w,h,st=[];function rs(){w=c.width=innerWidth*devicePixelRatio;h=c.height=innerHeight*devicePixelRatio;st=Array.from({length:220},()=>({x:Math.random()*w,y:Math.random()*h,z:.3+Math.random(),r:Math.random()*1.8+.4}))}rs();addEventListener('resize',rs);
@@ -371,11 +371,11 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBt
  await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
  goBtn.disabled=false;goBtn.innerHTML=goLabel})();
 const bgm=document.getElementById('bgm'),sndBtn=document.getElementById('snd');let bgmOk=false;bgm.volume=.55;
-bgmOk=true;sndBtn.hidden=false;bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true;musBtn.hidden=true});
+bgmOk=true;sndBtn.hidden=true;bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true;musBtn.hidden=true});
 const musBtn=document.getElementById('mus');let musWant=true;musBtn.addEventListener('click',()=>{musWant=!musWant;musBtn.classList.toggle('on',musWant);musBtn.querySelector('b').textContent=musWant?'ON':'OFF';if(musWant){bgm.play().catch(()=>{})}else bgm.pause();sndBtn.textContent=musWant?'🔊':'🔇'});
 sndBtn.addEventListener('click',()=>{if(bgm.paused){bgm.play().catch(()=>{});sndBtn.textContent='🔊'}else{bgm.pause();sndBtn.textContent='🔇'}});
 function duckBgm(to,ms){const v0=bgm.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=v0+(to-v0)*k;if(k<1)requestAnimationFrame(st)};st()}
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk&&musWant){bgm.play().then(()=>{sndBtn.textContent='🔊'}).catch(()=>{sndBtn.textContent='🔇'})}else sndBtn.textContent='🔇'});
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk){bgm.muted=true;bgm.play().then(()=>{bgm.pause();bgm.currentTime=0;bgm.muted=false}).catch(()=>{bgm.muted=false})}});
 
 addEventListener('wheel',e=>{if(!paused)v+=Math.sign(e.deltaY)*2},{passive:true});
 let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov'))return;tx0=e.touches[0].clientX},{passive:true});
