@@ -16,7 +16,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 #bg .hall.m{transform:scaleX(-1)}
 #bg .hall::before,#bg .hall::after{content:"";position:absolute;left:0;right:0;height:1400px}
 #bg .hall::before{bottom:100%;background:var(--ceil,#eef0f2)}#bg .hall::after{top:100%;background:var(--floor,#c9ccd0)}
-#bg .hall.h1{--ceil:#f2f3f5;--floor:#cfd2d6}#bg .hall.h2{--ceil:#f2f3f5;--floor:#cfd2d6}#bg .hall.h3{--ceil:#4399e7;--floor:#49531c}
+#bg .hall.h1{--ceil:#a44a25;--floor:#a54921}#bg .hall.h2{--ceil:#f2f3f5;--floor:#cfd2d6}#bg .hall.h3{--ceil:#4399e7;--floor:#49531c}
 #bg .fade{height:4600px!important;top:-1580px!important}
 #bg .hall.h2{background-color:#1f2126}#bg .hall.h3{background-color:#6aa0d0}
 #bg .fade{position:absolute;top:0;height:1800px;width:260px;background:linear-gradient(90deg,var(--a),var(--b))}
@@ -75,7 +75,7 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .bb .lkt{font-family:var(--disp);font-weight:800;font-size:22px;fill:var(--ink)}
 .bb .lks{font-family:var(--disp);font-size:15px;fill:#5b5a63}
 .bb rect.fr{fill:#fff;stroke:var(--ink);stroke-width:4}
-.mf{fill:#f1eee8;stroke:#cfc9bd;stroke-width:3}.mf2{fill:none;stroke:#dcd7cc;stroke-width:2}.mat{fill:#fbfaf7}.bb .sh{fill:rgba(0,0,0,.18)}
+.mf{fill:#f7ecdd;stroke:#d9b99c;stroke-width:3}.mf2{fill:none;stroke:#e8d3bd;stroke-width:2}.mat{fill:#fdf8f1}.bb .sh{fill:rgba(60,20,0,.22)}
 .bb rect.ph{fill:url(#film)}
 .bb text{font-family:var(--disp);font-weight:800;fill:var(--ink);letter-spacing:-.01em}
 .bb .tap{font-size:13px;fill:var(--mag);font-weight:500}
@@ -289,8 +289,8 @@ const HK=340/645,HX=29200-992*HK,HY=P(fx(29200)).y+5-1301*HK;
 /* museum halls as a parallax background */
 const bgL=document.getElementById('bg');const HALL_W=4600,HALL_TOP=-752;
 /* tiles: [image, x, mirrored] ; gallery -1800..10000, media 10000..17280 (big screen under LINKS), cabinet 17280.. */
-const TILES=[['hills',12160,0,0,-300],['hills',16761,1,0,-300],['hills',21300,0,0,-300],['hills',25900,1,0,-300],['hills',30500,0,0,-300],['gal',-2200,1],['gal',2400,0],['gal',7000,1],['studio',16260,0],['studio2',20800,0,1400]];
-TILES.forEach(([k,x,m,w,t])=>{const d=document.createElement('div');if(w)d.style.width=w+'px';d.className='hall '+({gal:'h1',studio:'h2',studio2:'h2',hills:'h3'}[k])+(m?' m':'');d.style.left=x+'px';d.style.top=(t==null?HALL_TOP:t)+'px';d.style.backgroundImage=`url(img/${k}.jpg)`;bgL.appendChild(d)});
+const TILES=[['hills',12160,0,0,-300],['hills',16761,1,0,-300],['hills',21300,0,0,-300],['hills',25900,1,0,-300],['hills',30500,0,0,-300],['med',-2200,1],['med',2400,0],['med',7000,1],['studio',16260,0],['studio2',20800,0,1400]];
+TILES.forEach(([k,x,m,w,t])=>{const d=document.createElement('div');if(w)d.style.width=w+'px';d.className='hall '+({med:'h1',studio:'h2',studio2:'h2',hills:'h3'}[k])+(m?' m':'');d.style.left=x+'px';d.style.top=(t==null?HALL_TOP:t)+'px';d.style.backgroundImage=`url(img/${k}.jpg)`;bgL.appendChild(d)});
 /* entrance doors at the start of each room */
 /* building walls with vintage wooden doors: [x, room card title, subtitle, kind] */
 const WALLS=[{x:11800,t:'The hills',sub:'real hills between the buildings',k:'out'},{x:15900,t:'Personal vlog',sub:'the studio',k:'in'},{x:21900,t:'The hills',sub:'channels & Maro’s house',k:'out'}];
