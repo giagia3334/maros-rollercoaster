@@ -208,6 +208,7 @@ svg image{pointer-events:none}
    <p class="dimq small">Don’t call it a date, call it fun.</p>
    <p class="lp" style="color:#fff;font-size:17px">Fulfill the curiosity?</p>
    <div class="deptrow"><button class="btn neon" id="yesbtn" type="button">YES</button><button class="btn ghost" id="maybebtn" type="button">MAYBE</button></div>
+   <p class="lp" style="opacity:.85;margin-top:10px;font-size:14px">Press YES and pick a day. The moment you pick one, you get the code that opens Round 2.</p>
    <div class="lmsg" id="deptmsg"></div>
   <div class="calwrap" id="calwrap" hidden><div class="calendly-inline-widget" data-url="https://calendly.com/gia-ananidze/meeting?hide_gdpr_banner=1&background_color=100f24&text_color=edeaff&primary_color=e6306e" style="min-width:280px;width:100%;height:660px"></div></div>
   </div>
@@ -468,7 +469,7 @@ function frame(now){
   if(it.type==='gift'&&!paused&&!it.open&&dist<40){it.open=true;it.lid.classList.add('open');say('🎁');capSay('<span class="k">keep</span>'+it.phrase,2800)}});
  if(toast.classList.contains('on')&&now-toastT>900)toast.classList.remove('on');
  if(round<3){const cd=CHECK[round]*L,st=round===0?0:CHECK[round-1]*L;const got=items.filter(x=>x.type==='heart'&&x.got&&x.dd>st&&x.dd<cd).length;const miss=NEED[round]-got;
-   const near=!paused&&miss>0&&d>cd-420&&d<cd; gateEl.classList.toggle('on',near); if(near)gateEl.firstChild.textContent=`Gate locked 🔒 catch ${miss} more ♥ (go back ← and jump)`;} else gateEl.classList.remove('on');
+   const near=!paused&&miss>0&&d>cd-420&&d<cd; gateEl.classList.toggle('on',near); if(near)gateEl.firstChild.textContent=`GATE LOCKED 🔒 you need ${miss} more ♥ to open it. Ride back ◀ and jump ▲ for the hearts you missed.`;} else gateEl.classList.remove('on');
  /* captions */
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.005&&p<f+.075)ci=i});
  if(now<capHold){}else if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
