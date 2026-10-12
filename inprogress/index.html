@@ -71,7 +71,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .dpair>div{position:absolute;top:0;height:100%;width:50%;background-size:100% 100%;transition:transform 1.4s cubic-bezier(.3,.7,.2,1)}
 .dpair .dl{left:0;transform-origin:0 50%;background-image:url(img/door2L.webp)}.dpair .dr2{right:0;transform-origin:100% 50%;background-image:url(img/door2R.webp)}
 .dpair.open .dl{transform:rotateY(-70deg)}.dpair.open .dr2{transform:rotateY(70deg)}
-#bloom{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:0;background:radial-gradient(80% 70% at 60% 55%,rgba(255,248,225,.95),rgba(255,236,190,.6) 55%,rgba(255,230,180,0));transition:opacity .9s}
+#bloom{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:0;background:linear-gradient(180deg,#8fbfee 0%,#bfdcf6 45%,#cfe3d0 70%,#8db864 100%);transition:opacity .9s}
 #bloom.on{opacity:1;transition:opacity .12s}
 .dusk{position:absolute;top:-2600px;height:5600px;pointer-events:none;background:linear-gradient(180deg,rgba(26,18,64,.62),rgba(60,30,90,.42) 52%,rgba(40,20,40,.28));-webkit-mask-image:linear-gradient(90deg,transparent,#000 1100px,#000 calc(100% - 1100px),transparent);mask-image:linear-gradient(90deg,transparent,#000 1100px,#000 calc(100% - 1100px),transparent)}
 .dusk::after{content:"";position:absolute;left:0;right:0;top:0;height:2700px;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 60% 18%,#fff,transparent),radial-gradient(2px 2px at 82% 40%,#fff,transparent),radial-gradient(1.5px 1.5px at 40% 52%,#fff,transparent),radial-gradient(1.5px 1.5px at 72% 64%,#fff,transparent);background-size:900px 700px;opacity:.7}
@@ -217,7 +217,7 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 .howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
 .howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
 .howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
-.cull{display:none!important}</style></head><body>
+.cull{visibility:hidden!important}.eb .cs{display:flex;height:100%;transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform}.eb .cs img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}.eb .ca{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:96px;height:96px;border-radius:50%;border:0;background:rgba(27,26,34,.55);color:#fff;font:800 70px/1 var(--disp);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 4px}.eb .ca.l{left:14px}.eb .ca.r{right:14px}.eb .cd{position:absolute;left:0;right:0;bottom:20px;display:flex;justify-content:center;gap:14px;z-index:3;pointer-events:none}.eb .cd i{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.55)}.eb .cd i.on{background:#fff}</style></head><body>
 <div class="stage" id="stage">
 <div id="bg" aria-hidden="true"></div><svg class="world" id="cloudsvg" aria-hidden="true"><g id="clouds"></g></svg>
 <svg class="world" id="svg">
@@ -330,19 +330,26 @@ const HDR=54,FOOT=232,IN_W=540; // instagram embed: header, footer (likes/commen
 function fitEmbed(s){const ifr=s.eb.querySelector('iframe');if(!ifr)return false;const th=parseFloat(ifr.style.height)||ifr.offsetHeight;if(!th||th<HDR+FOOT+40)return false;
  const imgH=Math.max(283,Math.min(675,th-HDR-FOOT));const sc=Math.max(s.w/IN_W,s.h/imgH);const inr=s.eb.querySelector('.in');
  const tx=(s.w/sc-IN_W)/2,ty=s.h/(2*sc)-(HDR+imgH/2);inr.style.transform=`scale(${sc}) translate(${tx}px,${ty}px)`;inr.style.height=Math.ceil(th)+'px';s.eb.querySelector('.wait')?.remove();s.fitted=true;return true}
+const CN={'DFXz47cMsMc':3,'DFX4j-JMmRB':2,'CvAQuUhMc0O':7,'CxxtUiwMWbf':2,'C-nG-pNMvZl':5,'C_F-f1UsQ96':3};
+function carousel(s,id,n){const eb=s.eb;let i=0;eb.innerHTML=`<div class="cs">${[...Array(n)].map((_,k)=>`<img src="img/posts/car/${id}_${k}.webp" alt="" decoding="async" ${k?'loading="lazy"':''}>`).join('')}</div><button class="ca l" aria-label="previous">‹</button><button class="ca r" aria-label="next">›</button><div class="cd">${[...Array(n)].map((_,k)=>`<i${k?'':' class="on"'}></i>`).join('')}</div>`;
+ const cs=eb.querySelector('.cs'),dots=[...eb.querySelectorAll('.cd i')];const go=k=>{i=(k+n)%n;cs.style.transform=`translateX(${-i*100}%)`;dots.forEach((d,j)=>d.classList.toggle('on',j===i))};
+ eb.querySelector('.ca.l').addEventListener('click',e=>{e.stopPropagation();go(i-1)});eb.querySelector('.ca.r').addEventListener('click',e=>{e.stopPropagation();go(i+1)});
+ let sx=null,sy=0,moved=false;eb.addEventListener('pointerdown',e=>{if(e.target.closest('.ca'))return;sx=e.clientX;sy=e.clientY;moved=false;e.stopPropagation()});
+ eb.addEventListener('pointerup',e=>{if(sx==null)return;const dx=e.clientX-sx;if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(e.clientY-sy)){go(i+(dx<0?1:-1));moved=true}sx=null});
+ eb.addEventListener('click',e=>{if(e.target.closest('.ca'))return;if(moved){moved=false;return}openPost(s.href,'',false,null)});eb.style.touchAction='pan-y'}
 const CAROUSEL=new Set(['DFXz47cMsMc','DFX4j-JMmRB','CvAQuUhMc0O','CxxtUiwMWbf','C-nG-pNMvZl','C_F-f1UsQ96']);
 /* photos hang only on plain wall: big where the wall is tall and free, small under the windows */
-const SPOTS=[[-2300,'S'],[-1680,'B'],[-1080,'B'],[-480,'B'],[110,'S'],[2560,'S'],[3150,'B'],[3750,'B'],[4350,'B'],[4880,'S'],[7150,'S'],[7750,'B'],[8350,'B'],[8930,'S'],[11250,'S']];
+const SPOTS=[[-2300,'S'],[-1700,'B'],[-1110,'B'],[-520,'B'],[110,'S'],[2560,'S'],[3150,'B'],[3750,'B'],[4350,'B'],[4880,'S'],[7150,'S'],[7750,'B'],[8350,'B'],[8930,'S'],[11300,'S','XL']];
 const LAND=new Set(['CxxtgA-sXyp','C_GAOozMH5E','CxxtUiwMWbf','C7mIxUMMcJk']);
-const SZ={BP:[440,550,-20],BL:[440,293,60],SP:[290,362,60],SL:[420,280,80]};
+const SZ={XL:[520,650,-90],BP:[420,525,-10],BL:[440,293,60],SP:[290,362,60],SL:[420,280,80]};
 const pS=CFG.posts.filter(p=>LAND.has(p[0])),pB=CFG.posts.filter(p=>!LAND.has(p[0]));let nS=SPOTS.filter(t=>t[1]==='S').length;while(pS.length<nS)pS.push(pB.pop());const ORDER=SPOTS.map(t=>t[1]==='S'?pS.shift():pB.shift());
-ORDER.forEach(([id,lab],i)=>{const k=SPOTS[i][1]+(LAND.has(id)?'L':'P'),[w,h,t]=SZ[k];board(SPOTS[i][0],w,h,lab,'',`https://www.instagram.com/p/${id}/`,false,null,t);if(CAROUSEL.has(id)){const s=stops[stops.length-1];const sw=document.createElement('div');sw.className='swipe';sw.innerHTML='<span>‹</span><span>›</span>';s.eb.appendChild(sw);s.swipe=sw}});
+ORDER.forEach(([id,lab],i)=>{const k=SPOTS[i][2]||(SPOTS[i][1]+(LAND.has(id)?'L':'P')),[w,h,t]=SZ[k];board(SPOTS[i][0],w,h,lab,'',`https://www.instagram.com/p/${id}/`,false,null,t);{const s=stops[stops.length-1];if(CN[id])carousel(s,id,CN[id]);else s.eb.addEventListener('click',()=>openPost(s.href,lab,false,null))}});
 scen.appendChild(towers);
 /* Maro's hill: the end of the ride climbs onto a grassy hilltop and the house sits on its flat top */
 {let pts=[];for(let i=0;i<=TN;i++){const x=TX[i];if(x<28250)continue;pts.push(`${x.toFixed(0)} ${(TY[i]+16).toFixed(0)}`)}const last=TX[TN],ly=TY[TN]+16;
  const dd=`M28000 1400 L28250 ${(PT(fx(28250)*L).y+16).toFixed(0)} L${pts.join(' L')} L${last+500} ${ly} C ${last+900} ${ly} ${last+1100} 1250 ${last+1500} 1400 Z`;
  scen.appendChild(el('path',{d:dd,fill:'url(#grassp)'}));scen.appendChild(el('path',{d:dd,fill:'url(#lawn)',opacity:.28}));scen.appendChild(el('path',{d:'M'+pts.join(' L')+` L${last+500} ${ly}`,fill:'none',stroke:'#c6df63','stroke-width':10,'stroke-linecap':'round'}));
-}if(SCR==='b')gantry(16500,22100);
+}if(SCR==='b')gantry(16500,22620);
 CFG.reels.forEach(([id,v,mp4],i)=>board(16800+i*680,400,711,'',v,`https://www.instagram.com/reel/${id}/`,true,mp4));
 document.getElementById('st').textContent=`stop 0/${stops.length}`;
 /* station signs */
@@ -375,8 +382,8 @@ const DOORX=13443,OUTX=15300,BACKX=15150,WALL_END=14360;
 {const dt=document.createElement('div');dt.className='hall h1';dt.style.cssText='z-index:2;left:11601px;top:-752px;width:2759px;background-image:url(img/doorwall.webp)';bgL.appendChild(dt);}
 const dpair=document.createElement('div');dpair.className='dpair';dpair.style.cssText='left:12977px;top:-462px;width:931px;height:1632px';dpair.innerHTML='<div class="dl"></div><div class="dr2"></div>';bgL.appendChild(dpair);
 let doorBusy=false;const stageEl=document.getElementById('stage');
-function goThrough(fwd){if(doorBusy)return;doorBusy=true;paused=true;v=0;keys.l=keys.r=false;const s=curS;const sx=camX+DOORX*s,sy=camY+760*s;
- stageEl.style.transformOrigin=`${sx}px ${sy}px`;stageEl.style.transition='transform 1s cubic-bezier(.55,0,.85,.35)';stageEl.style.transform='scale(6)';
+function goThrough(fwd){if(doorBusy)return;doorBusy=true;paused=true;v=0;keys.l=keys.r=false;const s=curS;const sx=camX+DOORX*s,sy=camY+420*s;
+ stageEl.style.transformOrigin=`${sx}px ${sy}px`;stageEl.style.transition='transform 1s cubic-bezier(.55,0,.85,.35)';stageEl.style.transform='scale(3.2)';
  bloomEl.style.transition='opacity .9s ease-in';bloomEl.classList.add('on');
  setTimeout(()=>{d=prevD=fx(fwd?OUTX:DOORX-260)*L;camInit=false;angInit=false;stageEl.style.transition='none';stageEl.style.transform='none';if(!fwd)dpair.classList.add('open');
   setTimeout(()=>{bloomEl.style.transition='opacity .9s ease-out';bloomEl.classList.remove('on');paused=false;last=null;setTimeout(()=>{doorBusy=false;bloomEl.style.transition=''},700)},120)},1000)}
@@ -434,7 +441,7 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.inn
 (async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp','img/doorL.webp','img/doorR.webp']);const total=urls.length+1;let done=0;const bar=document.querySelector('.loadbar i'),ltx=document.querySelector('.loadtxt'),icar=document.querySelector('.intro-car');icar.classList.add('loading');
  const tick=()=>{const pc=Math.round(done/total*100);bar.style.width=pc+'%';ltx.textContent=`MARO’S ROLLERCOASTER IS LOADING… ${pc}%`;goBtn.innerHTML=`LOADING ${pc}%`};tick();
  await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>{done++;tick();r()})};im.onerror=()=>{done++;tick();r()};im.src=u})));
- await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();
+ const pre=['img/gal_arch1.jpg','img/gal_arch2.jpg','img/doorwall.webp','img/hillsx.jpg',...[...document.querySelectorAll('.eb img')].slice(0,8).map(i=>i.src)].map(u=>{const im=new Image();im.src=u;return im.decode?im.decode().catch(()=>{}):0});await Promise.race([Promise.all(pre),new Promise(r=>setTimeout(r,4000))]);await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();
  const ph=stops.filter(s=>!s.mp4).slice(0,4);ph.forEach(mountEmbed);const t0=performance.now();while(performance.now()-t0<12000){const n=ph.filter(s=>s.fitted).length;ltx.textContent=`PREPARING PHOTOS ${n}/${ph.length}`;goBtn.innerHTML=`PHOTOS ${n}/${ph.length}`;bar.style.width=(70+30*n/ph.length)+'%';if(n>=ph.length)break;await new Promise(r=>setTimeout(r,250))}
  icar.classList.remove('loading');ltx.textContent='READY';bar.style.width='100%';goBtn.disabled=false;goBtn.innerHTML=gl})();
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
@@ -473,13 +480,13 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
  let s=Math.max(.3,Math.min(.9,innerWidth/640,innerHeight/1150,innerWidth*.96/(2048*HK)));if(SCR==='b'&&pt.x>16200&&pt.x<22400)tgtZ=Math.min(1,(innerHeight*.82-24)/((pt.y-(GT-70))*s));else tgtZ=1;zS+=(tgtZ-zS)*.06;s*=zS;curS=s;const hb=Math.max(0,Math.min(1,(d-(DOOR_D-2000))/1300));
  const ax=.2+.2*Math.min(1,Math.max(0,d-600)/(L*.05));const tgx=innerWidth*(ax*(1-hb)+.5*hb)-pt.x*s,tgy=(innerHeight*.82-pt.y*s)*(1-hb)+(innerHeight*.5-(HY+680*HK)*s)*hb;
- if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
+ if(!camInit){camX=tgx;camY=tgy;camInit=true;cullTick=-1}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
  svg.style.transform=embLayer.style.transform=doorsLayer.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;bgL.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;
  if(!doorBusy){const inside=pt.x<WALL_END;if(inside){const near=pt.x>DOORX-700;if(near!==dpair.classList.contains('open'))dpair.classList.toggle('open',near);if(pt.x>=DOORX-4&&v>=0)goThrough(true)}else if(pt.x<BACKX&&v<0)goThrough(false)}
  const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';carR.style.width=cw+'px';carR.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s+8*s}px,0) rotate(${-smAng}deg) scale(1,-1) translate(${-cw/2}px,${-ch}px)`;let fl='';
  if(flipT>=0){flipT+=dt;const FM=flip2?FLIP_MS*1.7:FLIP_MS;const t=Math.min(1,flipT/FM);const jump=Math.sin(t*Math.PI)*(flip2?720:330)*s;const ea=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const ang=-(flip2?720:360)*ea;const sq=t>.9?1+(t-.9)*1.2:1;fl=`translate(0px,${-jump}px) translate(0px,${-ch/2}px) rotate(${ang}deg) scale(${1/sq},${sq}) translate(0px,${ch/2}px)`;if(!fxFired&&t>.4){fxFired=true;fireworks(camX+pt.x*s,camY+pt.y*s-jump-ch/2);if(flip2){fireworks(camX+pt.x*s-220,camY+pt.y*s-jump-ch/2-120);setTimeout(()=>fireworks(camX+pt.x*s+200,camY+pt.y*s-jump-ch/2-60),260)}}if(t>=1){flipT=-1;fxFired=false;flip2=false}}
  carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) ${fl} translate(${-cw/2}px,${-ch}px)`;
- if((cullTick=(cullTick+1)%10)===0)cull();screenTick(d);linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
+ if((cullTick=(cullTick+1)%3)===0)cull();screenTick(d);linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
  if(doorState===0&&d>DOOR_D-520){doorState=1;doorL.classList.add('open');doorR.classList.add('open')}
  else if(doorState===1&&d>=DOOR_D-14){doorState=2;v=0;paused=true;keys.l=keys.r=false;doorL.classList.remove('open');doorR.classList.remove('open');setTimeout(()=>{carEl.style.opacity=0},250);setTimeout(()=>openCard('call'),900)}
  requestAnimationFrame(frame)}
