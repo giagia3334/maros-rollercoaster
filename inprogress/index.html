@@ -445,7 +445,7 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.inn
  const pre=['img/gal_arch1.jpg','img/gal_arch2.jpg','img/doorwall.webp','img/hillsx.jpg',...[...document.querySelectorAll('.eb img')].slice(0,8).map(i=>i.src)].map(u=>{const im=new Image();im.src=u;return im.decode?im.decode().catch(()=>{}):0});await Promise.race([Promise.all(pre),new Promise(r=>setTimeout(r,4000))]);await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();
  const ph=stops.filter(s=>!s.mp4).slice(0,4);ph.forEach(mountEmbed);const t0=performance.now();while(performance.now()-t0<12000){const n=ph.filter(s=>s.fitted).length;ltx.textContent=`PREPARING PHOTOS ${n}/${ph.length}`;goBtn.innerHTML=`PHOTOS ${n}/${ph.length}`;bar.style.width=(70+30*n/ph.length)+'%';if(n>=ph.length)break;await new Promise(r=>setTimeout(r,250))}
  icar.classList.remove('loading');ltx.textContent='READY';bar.style.width='100%';goBtn.disabled=false;goBtn.innerHTML=gl})();
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;ping('Round 2: started the ride','checkered_flag');document.getElementById('intro').classList.remove('on');paused=false;last=null});
 let flip2=false;let dwell=0,nearIdx=-1,shown3=false,shown4=false,embTick=0,flipT=-1,fxFired=false;const FLIP_MS=1150;
 /* fireworks */
 const fxc=document.getElementById('fx'),fxx=fxc.getContext('2d');let parts=[],fxOn=false;
@@ -504,7 +504,7 @@ document.getElementById('px').addEventListener('click',()=>{pov.classList.remove
 /* station cards */
 const ov=document.getElementById('ov'),card=document.getElementById('card');
 function closeCard(){ov.classList.remove('on');if(doorState===2){doorState=0;d=DOOR_D-760;prevD=d;v=0;paused=false;carEl.style.opacity=1;setAuto(false)}}
-function openCard(kind){setAuto(false);card.innerHTML='';const x=document.createElement('button');x.className='x';x.textContent='✕';x.addEventListener('click',closeCard);
+function openCard(kind){setAuto(false);ping('Round 2: reached Maro’s house ('+kind+')','house');card.innerHTML='';const x=document.createElement('button');x.className='x';x.textContent='✕';x.addEventListener('click',closeCard);
  card.innerHTML=`<div class="brand"><span class="led">MARO’S HOUSE</span></div>
  <h2>Have an idea you want to <em>talk about?</em></h2>
  <form id="callf" name="call-request" method="POST" class="row">
@@ -522,5 +522,7 @@ function openCard(kind){setAuto(false);card.innerHTML='';const x=document.create
   try{if(!CFG.formEndpoint)throw 0;const r=await fetch(CFG.formEndpoint,{method:'POST',headers:{'Accept':'application/json'},body:fd});if(!r.ok)throw 0;done(true)}
   catch(err){try{await navigator.clipboard.writeText(msg)}catch{}done(false)}})}
 document.getElementById('flags').addEventListener('click',e=>{const t=e.target.closest('.sign');if(!t)return;const txt=t.textContent;if(/HOUSE/.test(txt))openCard('call')});
+const NTFY='https://ntfy.sh/maro-coaster-g7x2k9';function ping(msg,tags){try{const ua=/iPhone/.test(navigator.userAgent)?'iPhone':/Android/.test(navigator.userAgent)?'Android':/Mac/.test(navigator.userAgent)?'Mac':'other';const t=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Tbilisi',hour:'2-digit',minute:'2-digit'});fetch(NTFY,{method:'POST',body:msg+' · '+ua+' · '+t,headers:{'Title':'Round 2','Tags':tags||'roller_coaster','Priority':'default'}}).catch(()=>{})}catch(e){}}
+ping('Round 2 opened','eyes');
 </script>
 </body></html>
