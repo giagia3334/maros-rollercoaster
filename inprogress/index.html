@@ -290,7 +290,7 @@ const scen=document.getElementById('scen');[['icecream',-300,110],['daisy',600,1
 /* billboards */
 const bbs=document.getElementById('bbs');const stops=[];
 const embLayer=document.getElementById('emb');
-const SCR=((new URLSearchParams(location.search)).get('screens')||'a').toLowerCase()==='b'?'b':'a';
+const SCR=((new URLSearchParams(location.search)).get('screens')||'b').toLowerCase()==='b'?'b':'a';
 /* steel lattice pieces, same language as a real coaster structure */
 function lat(g,x1,y1,x2,y2,wd,step){/* lattice column (vertical) or beam (horizontal) between two chords */
  const vert=Math.abs(x2-x1)<Math.abs(y2-y1);let d='';
@@ -304,14 +304,14 @@ function screenBox(g,x,w,top,h){/* the screen is built into a steel frame with a
  [[x-w/2-18,top-18],[x+w/2+18,top-18],[x-w/2-18,top+h+18],[x+w/2+18,top+h+18]].forEach(([cx,cy])=>g.appendChild(el('circle',{class:'bolt',cx,cy,r:6})))}
 const towers=document.createElementNS(NS,'g');towers.setAttribute('class','steel');
 function tower(x,y){lat(towers,x,y,x,1320,110,120);lat(towers,x-150,y+20,x+150,y+20,46,60)}
-function gantry(x1,x2){const g=towers;/* version B: one long coaster-steel bridge carrying all the screens */
- const yt=880,yb=1000;lat(g,x1,yt,x2,yt,70,70);
+const RB=260,GT=92-RB;function gantry(x1,x2){const g=towers;/* version B: one long coaster-steel bridge carrying all the screens */
+ const yt=880-RB,yb=1000-RB;lat(g,x1,yt,x2,yt,70,70);
  for(let x=x1;x<=x2+1;x+=340){lat(g,x,yt+35,x,1330,90,110)}
  for(let x=x1;x<x2;x+=340){g.appendChild(el('path',{class:'stl0',d:`M${x} ${yb+140}H${x+340}M${x} ${yb+290}H${x+340}`}));g.appendChild(el('path',{class:'stl',d:`M${x} ${yb+140}H${x+340}M${x} ${yb+290}H${x+340}`}))}
  g.appendChild(el('rect',{class:'scap0',x:x1-30,y:yt-52,width:x2-x1+60,height:22,rx:11}));g.appendChild(el('rect',{class:'scap',x:x1-26,y:yt-48,width:x2-x1+52,height:14,rx:7}));
- for(let k=0;k<9;k++){const sx=16800+k*680;g.appendChild(el('path',{class:'stl0',d:`M${sx-120} ${yt-52}L${sx-160} ${92+711+30}M${sx+120} ${yt-52}L${sx+160} ${92+711+30}`}));g.appendChild(el('path',{class:'stl',d:`M${sx-120} ${yt-52}L${sx-160} ${92+711+30}M${sx+120} ${yt-52}L${sx+160} ${92+711+30}`}))}}
+ for(let k=0;k<9;k++){const sx=16800+k*680;g.appendChild(el('path',{class:'stl0',d:`M${sx-120} ${yt-52}L${sx-160} ${GT+711+30}M${sx+120} ${yt-52}L${sx+160} ${GT+711+30}`}));g.appendChild(el('path',{class:'stl',d:`M${sx-120} ${yt-52}L${sx-160} ${GT+711+30}M${sx+120} ${yt-52}L${sx+160} ${GT+711+30}`}))}}
 function board(x,w,h,label,sub,href,isReel,mp4,ptop){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
- const top=isReel?(SCR==='b'?92:p.y-170-h):ptop;
+ const top=isReel?(SCR==='b'?GT:p.y-170-h):ptop;
  if(isReel){screenBox(g,p.x,w,top,h);if(SCR==='a')tower(p.x,top+h+34)}else{g.appendChild(el('rect',{class:'sh',x:p.x-w/2-40,y:top-30,width:w+92,height:h+92,rx:4}));g.appendChild(el('rect',{class:'mf',x:p.x-w/2-46,y:top-46,width:w+92,height:h+92,rx:4}));g.appendChild(el('rect',{class:'mf2',x:p.x-w/2-34,y:top-34,width:w+68,height:h+68,rx:2}));g.appendChild(el('rect',{class:'mat',x:p.x-w/2-22,y:top-22,width:w+44,height:h+44}))}
  g.appendChild(el('rect',{class:'ph',x:p.x-w/2,y:top,width:w,height:h,rx:4}));
  const open=()=>openPost(href,label,isReel,st.mp4);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
@@ -332,9 +332,9 @@ function fitEmbed(s){const ifr=s.eb.querySelector('iframe');if(!ifr)return false
  const tx=(s.w/sc-IN_W)/2,ty=s.h/(2*sc)-(HDR+imgH/2);inr.style.transform=`scale(${sc}) translate(${tx}px,${ty}px)`;inr.style.height=Math.ceil(th)+'px';s.eb.querySelector('.wait')?.remove();s.fitted=true;return true}
 const CAROUSEL=new Set(['DFXz47cMsMc','DFX4j-JMmRB','CvAQuUhMc0O','CxxtUiwMWbf','C-nG-pNMvZl','C_F-f1UsQ96']);
 /* photos hang only on plain wall: big where the wall is tall and free, small under the windows */
-const SPOTS=[[-1722,'S'],[-1046,'B'],[-328,'B'],[348,'S'],[1167,'B'],[3662,'B'],[4366,'S'],[5042,'B'],[5760,'B'],[6436,'S'],[7162,'B'],[9659,'B'],[10454,'S'],[11142,'B'],[11880,'B']];
+const SPOTS=[[-2300,'S'],[-1680,'B'],[-1080,'B'],[-480,'B'],[110,'S'],[2560,'S'],[3150,'B'],[3750,'B'],[4350,'B'],[4880,'S'],[7150,'S'],[7750,'B'],[8350,'B'],[8930,'S'],[11250,'S']];
 const LAND=new Set(['CxxtgA-sXyp','C_GAOozMH5E','CxxtUiwMWbf','C7mIxUMMcJk']);
-const SZ={BP:[480,600,-40],BL:[620,413,40],SP:[300,375,40],SL:[480,320,60]};
+const SZ={BP:[440,550,-20],BL:[440,293,60],SP:[290,362,60],SL:[420,280,80]};
 const pS=CFG.posts.filter(p=>LAND.has(p[0])),pB=CFG.posts.filter(p=>!LAND.has(p[0]));let nS=SPOTS.filter(t=>t[1]==='S').length;while(pS.length<nS)pS.push(pB.pop());const ORDER=SPOTS.map(t=>t[1]==='S'?pS.shift():pB.shift());
 ORDER.forEach(([id,lab],i)=>{const k=SPOTS[i][1]+(LAND.has(id)?'L':'P'),[w,h,t]=SZ[k];board(SPOTS[i][0],w,h,lab,'',`https://www.instagram.com/p/${id}/`,false,null,t);if(CAROUSEL.has(id)){const s=stops[stops.length-1];const sw=document.createElement('div');sw.className='swipe';sw.innerHTML='<span>‹</span><span>›</span>';s.eb.appendChild(sw);s.swipe=sw}});
 scen.appendChild(towers);
@@ -364,9 +364,9 @@ const bgL=document.getElementById('bg');const HALL_W=4600,HALL_TOP=-752;
 /* tiles: [image, x, mirrored] ; gallery -1800..10000, media 10000..17280 (big screen under LINKS), cabinet 17280.. */
 const TILES=[['hillsx',11600,0,0,-300-1786],['hillsx',16200,1,0,-300-1786],['hillsx',20800,0,0,-300-1786],['hillsx',25400,1,0,-300-1786],['hillsx',30000,0,0,-300-1786]];
 /* gallery wall panels, left to right: [image, x, width, crop offset px (world), image width, mirror] */
-const GAL=[['gal_arch1',-3640,1480,0,4601,0],['med',-2200,3256,743,4601,0],['gal_arch1',856,3232,685,4601,0],['med',3888,3256,743,4601,0],['gal_arch2',6944,3218,753,4601,1],['med',9976,2150,743,4601,0]];
+const GAL=[['gal_arch1',-3640,1250,0,4601,0],['gal_arch2',-2650,1401,3200,4601,0],['gal_arch2',-1850,1401,3200,4601,0],['gal_arch1',-800,4601,0,4601,0],['gal_arch2',3550,1401,3200,4601,0],['gal_arch2',3800,4601,0,4601,0],['gal_arch1',7850,4601,0,4601,0]];
 {const c=document.createElement('div');c.style.cssText='position:absolute;left:-3640px;width:18000px;top:-2152px;height:1404px;background:#a44a25';bgL.appendChild(c);const f=document.createElement('div');f.style.cssText='position:absolute;left:-3640px;width:18000px;top:1844px;height:1400px;background:#a54921';bgL.appendChild(f)}
-GAL.forEach(([k,x,w,off,iw,m],i)=>{if(i<GAL.length-1){w+=260;if(m)off-=260}const d=document.createElement('div');d.className='hall h1 gp';d.style.cssText=`z-index:1;left:${x}px;top:-752px;width:${w}px;background-image:url(img/${k}.${k==='med'?'jpg':'jpg'});background-size:${iw}px 2600px;background-position:${-off}px 0;${m?'transform:scaleX(-1);':''}${i?'-webkit-mask-image:linear-gradient(90deg,transparent,#000 200px);mask-image:linear-gradient(90deg,transparent,#000 200px);':''}`;if(m&&i)d.style.cssText+='-webkit-mask-image:linear-gradient(270deg,transparent,#000 200px);mask-image:linear-gradient(270deg,transparent,#000 200px);';bgL.appendChild(d)});
+GAL.forEach(([k,x,w,off,iw,m],i)=>{const d=document.createElement('div');d.className='hall h1 gp';d.style.cssText=`z-index:1;left:${x}px;top:-752px;width:${w}px;background-image:url(img/${k}.${k==='med'?'jpg':'jpg'});background-size:${iw}px 2600px;background-position:${-off}px 0;${m?'transform:scaleX(-1);':''}${i?'-webkit-mask-image:linear-gradient(90deg,transparent,#000 200px);mask-image:linear-gradient(90deg,transparent,#000 200px);':''}`;if(m&&i)d.style.cssText+='-webkit-mask-image:linear-gradient(270deg,transparent,#000 200px);mask-image:linear-gradient(270deg,transparent,#000 200px);';bgL.appendChild(d)});
 TILES.forEach(([k,x,m,w,t])=>{const d=document.createElement('div');if(w)d.style.width=w+'px';d.className='hall '+({med:'h1',studio:'h2',studio2:'h2',hills:'h3',hillsx:'h3'}[k])+(m?' m':'');if(k==='hillsx')d.style.height='4386px';d.style.left=x+'px';d.style.top=(t==null?HALL_TOP:t)+'px';d.style.backgroundImage=`url(img/${k}.jpg)`;bgL.appendChild(d)});
 /* entrance doors at the start of each room */
 /* building walls with vintage wooden doors: [x, room card title, subtitle, kind] */
@@ -459,7 +459,7 @@ function physics(){prevD=d;const pA=PT(d),pB=PT(d+6);const slope=(pB.y-pA.y)/6;
 const bloomEl=document.getElementById('bloom');const capEl=document.getElementById('cap');let capIdx=-1;const tip=document.getElementById('tip'),where=document.getElementById('where');
 const carEl=document.getElementById('car'),carR=document.getElementById('carR');
 /* dust motes drifting in the light */
-(()=>{const c=document.getElementById('dust'),x=c.getContext('2d');let P=[];function size(){c.width=innerWidth;c.height=innerHeight;P=[...Array(Math.round(innerWidth*innerHeight/14000))].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:.6+Math.random()*1.8,vx:(Math.random()-.5)*.15,vy:-.05-Math.random()*.15,a:Math.random()*6.28,o:.15+Math.random()*.35}))}size();addEventListener('resize',size);let lx=0;function step(){const dxc=(camX-lx)*.25;lx=camX;x.clearRect(0,0,c.width,c.height);for(const q of P){q.a+=.01;q.x+=q.vx+Math.sin(q.a)*.2+dxc;q.y+=q.vy;if(q.y<-5){q.y=c.height+5;q.x=Math.random()*c.width}if(q.x<-5)q.x=c.width+5;if(q.x>c.width+5)q.x=-5;x.globalAlpha=q.o*(0.6+0.4*Math.sin(q.a*3));x.fillStyle='#fff';x.beginPath();x.arc(q.x,q.y,q.r,0,7);x.fill()}requestAnimationFrame(step)}if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(step)})();let curS=.6,camX=0,camY=0,camInit=false,smAng=0,angInit=false;
+(()=>{const c=document.getElementById('dust'),x=c.getContext('2d');let P=[];function size(){c.width=innerWidth;c.height=innerHeight;P=[...Array(Math.round(innerWidth*innerHeight/14000))].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:.6+Math.random()*1.8,vx:(Math.random()-.5)*.15,vy:-.05-Math.random()*.15,a:Math.random()*6.28,o:.15+Math.random()*.35}))}size();addEventListener('resize',size);let lx=0;function step(){const dxc=(camX-lx)*.25;lx=camX;x.clearRect(0,0,c.width,c.height);for(const q of P){q.a+=.01;q.x+=q.vx+Math.sin(q.a)*.2+dxc;q.y+=q.vy;if(q.y<-5){q.y=c.height+5;q.x=Math.random()*c.width}if(q.x<-5)q.x=c.width+5;if(q.x>c.width+5)q.x=-5;x.globalAlpha=q.o*(0.6+0.4*Math.sin(q.a*3));x.fillStyle='#fff';x.beginPath();x.arc(q.x,q.y,q.r,0,7);x.fill()}requestAnimationFrame(step)}if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(step)})();let zS=1,tgtZ=1,curS=.6,camX=0,camY=0,camInit=false,smAng=0,angInit=false;
 function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;acc=Math.max(0,acc+Math.max(0,Math.min(100,dt)));let n=0;while(acc>=STEP&&n<8){physics();acc-=STEP;n++}
  const al=Math.min(1,acc/STEP),rd=prevD+(d-prevD)*al,p=rd/L;
  // near frame
@@ -471,7 +471,7 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  let ci=-1;caps.forEach(([f],i)=>{if(p>=f-.004&&p<f+.05)ci=i});if(ci!==capIdx&&!paused){capIdx=ci;if(ci<0)capEl.classList.remove('on');else{capEl.innerHTML=caps[ci][1];capEl.classList.add('on')}}
  const wt=p<F1?'MARO’S ROLLERCOASTER':p<FH?'PHOTOGRAPHY':p<F2?'THE HILLS':p<F3?'PERSONAL VLOG':p<F4?'CHANNELS':'MARO’S HOUSE';if(where.textContent!==wt)where.textContent=wt;
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
- const s=Math.max(.3,Math.min(.9,innerWidth/640,innerHeight/1150,innerWidth*.96/(2048*HK)));curS=s;const hb=Math.max(0,Math.min(1,(d-(DOOR_D-2000))/1300));
+ let s=Math.max(.3,Math.min(.9,innerWidth/640,innerHeight/1150,innerWidth*.96/(2048*HK)));if(SCR==='b'&&pt.x>16200&&pt.x<22400)tgtZ=Math.min(1,(innerHeight*.82-24)/((pt.y-(GT-70))*s));else tgtZ=1;zS+=(tgtZ-zS)*.06;s*=zS;curS=s;const hb=Math.max(0,Math.min(1,(d-(DOOR_D-2000))/1300));
  const ax=.2+.2*Math.min(1,Math.max(0,d-600)/(L*.05));const tgx=innerWidth*(ax*(1-hb)+.5*hb)-pt.x*s,tgy=(innerHeight*.82-pt.y*s)*(1-hb)+(innerHeight*.5-(HY+680*HK)*s)*hb;
  if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
  svg.style.transform=embLayer.style.transform=doorsLayer.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;bgL.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;
