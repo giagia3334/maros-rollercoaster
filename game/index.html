@@ -192,7 +192,6 @@ svg image{pointer-events:none}
  <h2>Ready for adventure?</h2>
  <p>Flip for the hearts, open the gifts, pass three gates.</p>
  <div class="howto two"><div><b>◀ ▶</b>ride</div><div><b>FLIP!</b>catch the ♥</div></div>
- <button class="mus on" id="mus" type="button" hidden>🎵 music: <b>ON</b></button>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -371,8 +370,8 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBt
  await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
  goBtn.disabled=false;goBtn.innerHTML=goLabel})();
 const bgm=document.getElementById('bgm'),sndBtn=document.getElementById('snd');let bgmOk=false;bgm.volume=.55;
-bgmOk=true;sndBtn.hidden=true;bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true;musBtn.hidden=true});
-const musBtn=document.getElementById('mus');let musWant=true;musBtn.addEventListener('click',()=>{musWant=!musWant;musBtn.classList.toggle('on',musWant);musBtn.querySelector('b').textContent=musWant?'ON':'OFF';if(musWant){bgm.play().catch(()=>{})}else bgm.pause();sndBtn.textContent=musWant?'🔊':'🔇'});
+bgmOk=true;sndBtn.hidden=true;bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true});
+
 sndBtn.addEventListener('click',()=>{if(bgm.paused){bgm.play().catch(()=>{});sndBtn.textContent='🔊'}else{bgm.pause();sndBtn.textContent='🔇'}});
 function duckBgm(to,ms){const v0=bgm.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=v0+(to-v0)*k;if(k<1)requestAnimationFrame(st)};st()}
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk){bgm.muted=true;bgm.play().then(()=>{bgm.pause();bgm.currentTime=0;bgm.muted=false}).catch(()=>{bgm.muted=false})}});
