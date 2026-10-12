@@ -175,6 +175,7 @@ svg.world{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible
 .gnote{background:var(--cream);border:2px dashed #E6E0D6;border-radius:12px;padding:12px 14px;margin:0 0 14px;text-align:left}
 .gnote .gl{font-family:var(--game);font-size:12px;letter-spacing:.18em;color:var(--led);background:var(--ink);display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:6px}
 .gnote p{margin:0 0 6px;font-size:15px;line-height:1.4;color:var(--ink)}
+.emer{font-weight:800;background:linear-gradient(90deg,#00a86b,#2ee6a6,#00c389,#0f8f5f,#00a86b);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:emer 3s linear infinite;text-shadow:0 0 0 transparent}@keyframes emer{to{background-position:200% 0}}
 .gnote p:last-child{margin:0;font-family:var(--hand);font-size:22px;line-height:1}
 .card h2{margin:0 0 8px;font-size:clamp(26px,6.5vw,34px);line-height:.95;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
 .card h2 em{font-style:normal;color:var(--mag)}
@@ -216,7 +217,7 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
 .howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
 .howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
 .howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
-</style></head><body>
+.cull{display:none!important}</style></head><body>
 <div class="stage" id="stage">
 <div id="bg" aria-hidden="true"></div><svg class="world" id="cloudsvg" aria-hidden="true"><g id="clouds"></g></svg>
 <svg class="world" id="svg">
@@ -227,8 +228,8 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
  <g id="world">
   <rect class="ground2" x="-2000" y="1120" width="13800" height="60"/><rect class="ground2" x="15900" y="1120" width="6000" height="60"/><rect class="ground" x="-2000" y="1150" width="36000" height="1000"/>
   <g id="scen"></g><g id="sup"></g>
-  <path id="track" d="M-1400 1000 L 300 1000 C 700 1000 700 800 1000 800 L 13443 800 C 13900 800 14500 1154 14960 1154 C 15000 1158 15040 1159 15080 1158 C 15120 1156 15160 1152 15200 1146 C 15240 1140 15280 1132 15320 1123 C 15360 1114 15400 1103 15440 1092 C 15480 1081 15520 1070 15560 1058 C 15600 1046 15640 1035 15680 1022 C 15720 1009 15780 987 15800 980 C 16000 980 16000 1000 16200 1000 L 22400 1000 C 22600 1000 22600 765 22800 765 C 22820 760 22880 745 22920 737 C 22960 728 23000 719 23040 714 C 23080 709 23120 706 23160 706 C 23200 707 23240 709 23280 716 C 23320 722 23360 734 23400 743 C 23440 753 23480 763 23520 775 C 23560 787 23600 800 23640 814 C 23680 827 23720 841 23760 855 C 23800 869 23840 883 23880 897 C 23920 911 23960 927 24000 941 C 24040 956 24080 971 24120 985 C 24160 1000 24200 1016 24240 1031 C 24280 1045 24320 1060 24360 1073 C 24400 1086 24440 1098 24480 1109 C 24520 1120 24560 1131 24600 1139 C 24640 1147 24680 1153 24720 1156 C 24760 1159 24800 1159 24840 1157 C 24880 1155 24920 1150 24960 1143 C 25000 1137 25040 1128 25080 1119 C 25120 1110 25160 1099 25200 1088 C 25240 1077 25280 1064 25320 1052 C 25360 1040 25400 1028 25440 1015 C 25480 1002 25520 987 25560 973 C 25600 959 25640 945 25680 931 C 25720 918 25760 904 25800 892 C 25840 879 25880 866 25920 855 C 25960 844 26000 835 26040 828 C 26080 821 26120 816 26160 814 C 26200 811 26240 812 26280 815 C 26320 818 26360 827 26400 832 C 26440 836 26480 844 26520 843 C 26560 842 26600 831 26640 826 C 26680 821 26720 814 26760 812 C 26800 811 26840 813 26880 817 C 26920 821 26960 828 27000 836 C 27040 844 27080 855 27120 867 C 27160 878 27200 892 27240 905 C 27280 918 27320 932 27360 945 C 27400 959 27440 974 27480 988 C 27520 1002 27560 1016 27600 1029 C 27640 1041 27680 1052 27720 1064 C 27760 1075 27800 1087 27840 1098 C 27880 1108 27920 1119 27960 1127 C 28000 1136 28040 1144 28080 1149 C 28120 1154 28160 1157 28200 1158 C 28240 1158 28280 1156 28320 1152 C 28360 1147 28400 1139 28440 1131 C 28480 1122 28520 1110 28560 1098 C 28600 1087 28640 1074 28680 1061 C 28720 1047 28760 1032 28800 1017 C 28840 1002 28880 987 28920 972 C 28960 957 29000 943 29040 928 C 29080 913 29120 897 29160 883 C 29200 868 29240 855 29280 841 C 29320 827 29360 814 29400 801 C 29440 788 29480 770 29520 764 C 29560 759 29600 767 29640 767 C 29680 768 29720 767 29760 767 C 29800 767 29840 767 29880 767 C 29920 767 29960 767 30000 767 C 30040 767 30080 767 30120 767 C 30160 767 30200 767 30240 767 C 30280 767 30320 767 30360 767 C 30400 767 30440 767 30480 767 C 30520 767 30560 767 30600 767 C 30640 767 30680 767 30720 767 C 30760 767 30800 767 30840 767 C 30880 767 30920 767 30960 767 C 31000 767 31040 767 31080 767 C 31120 767 31160 767 31200 767 C 31240 767 31280 767 31320 767 C 31360 767 31400 767 31440 767 C 31480 767 31520 767 31560 767 C 31600 767 31640 767 31680 767 C 31720 767 31760 767 31800 767 C 31840 767 31880 767 31920 767 C 31960 767 32020 767 32040 767"/>
-  <clipPath id="railclip" clipPathUnits="userSpaceOnUse"><rect x="-5000" y="-5000" width="18470" height="12000"/><rect x="14360" y="-5000" width="40000" height="12000"/></clipPath><g clip-path="url(#railclip)"><path class="ties" id="ties"/><path class="rail" id="rail"/><path class="rail2" id="rail2"/></g>
+  <path id="track" d="M-3800 1000 L 300 1000 C 700 1000 700 800 1000 800 L 13443 800 C 13900 800 14500 1154 14960 1154 C 15000 1158 15040 1159 15080 1158 C 15120 1156 15160 1152 15200 1146 C 15240 1140 15280 1132 15320 1123 C 15360 1114 15400 1103 15440 1092 C 15480 1081 15520 1070 15560 1058 C 15600 1046 15640 1035 15680 1022 C 15720 1009 15780 987 15800 980 C 16000 980 16000 1000 16200 1000 L 22400 1000 C 22600 1000 22600 765 22800 765 C 22820 760 22880 745 22920 737 C 22960 728 23000 719 23040 714 C 23080 709 23120 706 23160 706 C 23200 707 23240 709 23280 716 C 23320 722 23360 734 23400 743 C 23440 753 23480 763 23520 775 C 23560 787 23600 800 23640 814 C 23680 827 23720 841 23760 855 C 23800 869 23840 883 23880 897 C 23920 911 23960 927 24000 941 C 24040 956 24080 971 24120 985 C 24160 1000 24200 1016 24240 1031 C 24280 1045 24320 1060 24360 1073 C 24400 1086 24440 1098 24480 1109 C 24520 1120 24560 1131 24600 1139 C 24640 1147 24680 1153 24720 1156 C 24760 1159 24800 1159 24840 1157 C 24880 1155 24920 1150 24960 1143 C 25000 1137 25040 1128 25080 1119 C 25120 1110 25160 1099 25200 1088 C 25240 1077 25280 1064 25320 1052 C 25360 1040 25400 1028 25440 1015 C 25480 1002 25520 987 25560 973 C 25600 959 25640 945 25680 931 C 25720 918 25760 904 25800 892 C 25840 879 25880 866 25920 855 C 25960 844 26000 835 26040 828 C 26080 821 26120 816 26160 814 C 26200 811 26240 812 26280 815 C 26320 818 26360 827 26400 832 C 26440 836 26480 844 26520 843 C 26560 842 26600 831 26640 826 C 26680 821 26720 814 26760 812 C 26800 811 26840 813 26880 817 C 26920 821 26960 828 27000 836 C 27040 844 27080 855 27120 867 C 27160 878 27200 892 27240 905 C 27280 918 27320 932 27360 945 C 27400 959 27440 974 27480 988 C 27520 1002 27560 1016 27600 1029 C 27640 1041 27680 1052 27720 1064 C 27760 1075 27800 1087 27840 1098 C 27880 1108 27920 1119 27960 1127 C 28000 1136 28040 1144 28080 1149 C 28120 1154 28160 1157 28200 1158 C 28240 1158 28280 1156 28320 1152 C 28360 1147 28400 1139 28440 1131 C 28480 1122 28520 1110 28560 1098 C 28600 1087 28640 1074 28680 1061 C 28720 1047 28760 1032 28800 1017 C 28840 1002 28880 987 28920 972 C 28960 957 29000 943 29040 928 C 29080 913 29120 897 29160 883 C 29200 868 29240 855 29280 841 C 29320 827 29360 814 29400 801 C 29440 788 29480 770 29520 764 C 29560 759 29600 767 29640 767 C 29680 768 29720 767 29760 767 C 29800 767 29840 767 29880 767 C 29920 767 29960 767 30000 767 C 30040 767 30080 767 30120 767 C 30160 767 30200 767 30240 767 C 30280 767 30320 767 30360 767 C 30400 767 30440 767 30480 767 C 30520 767 30560 767 30600 767 C 30640 767 30680 767 30720 767 C 30760 767 30800 767 30840 767 C 30880 767 30920 767 30960 767 C 31000 767 31040 767 31080 767 C 31120 767 31160 767 31200 767 C 31240 767 31280 767 31320 767 C 31360 767 31400 767 31440 767 C 31480 767 31520 767 31560 767 C 31600 767 31640 767 31680 767 C 31720 767 31760 767 31800 767 C 31840 767 31880 767 31920 767 C 31960 767 32020 767 32040 767"/>
+  <clipPath id="railclip" clipPathUnits="userSpaceOnUse"><rect x="-5000" y="-5000" width="18470" height="12000"/><rect x="14360" y="-5000" width="40000" height="12000"/></clipPath><g><path class="ties" id="ties"/><path class="rail" id="rail"/><path class="rail2" id="rail2"/></g>
   <g id="bbs"></g><g id="flags"></g>
  </g>
 </svg>
@@ -246,7 +247,7 @@ textarea{min-height:90px;resize:vertical}input:focus,textarea:focus{outline:none
  <div class="brand"><span class="led">MARO’S ROLLERCOASTER</span><span class="ed">★ PORTFOLIO EXCURSION ★</span></div>
  <img class="intro-car" alt="" src="img/car.webp" style="width:min(60%,200px);display:block;margin:0 auto 6px" draggable="false">
  <div class="loadbar"><i></i></div><p class="loadtxt">LOADING…</p>
- <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is the first draft of your portfolio ride. We can add anything to it later that feels authentic to you.</p></div>
+ <div class="gnote"><div class="gl">A NOTE FROM GIA</div><p>This is the first draft of your portfolio ride. We can add anything to it later that feels <span class="emer">authentic to you</span>.</p></div>
  <div class="howto"><div><b>◀ ▶</b>ride</div><div><b>FLIP!</b>show off</div><div><b>TAP</b>a frame</div></div>
  <button class="btn" id="go">▶ START</button>
 </div></div>
@@ -309,8 +310,8 @@ function gantry(x1,x2){const g=towers;/* version B: one long coaster-steel bridg
  for(let x=x1;x<x2;x+=340){g.appendChild(el('path',{class:'stl0',d:`M${x} ${yb+140}H${x+340}M${x} ${yb+290}H${x+340}`}));g.appendChild(el('path',{class:'stl',d:`M${x} ${yb+140}H${x+340}M${x} ${yb+290}H${x+340}`}))}
  g.appendChild(el('rect',{class:'scap0',x:x1-30,y:yt-52,width:x2-x1+60,height:22,rx:11}));g.appendChild(el('rect',{class:'scap',x:x1-26,y:yt-48,width:x2-x1+52,height:14,rx:7}));
  for(let k=0;k<9;k++){const sx=16800+k*680;g.appendChild(el('path',{class:'stl0',d:`M${sx-120} ${yt-52}L${sx-160} ${92+711+30}M${sx+120} ${yt-52}L${sx+160} ${92+711+30}`}));g.appendChild(el('path',{class:'stl',d:`M${sx-120} ${yt-52}L${sx-160} ${92+711+30}M${sx+120} ${yt-52}L${sx+160} ${92+711+30}`}))}}
-function board(x,w,h,label,sub,href,isReel,mp4){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
- const top=isReel?(SCR==='b'?92:p.y-170-h):40;
+function board(x,w,h,label,sub,href,isReel,mp4,ptop){const f=fx(x);const p=P(f);const g=el('g',{class:'bb',tabindex:'0',role:'link'});
+ const top=isReel?(SCR==='b'?92:p.y-170-h):ptop;
  if(isReel){screenBox(g,p.x,w,top,h);if(SCR==='a')tower(p.x,top+h+34)}else{g.appendChild(el('rect',{class:'sh',x:p.x-w/2-40,y:top-30,width:w+92,height:h+92,rx:4}));g.appendChild(el('rect',{class:'mf',x:p.x-w/2-46,y:top-46,width:w+92,height:h+92,rx:4}));g.appendChild(el('rect',{class:'mf2',x:p.x-w/2-34,y:top-34,width:w+68,height:h+68,rx:2}));g.appendChild(el('rect',{class:'mat',x:p.x-w/2-22,y:top-22,width:w+44,height:h+44}))}
  g.appendChild(el('rect',{class:'ph',x:p.x-w/2,y:top,width:w,height:h,rx:4}));
  const open=()=>openPost(href,label,isReel,st.mp4);g.addEventListener('click',open);g.addEventListener('keydown',e=>{if(e.key==='Enter'){open()}});
@@ -319,19 +320,23 @@ function board(x,w,h,label,sub,href,isReel,mp4){const f=fx(x);const p=P(f);const
  const eb=document.createElement('div');eb.className='eb';const sc=w/IN_W;
  eb.style.cssText=`left:${p.x-w/2}px;top:${top}px;width:${w}px;height:${h}px;transform-origin:${w/2}px ${p.y-top}px`;
  if(isReel){const vb=document.createElement('div');vb.className='vb';vb.textContent=sub+' views';eb.appendChild(vb)}
- if(isReel)eb.classList.add('rl');const st={f,g,eb,href,sc,w,h,mp4,mounted:false,px:p.x,k:1};if(mp4)eb.style.background=`#000 url(${mp4.replace('.mp4','.jpg')}) center/cover`;g.style.transition='none';stops.push(st);embLayer.appendChild(eb);return f}
+ if(isReel)eb.classList.add('rl');const st={f,g,eb,href,sc,w,h,mp4,mounted:false,px:p.x,k:1};if(!isReel){const pid=href.split('/p/')[1].replace('/','');eb.innerHTML=`<img src="img/posts/${pid}.webp" alt="" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block">`;st.mounted=true;st.fitted=true;st.stat=true}if(mp4)eb.style.background=`#000 url(${mp4.replace('.mp4','.jpg')}) center/cover`;g.style.transition='none';stops.push(st);embLayer.appendChild(eb);return f}
 function mountEmbed(s){if(s.mounted)return;s.mounted=true;
  if(s.mp4&&!s.noMp4){const v=document.createElement('video');v.addEventListener('error',()=>{s.noMp4=true;s.mp4=null;v.remove();s.mounted=false;mountEmbed(s)},{once:true});v.style.opacity=0;v.style.transition='opacity .35s';v.style.background='transparent';v.addEventListener('playing',()=>{v.style.opacity=1},{once:true});v.src=s.mp4;v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.addEventListener('click',e=>{e.stopPropagation();openPost(s.href,'',true,s.mp4)});s.eb.prepend(v);return}
  const vb=s.eb.querySelector('.vb')||s.swipe;s.eb.innerHTML=`<div class="wait">LOADING…</div><div class="in" style="transform:scale(${s.sc}) translateY(-${HDR}px);height:${Math.ceil(s.h/s.sc)+HDR}px"><blockquote class="instagram-media" data-instgrm-permalink="${s.href}" data-instgrm-version="14"></blockquote></div>`;
  if(vb)s.eb.appendChild(vb);loadEmbedJs();const go=()=>{if(window.instgrm&&window.instgrm.Embeds){window.instgrm.Embeds.process();let n=0;const fit=()=>{if(!s.mounted)return;if(!fitEmbed(s)&&n++<40)setTimeout(fit,250);else if(n>=40)s.eb.querySelector('.wait')?.remove()};setTimeout(fit,600)}else setTimeout(go,300)};go()}
-function unmountEmbed(s){if(!s.mounted)return;s.mounted=false;const vb=s.eb.querySelector('.vb')||s.swipe;s.eb.innerHTML='';if(vb)s.eb.appendChild(vb)}
+function unmountEmbed(s){if(!s.mounted||s.stat)return;s.mounted=false;const vb=s.eb.querySelector('.vb')||s.swipe;s.eb.innerHTML='';if(vb)s.eb.appendChild(vb)}
 const HDR=54,FOOT=232,IN_W=540; // instagram embed: header, footer (likes/comments block), inner width
 function fitEmbed(s){const ifr=s.eb.querySelector('iframe');if(!ifr)return false;const th=parseFloat(ifr.style.height)||ifr.offsetHeight;if(!th||th<HDR+FOOT+40)return false;
  const imgH=Math.max(283,Math.min(675,th-HDR-FOOT));const sc=Math.max(s.w/IN_W,s.h/imgH);const inr=s.eb.querySelector('.in');
  const tx=(s.w/sc-IN_W)/2,ty=s.h/(2*sc)-(HDR+imgH/2);inr.style.transform=`scale(${sc}) translate(${tx}px,${ty}px)`;inr.style.height=Math.ceil(th)+'px';s.eb.querySelector('.wait')?.remove();s.fitted=true;return true}
 const CAROUSEL=new Set(['DFXz47cMsMc','DFX4j-JMmRB','CvAQuUhMc0O','CxxtUiwMWbf','C-nG-pNMvZl','C_F-f1UsQ96']);
-const POSTX=[-310,212,734,1256,3394,3916,4438,4960,5482,6004,7853,8375,8897,9419,9941,10463];/* only where the gallery has plain wall (not the open arches) */
-CFG.posts.forEach(([id,lab],i)=>{board(POSTX[i],360,450,lab,'',`https://www.instagram.com/p/${id}/`,false);if(CAROUSEL.has(id)){const s=stops[stops.length-1];const sw=document.createElement('div');sw.className='swipe';sw.innerHTML='<span>‹</span><span>›</span>';s.eb.appendChild(sw);s.swipe=sw}});
+/* photos hang only on plain wall: big where the wall is tall and free, small under the windows */
+const SPOTS=[[-1722,'S'],[-1046,'B'],[-328,'B'],[348,'S'],[1167,'B'],[3662,'B'],[4366,'S'],[5042,'B'],[5760,'B'],[6436,'S'],[7162,'B'],[9659,'B'],[10454,'S'],[11142,'B'],[11880,'B']];
+const LAND=new Set(['CxxtgA-sXyp','C_GAOozMH5E','CxxtUiwMWbf','C7mIxUMMcJk']);
+const SZ={BP:[480,600,-40],BL:[620,413,40],SP:[300,375,40],SL:[480,320,60]};
+const pS=CFG.posts.filter(p=>LAND.has(p[0])),pB=CFG.posts.filter(p=>!LAND.has(p[0]));let nS=SPOTS.filter(t=>t[1]==='S').length;while(pS.length<nS)pS.push(pB.pop());const ORDER=SPOTS.map(t=>t[1]==='S'?pS.shift():pB.shift());
+ORDER.forEach(([id,lab],i)=>{const k=SPOTS[i][1]+(LAND.has(id)?'L':'P'),[w,h,t]=SZ[k];board(SPOTS[i][0],w,h,lab,'',`https://www.instagram.com/p/${id}/`,false,null,t);if(CAROUSEL.has(id)){const s=stops[stops.length-1];const sw=document.createElement('div');sw.className='swipe';sw.innerHTML='<span>‹</span><span>›</span>';s.eb.appendChild(sw);s.swipe=sw}});
 scen.appendChild(towers);
 /* Maro's hill: the end of the ride climbs onto a grassy hilltop and the house sits on its flat top */
 {let pts=[];for(let i=0;i<=TN;i++){const x=TX[i];if(x<28250)continue;pts.push(`${x.toFixed(0)} ${(TY[i]+16).toFixed(0)}`)}const last=TX[TN],ly=TY[TN]+16;
@@ -349,7 +354,7 @@ function arch(x,txt){const span=340,pl=P(fx(x-span)),pr=P(fx(x+span)),pm=P(fx(x)
  for(let k=1;k<12;k++){const t=k/12,bx=(1-t)*(1-t)*(x-span)+2*(1-t)*t*x+t*t*(x+span),byy=(1-t)*(1-t)*ty+2*(1-t)*t*(ty-260)+t*t*ty;g.appendChild(el('circle',{class:'bulb'+(k%2?' b2':''),cx:bx,cy:byy,r:9}))}
  const W2=txt.length*30+90,bh=86,by=ty-170;g.appendChild(el('line',{x1:x-W2/2+30,y1:by+bh,x2:x-W2/2+30,y2:ty-100,stroke:'#1b1a22','stroke-width':6}));g.appendChild(el('line',{x1:x+W2/2-30,y1:by+bh,x2:x+W2/2-30,y2:ty-100,stroke:'#1b1a22','stroke-width':6}));
  g.appendChild(el('rect',{class:'board',x:x-W2/2,y:by-bh/2,width:W2,height:bh,rx:14}));const t=el('text',{x,y:by+14,'text-anchor':'middle','font-size':40});t.textContent=txt;g.appendChild(t);scen.appendChild(g)}
-arch(-900,'PHOTOGRAPHY');arch(15900,'PERSONAL VLOG');arch(23500,'CHANNELS');
+arch(-2900,'PHOTOGRAPHY');arch(15900,'PERSONAL VLOG');arch(23500,'CHANNELS');
 const caps=[];
 const STATION3=fx(25200),STATION4=fx(29800);
 /* Maro's house (end of the ride) */
@@ -357,13 +362,17 @@ const HK=340/645,HX=29800-992*HK,HY=P(fx(29800)).y+5-1301*HK;
 /* museum halls as a parallax background */
 const bgL=document.getElementById('bg');const HALL_W=4600,HALL_TOP=-752;
 /* tiles: [image, x, mirrored] ; gallery -1800..10000, media 10000..17280 (big screen under LINKS), cabinet 17280.. */
-const TILES=[['hillsx',11600,0,0,-300-1786],['hillsx',16200,1,0,-300-1786],['hillsx',20800,0,0,-300-1786],['hillsx',25400,1,0,-300-1786],['hillsx',30000,0,0,-300-1786],['med',-2200,1],['med',2400,0],['med',7000,1]];
+const TILES=[['hillsx',11600,0,0,-300-1786],['hillsx',16200,1,0,-300-1786],['hillsx',20800,0,0,-300-1786],['hillsx',25400,1,0,-300-1786],['hillsx',30000,0,0,-300-1786]];
+/* gallery wall panels, left to right: [image, x, width, crop offset px (world), image width, mirror] */
+const GAL=[['gal_arch1',-3640,1480,0,4601,0],['med',-2200,3256,743,4601,0],['gal_arch1',856,3232,685,4601,0],['med',3888,3256,743,4601,0],['gal_arch2',6944,3218,753,4601,1],['med',9976,2150,743,4601,0]];
+{const c=document.createElement('div');c.style.cssText='position:absolute;left:-3640px;width:18000px;top:-2152px;height:1404px;background:#a44a25';bgL.appendChild(c);const f=document.createElement('div');f.style.cssText='position:absolute;left:-3640px;width:18000px;top:1844px;height:1400px;background:#a54921';bgL.appendChild(f)}
+GAL.forEach(([k,x,w,off,iw,m],i)=>{if(i<GAL.length-1){w+=260;if(m)off-=260}const d=document.createElement('div');d.className='hall h1 gp';d.style.cssText=`z-index:1;left:${x}px;top:-752px;width:${w}px;background-image:url(img/${k}.${k==='med'?'jpg':'jpg'});background-size:${iw}px 2600px;background-position:${-off}px 0;${m?'transform:scaleX(-1);':''}${i?'-webkit-mask-image:linear-gradient(90deg,transparent,#000 200px);mask-image:linear-gradient(90deg,transparent,#000 200px);':''}`;if(m&&i)d.style.cssText+='-webkit-mask-image:linear-gradient(270deg,transparent,#000 200px);mask-image:linear-gradient(270deg,transparent,#000 200px);';bgL.appendChild(d)});
 TILES.forEach(([k,x,m,w,t])=>{const d=document.createElement('div');if(w)d.style.width=w+'px';d.className='hall '+({med:'h1',studio:'h2',studio2:'h2',hills:'h3',hillsx:'h3'}[k])+(m?' m':'');if(k==='hillsx')d.style.height='4386px';d.style.left=x+'px';d.style.top=(t==null?HALL_TOP:t)+'px';d.style.backgroundImage=`url(img/${k}.jpg)`;bgL.appendChild(d)});
 /* entrance doors at the start of each room */
 /* building walls with vintage wooden doors: [x, room card title, subtitle, kind] */
 /* the gallery's own end wall with a big wooden door: it opens, you go through it, you're outside */
 const DOORX=13443,OUTX=15300,BACKX=15150,WALL_END=14360;
-{const dt=document.createElement('div');dt.className='hall h1';dt.style.cssText='left:11601px;top:-752px;width:2759px;background-image:url(img/doorwall.webp)';bgL.appendChild(dt);}
+{const dt=document.createElement('div');dt.className='hall h1';dt.style.cssText='z-index:2;left:11601px;top:-752px;width:2759px;background-image:url(img/doorwall.webp)';bgL.appendChild(dt);}
 const dpair=document.createElement('div');dpair.className='dpair';dpair.style.cssText='left:12977px;top:-462px;width:931px;height:1632px';dpair.innerHTML='<div class="dl"></div><div class="dr2"></div>';bgL.appendChild(dpair);
 let doorBusy=false;const stageEl=document.getElementById('stage');
 function goThrough(fwd){if(doorBusy)return;doorBusy=true;paused=true;v=0;keys.l=keys.r=false;const s=curS;const sx=camX+DOORX*s,sy=camY+760*s;
@@ -377,7 +386,7 @@ const houseImg=el('image',{href:'img/house.webp',x:HX,y:HY,width:2048*HK,height:
 const doorsLayer=document.getElementById('doors');
 const mkDoor=(side,x0,x1)=>{const dv=document.createElement('div');dv.className='dr '+side;dv.style.cssText=`left:${HX+x0*HK}px;top:${HY+750*HK}px;width:${(x1-x0)*HK}px;height:${552*HK}px`;dv.innerHTML=`<img src="img/door${side==='l'?'L':'R'}.webp" alt="">`;doorsLayer.appendChild(dv);return dv};
 const doorL=mkDoor('l',670,993),doorR=mkDoor('r',992,1316);const DOOR_D=fx(29800)*L;let doorState=0;
-const FH=fx(13500),F1=fx(-1000),F2=fx(16000),F3=fx(23200),F4=fx(27800);
+const FH=fx(13500),F1=fx(-2900),F2=fx(16000),F3=fx(23200),F4=fx(27800);
 /* link boards */
 /* official brand marks (Instagram glyph, LinkedIn, Facebook, WhatsApp, Mail) */
 const LOGO={
@@ -410,7 +419,7 @@ false&&LINKS.forEach(([ic,lab,sub,href],i)=>{const n=LINKS.length;const f=fx(167
  g.appendChild(el('rect',{class:'lkgobg',x:p.x-46,y:top+h-14,width:92,height:30,rx:15}));const t4=el('text',{class:'lkgo',x:p.x,y:top+h+7,'text-anchor':'middle'});t4.textContent='OPEN ↗';g.appendChild(t4);
  a.appendChild(g);bbs.appendChild(a);linkStops.push({f,g})});
 /* controls & physics */
-const keys={l:false,r:false};let auto=true,paused=true,d=200,v=0,prevD=200,last=null,acc=0;const STEP=1000/60;
+const keys={l:false,r:false};let auto=true,paused=true,d=600,v=0,prevD=600,last=null,acc=0;const STEP=1000/60;
 const hold=(id,k)=>{const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('down');setAuto(false)},off=()=>{keys[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,off))};
 hold('br','r');hold('bl','l');
 const autoBtn=document.getElementById('auto');function setAuto(on){auto=on;autoBtn.classList.toggle('on',on);autoBtn.textContent=on?'❚❚ AUTO':'▶ AUTO'}
@@ -425,7 +434,7 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const gl=goBtn.inn
 (async()=>{const urls=[...document.querySelectorAll('#scen image')].map(i=>i.getAttribute('href')).concat(['img/car.webp','img/doorL.webp','img/doorR.webp']);const total=urls.length+1;let done=0;const bar=document.querySelector('.loadbar i'),ltx=document.querySelector('.loadtxt'),icar=document.querySelector('.intro-car');icar.classList.add('loading');
  const tick=()=>{const pc=Math.round(done/total*100);bar.style.width=pc+'%';ltx.textContent=`MARO’S ROLLERCOASTER IS LOADING… ${pc}%`;goBtn.innerHTML=`LOADING ${pc}%`};tick();
  await Promise.all(urls.map(u=>new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>{done++;tick();r()})};im.onerror=()=>{done++;tick();r()};im.src=u})));
- loadEmbedJs();await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();
+ await Promise.race([document.fonts?document.fonts.ready:0,new Promise(r=>setTimeout(r,1500))]);done=total;tick();
  const ph=stops.filter(s=>!s.mp4).slice(0,4);ph.forEach(mountEmbed);const t0=performance.now();while(performance.now()-t0<12000){const n=ph.filter(s=>s.fitted).length;ltx.textContent=`PREPARING PHOTOS ${n}/${ph.length}`;goBtn.innerHTML=`PHOTOS ${n}/${ph.length}`;bar.style.width=(70+30*n/ph.length)+'%';if(n>=ph.length)break;await new Promise(r=>setTimeout(r,250))}
  icar.classList.remove('loading');ltx.textContent='READY';bar.style.width='100%';goBtn.disabled=false;goBtn.innerHTML=gl})();
 goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null});
@@ -444,7 +453,7 @@ function physics(){prevD=d;const pA=PT(d),pB=PT(d+6);const slope=(pB.y-pA.y)/6;
   const nx=stops.find(s=>s.f*L>d+4);if(nx&&nx.f*L-d<40&&dwell<150){dwell++;want=0}else{want=nx&&nx.f*L-d<40?0:3.2;if(nx&&nx.f*L-d>=40)dwell=0}
   if(!nx&&d>STATION4*L)want=0}
  v+=(want-v)*.08;if(!paused&&(keys.r||keys.l))v+=slope*.15;if(!keys.r&&!keys.l&&!auto)v*=.92;if(Math.abs(v)<.03)v=0;v=Math.max(-12,Math.min(turboT>0?26:15,v));
- d=Math.max(200,Math.min(L,d+v));if(d<=200&&v<0)v=0;if(d>=L)v=0;
+ d=Math.max(600,Math.min(L,d+v));if(d<=600&&v<0)v=0;if(d>=L)v=0;
 
 }
 const bloomEl=document.getElementById('bloom');const capEl=document.getElementById('cap');let capIdx=-1;const tip=document.getElementById('tip'),where=document.getElementById('where');
@@ -463,20 +472,21 @@ function frame(now){if(last===null){last=now;acc=0}const dt=now-last;last=now;ac
  const wt=p<F1?'MARO’S ROLLERCOASTER':p<FH?'PHOTOGRAPHY':p<F2?'THE HILLS':p<F3?'PERSONAL VLOG':p<F4?'CHANNELS':'MARO’S HOUSE';if(where.textContent!==wt)where.textContent=wt;
  const pt=P(p);let raw=angAt(p);if(!angInit){smAng=raw;angInit=true}let da=((raw-smAng+540)%360)-180;smAng+=da*.35;
  const s=Math.max(.3,Math.min(.9,innerWidth/640,innerHeight/1150,innerWidth*.96/(2048*HK)));curS=s;const hb=Math.max(0,Math.min(1,(d-(DOOR_D-2000))/1300));
- const ax=.2+.2*Math.min(1,Math.max(0,d-200)/(L*.05));const tgx=innerWidth*(ax*(1-hb)+.5*hb)-pt.x*s,tgy=(innerHeight*.82-pt.y*s)*(1-hb)+(innerHeight*.5-(HY+680*HK)*s)*hb;
+ const ax=.2+.2*Math.min(1,Math.max(0,d-600)/(L*.05));const tgx=innerWidth*(ax*(1-hb)+.5*hb)-pt.x*s,tgy=(innerHeight*.82-pt.y*s)*(1-hb)+(innerHeight*.5-(HY+680*HK)*s)*hb;
  if(!camInit){camX=tgx;camY=tgy;camInit=true}const kc=1-Math.pow(1-.16,Math.max(.5,dt/16.7));camX+=(tgx-camX)*kc;camY+=(tgy-camY)*kc;
  svg.style.transform=embLayer.style.transform=doorsLayer.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;bgL.style.transform=`translate3d(${camX}px,${camY}px,0) scale(${s})`;
  if(!doorBusy){const inside=pt.x<WALL_END;if(inside){const near=pt.x>DOORX-700;if(near!==dpair.classList.contains('open'))dpair.classList.toggle('open',near);if(pt.x>=DOORX-4&&v>=0)goThrough(true)}else if(pt.x<BACKX&&v<0)goThrough(false)}
  const cw=250*s,ch=cw*(595/927);carEl.style.width=cw+'px';carR.style.width=cw+'px';carR.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s+8*s}px,0) rotate(${-smAng}deg) scale(1,-1) translate(${-cw/2}px,${-ch}px)`;let fl='';
  if(flipT>=0){flipT+=dt;const FM=flip2?FLIP_MS*1.7:FLIP_MS;const t=Math.min(1,flipT/FM);const jump=Math.sin(t*Math.PI)*(flip2?720:330)*s;const ea=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const ang=-(flip2?720:360)*ea;const sq=t>.9?1+(t-.9)*1.2:1;fl=`translate(0px,${-jump}px) translate(0px,${-ch/2}px) rotate(${ang}deg) scale(${1/sq},${sq}) translate(0px,${ch/2}px)`;if(!fxFired&&t>.4){fxFired=true;fireworks(camX+pt.x*s,camY+pt.y*s-jump-ch/2);if(flip2){fireworks(camX+pt.x*s-220,camY+pt.y*s-jump-ch/2-120);setTimeout(()=>fireworks(camX+pt.x*s+200,camY+pt.y*s-jump-ch/2-60),260)}}if(t>=1){flipT=-1;fxFired=false;flip2=false}}
  carEl.style.transform=`translate3d(${camX+pt.x*s}px,${camY+pt.y*s}px,0) rotate(${smAng}deg) ${fl} translate(${-cw/2}px,${-ch}px)`;
- screenTick(d);linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
+ if((cullTick=(cullTick+1)%10)===0)cull();screenTick(d);linkStops.forEach(s=>{const dd=s.f*L-d;if(dd<520&&!s.g.classList.contains('pop'))s.g.classList.add('pop');s.g.classList.toggle('near',Math.abs(dd)<70)});
  if(doorState===0&&d>DOOR_D-520){doorState=1;doorL.classList.add('open');doorR.classList.add('open')}
  else if(doorState===1&&d>=DOOR_D-14){doorState=2;v=0;paused=true;keys.l=keys.r=false;doorL.classList.remove('open');doorR.classList.remove('open');setTimeout(()=>{carEl.style.opacity=0},250);setTimeout(()=>openCard('call'),900)}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
 /* instagram post viewer (official embed) */
 const pov=document.getElementById('pov'),pbox=document.getElementById('pbox');let embedLoaded=false;
+let cullTick=0,cullList=null;function cull(){if(!cullList){cullList=[];[bgL,embLayer].forEach(L=>{for(const el of L.children){const w=el.offsetWidth;if(w>0&&w<9000)cullList.push([el,el.offsetLeft,el.offsetLeft+w])}})}const s=curS,l=-camX/s-900,r=(innerWidth-camX)/s+900;for(const [el,a,b] of cullList){const off=b<l||a>r;if(off!==el.classList.contains('cull'))el.classList.toggle('cull',off)}}
 function loadEmbedJs(){if(embedLoaded)return;embedLoaded=true;const s=document.createElement('script');s.async=true;s.src='https://www.instagram.com/embed.js';document.body.appendChild(s)}
 function openPost(href,label,isReel,mp4){setAuto(false);document.getElementById('plab').textContent=(isReel?'MY BLOG · ':'PHOTOGRAPHY · ')+label.toUpperCase();document.getElementById('popen').href=href;
  if(mp4){pbox.innerHTML=`<video src="${mp4}" controls autoplay playsinline loop></video>`;pov.classList.add('on');return}
