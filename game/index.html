@@ -155,7 +155,7 @@ svg image{pointer-events:none}
 .howto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}.howto.two{grid-template-columns:1fr 1fr}
 .howto div{background:var(--cream);border:2px solid #E6E0D6;border-radius:10px;padding:8px 6px;text-align:center;font-family:var(--disp);font-size:12px;line-height:1.2;color:#5b5a63}
 .howto b{display:block;font-family:var(--game);font-size:15px;color:var(--ink);margin-bottom:3px;letter-spacing:.04em}
-.snd{font:inherit;font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;border:2px solid var(--led);background:var(--ink);color:#fff;cursor:pointer;pointer-events:auto;margin-left:4px}
+.mus{display:block;margin:0 auto 12px;font:inherit;font-size:14px;padding:8px 16px;border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}.mus.on{background:var(--ink);color:#fff}.snd{font:inherit;font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;border:2px solid var(--led);background:var(--ink);color:#fff;cursor:pointer;pointer-events:auto;margin-left:4px}
 .calwrap{width:100%;border:3px solid #3b3670;border-radius:14px;overflow:hidden;background:#100f24;box-shadow:0 0 40px rgba(230,48,110,.35)}
 </style>
 
@@ -192,6 +192,7 @@ svg image{pointer-events:none}
  <h2>Ready for adventure?</h2>
  <p>Flip for the hearts, open the gifts, pass three gates.</p>
  <div class="howto two"><div><b>◀ ▶</b>ride</div><div><b>FLIP!</b>catch the ♥</div></div>
+ <button class="mus on" id="mus" type="button">🎵 music: <b>ON</b></button>
  <button class="btn" id="go"><span class="blink">▶</span>&nbsp;YES!</button>
 </div></div>
 <div class="ov" id="ov"><div class="card" id="card"></div></div>
@@ -370,10 +371,11 @@ const goBtn=document.getElementById('go');goBtn.disabled=true;const goLabel=goBt
  await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
  goBtn.disabled=false;goBtn.innerHTML=goLabel})();
 const bgm=document.getElementById('bgm'),sndBtn=document.getElementById('snd');let bgmOk=false;bgm.volume=.55;
-bgm.addEventListener('canplaythrough',()=>{bgmOk=true;sndBtn.hidden=false},{once:true});bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true});
+bgmOk=true;sndBtn.hidden=false;bgm.addEventListener('error',()=>{bgmOk=false;sndBtn.hidden=true;musBtn.hidden=true});
+const musBtn=document.getElementById('mus');let musWant=true;musBtn.addEventListener('click',()=>{musWant=!musWant;musBtn.classList.toggle('on',musWant);musBtn.querySelector('b').textContent=musWant?'ON':'OFF';if(musWant){bgm.play().catch(()=>{})}else bgm.pause();sndBtn.textContent=musWant?'🔊':'🔇'});
 sndBtn.addEventListener('click',()=>{if(bgm.paused){bgm.play().catch(()=>{});sndBtn.textContent='🔊'}else{bgm.pause();sndBtn.textContent='🔇'}});
 function duckBgm(to,ms){const v0=bgm.volume,t0=performance.now();const st=()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=v0+(to-v0)*k;if(k<1)requestAnimationFrame(st)};st()}
-goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk){bgm.play().catch(()=>{sndBtn.textContent='🔇'})}});
+goBtn.addEventListener('click',()=>{if(goBtn.disabled)return;document.getElementById('intro').classList.remove('on');paused=false;last=null;if(bgmOk&&musWant){bgm.play().then(()=>{sndBtn.textContent='🔊'}).catch(()=>{sndBtn.textContent='🔇'})}else sndBtn.textContent='🔇'});
 
 addEventListener('wheel',e=>{if(!paused)v+=Math.sign(e.deltaY)*2},{passive:true});
 let tx0=null;addEventListener('touchstart',e=>{if(e.target.closest('.pad,.ov'))return;tx0=e.touches[0].clientX},{passive:true});
